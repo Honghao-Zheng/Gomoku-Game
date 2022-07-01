@@ -2,70 +2,94 @@
 import React, { useState } from "react";
 import Board from "./Board";
 import {putDownPiece,checkWinning} from "./GameLogic";
-
-
-let boardArrangement=[
-  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "]
-
-];
-
-
-
+import HomePage from "./HomePage";
+import PlayerVsPlayer from "./gameplaypage/PlayerVsPlayer";
+import PlayerVsAIChoice from "./parameterchoice/PlayerVsAIChoice"
+import AIVsAIChoice from "./parameterchoice/AIVsAIChoice"
+import SimulationChoice from "./parameterchoice/SimulationChoice"
 
 function GomokuGame (){
 
-  const [gameState,setSate]=useState({
-    isBlackTurn:true
-  });
+  const [homePageState,setHomeState]=useState({
+    showPage:true,
+    modeClicked:null
+  })
+  function handleModeClick(mode){
+    // console.log(mode)
+      setHomeState({showPage:homePageState.showPage?false:null,
+                     modeClicked:mode      
+                    })
+  }
 
-    function handleMoveClick(clickedIntersectionCoord){
-      
-      let turn=gameState.isBlackTurn?"B":"W";
-      let rowCoord, colCoord;
-      let moveMade;
-      let whoWin;
-      [rowCoord,colCoord]=clickedIntersectionCoord;
-      moveMade = putDownPiece(clickedIntersectionCoord,turn,boardArrangement);
-      if (moveMade){
-        whoWin =checkWinning(turn,rowCoord,colCoord,boardArrangement);
-        if (whoWin==="B"){
-          alert("black piece win")
-        } else if(whoWin==="W"){
-          alert("white piece win")
-        }
-        setSate({isBlackTurn:gameState.isBlackTurn?false:true});
-      } 
+  function handleHomeButtonClick(){
+        setHomeState({showPage:homePageState.showPage?null:true})
+  }
 
-    }
+
+
+if(homePageState.showPage===false){
+  // console.log(homePageState.showPage)
+  // console.log(homePageState.modeClicked)
+
+    //playerVSplayer game page
+  if(homePageState.modeClicked==="PvsP"){    
     return (
-      <div >
-        <div className="game row">
-   
-            <Board
-            boardArrangement={boardArrangement}
-            onClick={([rowNum,colNum])=>handleMoveClick([rowNum,colNum])}
-            
-            />
-        </div>
-        
-
+      <div>
+        <PlayerVsPlayer onClickHome={()=>handleHomeButtonClick()} />
       </div>
+    )
+  }
 
-    );
+  //playerVScomputer game setting page
+   else if(homePageState.modeClicked==="PvsAI"){
+    return (
+    <div>
+    <PlayerVsAIChoice onClickHome={()=>handleHomeButtonClick()} />
+  </div>
+    )
+
+      //computerVScomputer game setting page
+   } else if (homePageState.modeClicked==="AIvsAI"){
+    return (
+    <div>
+    <AIVsAIChoice onClickHome={()=>handleHomeButtonClick()} />
+  </div>
+    )
+
+      //simulation setting page
+   } else if (homePageState.modeClicked==="Simulation"){
+    return (
+    <div>
+    <SimulationChoice onClick={()=>handleHomeButtonClick()} />
+  </div>
+    )
+   }
+
+   //Home page
+} else{
+  return (
+    <HomePage onClick={(mode)=>handleModeClick(mode)}/>
+  )
+}
+
+
+// return (
+//   <div>
+
+
+//     <div>
+//       {homePageState.showPage?<HomePage onClick={(mode)=>handleModeClick(mode)}/>:null}
+//     </div>
+
+
+//     <div>
+//       {homePageState.showPage?null:<PlayerVsPlayer onClick={()=>handleHomeButtonClick()}/>}
+//     </div>
+
+//   </div>
+// )
+
+
 
 }
 

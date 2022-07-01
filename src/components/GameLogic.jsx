@@ -14,226 +14,203 @@ function putDownPiece(coord,whoTurn,board){
     } else {
         return false
     }
-    
 }
 
-function rightDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board){
-    let count;
-    let colInex;
-    if (pieceColour !==" "){
-        count=0
-        for(colInex=pieceColCoord;colInex<pieceColCoord+5 && colInex<15;colInex++){
-            if (board[pieceRowCoord][colInex]===pieceColour){
-                count++;               
-            } else {
-                break;
-            }
+function avalibleMoves(board){
+    let avalibleMoves=[];
+    let row,col;
+    for (row=0;row<board.length;row++){
+        for (col=0;col<board[row].length;col++){
+        if (board[row][col]===" "){
+            avalibleMoves.push([row,col])
         }
-        // console.log(count)
-        if (count===5){
-            // console.log(pieceColour)
-            return pieceColour;
         }
     }
-    return null;
+    return avalibleMoves;
 }
 
-function rightTopDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board){
-    let count;
-    let rowInex=pieceRowCoord;
-    let colInex=pieceColCoord;
-    if (pieceColour !==" "){
-        count=0
-        while(rowInex>pieceRowCoord-5 && rowInex>=0 && colInex<pieceColCoord+5 && colInex<15){
-
-        if (board[rowInex][colInex]===pieceColour){
-            count++;               
-        } else {
-            break;
-        }
-        rowInex--;
-        colInex++;
+function checkDraw(board){
+    let possibleMoves=avalibleMoves(board);
+    if(possibleMoves.length===0){
+        return true;
+    } else{
+        return false;
     }
-        // console.log(count)
-        if (count===5){
-            // console.log(pieceColour)
-            return pieceColour;
-        }
-    }
-    return null;
 }
 
-function topDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board){
-    let count;
-    let rowInex;
-    if (pieceColour !==" "){
-        count=0
-        for(rowInex=pieceRowCoord;rowInex>pieceRowCoord-5 && rowInex>=0;rowInex--){
-            if (board[rowInex][pieceColCoord]===pieceColour){
-                count++;               
-            } else {
-                break;
-            }
-        }
-        // console.log(count)
-        if (count===5){
-            // console.log(pieceColour)
-            return pieceColour;
-        }
-    }
-    return null;
-}
-
-
-function topLeftDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board){
-    let count;
-    let rowInex=pieceRowCoord;
-    let colIndex=pieceColCoord;
-    if (pieceColour !==" "){
-        count=0
-        while (rowInex>pieceRowCoord-5 && rowInex>=0 && colIndex>pieceColCoord-5 && colIndex>=0){
-            if (board[rowInex][colIndex]===pieceColour){
-                count++;               
-            } else {
-                break;
-            }
-            rowInex--
-            colIndex--
-        }
-
-        // console.log(count)
-        if (count===5){
-            // console.log(pieceColour)
-            return pieceColour;
-        }
-    }
-    return null;
-}
-
-function leftDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board){
+function leftToRightCheck(pieceColour,pieceRowCoord,pieceColCoord,board){
     let count;
     let colIndex;
-    if (pieceColour !==" "){
-        count=0
-        for(colIndex=pieceColCoord;colIndex>pieceColCoord-5 && colIndex>=0;colIndex--){
+
+        count=-1
+        //since it will count itself twice and it will outside of range if we set 
+        //colIndex=pieceColCoord-1 for pieceColCoord=0
+        colIndex=pieceColCoord;
+        for(colIndex=pieceColCoord;colIndex<pieceColCoord+5 && colIndex<15;colIndex++){
             if (board[pieceRowCoord][colIndex]===pieceColour){
                 count++;               
             } else {
                 break;
             }
         }
+        colIndex=pieceColCoord;
+        for(colIndex=pieceColCoord;colIndex>pieceColCoord-5 && colIndex>=0;colIndex--){
+            if (board[pieceRowCoord][colIndex]===pieceColour){
+                count++;               
+            } else {
+                break;
+            }   
+    }
         // console.log(count)
-        if (count===5){
+        if (count>=5){
             // console.log(pieceColour)
             return pieceColour;
         }
-    }
+    
     return null;
 }
 
-function leftBotDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board){
+
+
+function leftBottoRightTopCheck (pieceColour,pieceRowCoord,pieceColCoord,board){
     let count;
     let rowInex=pieceRowCoord;
     let colIndex=pieceColCoord;
-    if (pieceColour !==" "){
-        count=0
-        while(colIndex>pieceColCoord-5 && colIndex>=0 && rowInex<pieceRowCoord+5 && rowInex<15){
+
+        count=-1
+        while(rowInex>pieceRowCoord-5 && rowInex>=0 && colIndex<pieceColCoord+5 && colIndex<15){
+        if (board[rowInex][colIndex]===pieceColour){
+            count++;       
+            // console.log(count)        
+        } else {
+            break;
+        }
+        rowInex--;
+        colIndex++;
+    }
+    rowInex=pieceRowCoord;
+    colIndex=pieceColCoord
+    while(colIndex>pieceColCoord-5 && colIndex>=0 && rowInex<pieceRowCoord+5 && rowInex<15){
+        if (board[rowInex][colIndex]===pieceColour){
+            count++;        
+            // console.log(count)       
+        } else {
+            break;
+        }
+        colIndex--
+        rowInex++
+    }
+
+
+
+        // console.log(count)
+        if (count>=5){
+            // console.log(pieceColour)
+            return pieceColour;
+        }
+    
+    return null;
+}
+
+function topToBotCheck(pieceColour,pieceRowCoord,pieceColCoord,board){
+    let count;
+    let rowIndex=pieceRowCoord;
+
+        count=-1
+        for(rowIndex=pieceRowCoord;rowIndex>pieceRowCoord-5 && rowIndex>=0;rowIndex--){
+            if (board[rowIndex][pieceColCoord]===pieceColour){
+                count++;               
+            } else {
+                break;
+            }
+        }
+        rowIndex=pieceRowCoord
+        for(rowIndex=pieceRowCoord;rowIndex<pieceRowCoord+5 && rowIndex<15;rowIndex++){
+            if (board[rowIndex][pieceColCoord]===pieceColour){
+                count++;               
+            } else {
+                break;
+            }
+        }
+        // console.log(count)
+        if (count>=5){
+            // console.log(pieceColour)
+            return pieceColour;
+        }
+    
+    return null;
+}
+
+
+function topLeftToBotRightCheck(pieceColour,pieceRowCoord,pieceColCoord,board){
+    let count;
+    let rowInex=pieceRowCoord;
+    let colIndex=pieceColCoord;
+
+        count=-1
+        while (rowInex>pieceRowCoord-5 && rowInex>=0 && colIndex>pieceColCoord-5 && colIndex>=0){
             if (board[rowInex][colIndex]===pieceColour){
                 count++;               
             } else {
                 break;
             }
+            rowInex-- 
             colIndex--
-            rowInex++
         }
-
-        // console.log(count)
-        if (count===5){
-            // console.log(pieceColour)
-            return pieceColour;
-        }
-    }
-    return null;
-}
-
-function botDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board){
-    let count;
-    let rowInex;
-    if (pieceColour !==" "){
-        count=0
-        for(rowInex=pieceRowCoord;rowInex<pieceRowCoord+5 && rowInex<15;rowInex++){
-            if (board[rowInex][pieceColCoord]===pieceColour){
+        rowInex=pieceRowCoord;
+        colIndex=pieceColCoord;
+        while(rowInex<pieceRowCoord+5 && rowInex<15 && colIndex<pieceColCoord+5 && colIndex<15){
+            if (board[rowInex][colIndex]===pieceColour){
                 count++;               
             } else {
                 break;
             }
+            // console.log([rowInex,colIndex])
+            // console.log(board[rowInex][colIndex])
+            rowInex++
+            colIndex++
         }
         // console.log(count)
-        if (count===5){
+        if (count>=5){
             // console.log(pieceColour)
             return pieceColour;
         }
-    }
+    
     return null;
 }
 
-function botRightDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board){
-    let count=0;
-    let rowInex=pieceRowCoord;
-    let colIndex=pieceColCoord;
-    while(rowInex<pieceRowCoord+5 && rowInex<15 && colIndex<pieceColCoord+5 && colIndex<15){
-        if (board[rowInex][colIndex]===pieceColour){
-            count++;               
-        } else {
-            break;
-        }
-        // console.log([rowInex,colIndex])
-        // console.log(board[rowInex][colIndex])
-        rowInex++
-        colIndex++
-    }
-    // console.log(count)
-    if (count===5){
-        // console.log(pieceColour)
-        return pieceColour;
-    }
 
-    return null;
-}
 
-function checkWinning(pieceColour,pieceRowCoord,pieceColCoord,board){
+function checkWinning(pieceColour,coord,board){
     let whoWin=null;
-    let top=topDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board);
-    let topLeft=topLeftDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board);
-    let left=leftDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board);
-    let leftBot=leftBotDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board);
-    let bot=botDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board);
-    let botRight=botRightDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board);
-    let right=rightDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board);
-    let rightTop=rightTopDirectionCheck(pieceColour,pieceRowCoord,pieceColCoord,board);
-
-    if (top!==null){
-        whoWin=top;
-    } else if(topLeft !==null){
-        whoWin=topLeft;
-    } else if(left !==null){
-        whoWin=left;
-    } else if(leftBot !==null){
-        whoWin=leftBot;
-    } else if(bot !==null){
-        whoWin=bot;
-    } else if(botRight !==null){
-        whoWin=botRight;
-    } else if(right !==null){
-        whoWin=right;
-    } else if (rightTop !==null){
-        whoWin=rightTop;
+    let [pieceRowCoord,pieceColCoord]=coord;
+    let topBot=topToBotCheck(pieceColour,pieceRowCoord,pieceColCoord,board);
+    // console.log(topBot!==null)
+    let leftBottoRightTop=leftBottoRightTopCheck(pieceColour,pieceRowCoord,pieceColCoord,board);
+    // console.log(leftBottoRightTop!==null)
+    let leftright=leftToRightCheck(pieceColour,pieceRowCoord,pieceColCoord,board);
+    // console.log(leftright!==null)
+    let topLeftToBotRight=topLeftToBotRightCheck(pieceColour,pieceRowCoord,pieceColCoord,board);
+    // console.log(topLeftToBotRight!==null)
+    if (checkDraw(board)===true){
+        whoWin="D"
+    }
+//if after draw no one wins then it is a draw
+    if (topBot!==null){
+        whoWin=topBot;
+    } else if(leftBottoRightTop !==null){
+        whoWin=leftBottoRightTop;
+    } else if(leftright !==null){
+        whoWin=leftright;
+    } else if(topLeftToBotRight !==null){
+        whoWin=topLeftToBotRight;
+    } 
+    if(whoWin!==null){
+        // console.log("found")
     }
     return whoWin;
             }
-    //     }
-    // }
 
 
 
-export { putDownPiece,checkWinning};
+export { putDownPiece,checkWinning, avalibleMoves,checkDraw};

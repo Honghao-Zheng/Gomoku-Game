@@ -1,16 +1,22 @@
 //jshint esversion:6
 import React from "react";
-import Intersection from "./Intersection";
-
+import {Intersection} from "./Buttons";
+import { isArrayEqualArray } from "./GeneralAlgorithms";
 
 function Board (props) {
-
+// console.log(props.boardArrangement)
   function renderRow(row,rowNum){
     let cellColour;
+
     return (
       <div>
       {row.map((pieceColour,colNum)=>{
-        cellColour="white"        
+        cellColour="yellow"
+        
+        if(isArrayEqualArray(props.moveMade,[rowNum,colNum])){
+
+      cellColour="red"
+    }     
         return (
         <Intersection
         colour={cellColour}
@@ -31,6 +37,9 @@ function Board (props) {
       )
     }
   )}
+
+
+
 </div>
   )
 }

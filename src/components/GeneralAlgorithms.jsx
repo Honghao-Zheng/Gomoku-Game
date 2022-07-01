@@ -1,36 +1,45 @@
 //jshint esversion:6
-function checkEqualArray(array1,array2){
+function isArrayEqualArray(array1,array2){
   if (array1.length===array2.length){
-    var i;
-    for(i=0;i<array1.length;i++){
-      if (array1[i] !==array2[i]){
+
+    let index;
+    for(index=0;index<array1.length;index++){
+      if (array1[index] !==array2[index]){
         return (false);
       }
     }
+    
     return (true);
 }
 
 }
 
-  function arraysIncludeArray(arrays,oneArray){
-    var i;
-    for (i=0;i<arrays.length;i++){
-      if (checkEqualArray(arrays[i],oneArray)){
+  function arraysHasArray(collectionOfArrays,singleArray){
+    let index;
+    for (index=0;index<collectionOfArrays.length;index++){
+      if (isArrayEqualArray(collectionOfArrays[index],singleArray)){
         return (true);
       }
     }
     return (false);
   }
 
-  function flippingArrays(arrays){
-    let newArrays=[];
-    let rowIndex;
-    for (rowIndex=arrays.length-1;rowIndex>=0;rowIndex--){
-      newArrays.push(arrays[rowIndex]);
+
+  function copyTwoDimArray(array){
+    let twoDimArray=[];
+    let rowArray=[];
+    let rowIndex,colIndex;
+    for (rowIndex=0;rowIndex<array.length;rowIndex++){
+      for (colIndex=0;colIndex<array.length;colIndex++){
+        rowArray.push(array[rowIndex][colIndex])
+      }
+      twoDimArray.push(rowArray)
+      rowArray=[]
     }
-    return newArrays;
+    return twoDimArray;
   }
+  
 
 
 
-export {flippingArrays,arraysIncludeArray,checkEqualArray};
+export {arraysHasArray,isArrayEqualArray,copyTwoDimArray};

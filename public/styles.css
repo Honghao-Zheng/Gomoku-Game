@@ -6,31 +6,59 @@
   border-color: #999;
   border-width: 1px;
   float: left;
-  height: 34px;
+  height: 35px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
-  width: 34px;
-
+  width: 35px;
 }
 
-.white{
-  background-color: white;
+.yellow{
+  background-color: yellow;
 }
 
+.red{
+  background-color: red;
+}
 
+.textBlack{
+  color: black;
+}
 
+.textRed{
+  color: red;
+}
 
-.game {
+.gameboard {
   display: flex;
   flex-direction: row;
+  height: 510px;
+  width: 510px;
 }
 
-.row{
-  display:inline-block;
-position:relative;
-margin-right: 50px;
-margin-left: 50px
+.rows{
+  display: flex;
+  flex-direction: row;
+  width: 600px;
+}
+
+.cols{
+  display: flex;
+  flex-direction:column;
+  width: 200px;
+}
+
+.radioDis{
+  display: flex;
+  flex-direction: row;
+  width: 800px;
+  height:50px
+}
+
+.gameScreen{
+  display: flex;
+  height: 510px;
+  width: 1200px;
 }
 
 h1{
@@ -40,24 +68,28 @@ h1{
 
 
 .W{
-    background-image: url("assets/white_king.png");
+    background-image: url("assets/whitepiece.png");
 }
-
-
-
-
 
 
 .B{
-    background-image: url("assets/black_queen.png");
+    background-image: url("assets/blackpiece.png");
 }
 
 
+.navigation{
+  margin: 8px auto;
+  flex-shrink: 0;
+  width: 160px;
+  height: 64px;
+}
+.function{
+  margin: 8px auto;
+  flex-shrink: 0;
+  width: 160px;
+  height: 60px;
+}
 
-
-
-
-p{
-  margin-top: 8px;
-  margin-bottom: 0px;
+.des{
+  text-align: center;
 }
