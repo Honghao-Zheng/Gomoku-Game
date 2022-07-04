@@ -77,7 +77,7 @@ function AIVsAIChoice(props) {
         />
         
         <NavButton
-          text="Start Game"
+          text="Next"
           onClick={() => {
             setState({
               isStarted: true,

@@ -60,7 +60,7 @@ if(homePageState.showPage===false){
    } else if (homePageState.modeClicked==="Simulation"){
     return (
     <div>
-    <SimulationChoice onClick={()=>handleHomeButtonClick()} />
+    <SimulationChoice onClickHome={()=>handleHomeButtonClick()} />
   </div>
     )
    }
