@@ -39,7 +39,28 @@ function isArrayEqualArray(array1,array2){
     return twoDimArray;
   }
   
+  //choose a uniform random number between 0 and max-1
+  function random(max) {
+    const num = Math.floor(Math.random() * (max));
+    return num;
+  }
+
+  function shuffle(arr) {
+    let arrIndex;
+    let randomNum;
+    let temp;
+    for (arrIndex = arr.length - 1; arrIndex > 0; arrIndex--) {
+    
+      randomNum = random(arrIndex+1)
+            
+      temp = arr[arrIndex];
+      arr[arrIndex] = arr[randomNum];
+      arr[randomNum] = temp;
+    }
+      
+    return arr;
+    }
+    
 
 
-
-export {arraysHasArray,isArrayEqualArray,copyTwoDimArray};
+export {arraysHasArray,isArrayEqualArray,copyTwoDimArray,random,shuffle};

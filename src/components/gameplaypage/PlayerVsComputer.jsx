@@ -6,7 +6,7 @@ import chooseRandomMove from "../AIplayers/RandomPlayer"
 import { putDownPiece, checkWinning } from "../GameLogic"
 import { useState } from "react";
 import ShowText from "../ShowText";
-
+import GAmove from "../AIplayers/GA/GAalgorithm"
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -47,6 +47,8 @@ function PlayerVsComputer(props){
         let computerMove;
         if(AI==="Random"){
             computerMove=chooseRandomMove(board)
+            // computerMove=GAmove(turn,board)
+            
         } else if(AI==="Minimax") {
         } else if(AI==="Greedy"){
         }

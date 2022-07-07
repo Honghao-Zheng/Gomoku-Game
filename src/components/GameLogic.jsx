@@ -62,7 +62,7 @@ function leftToRightCheck(pieceColour,pieceRowCoord,pieceColCoord,board){
             }   
     }
         // console.log(count)
-        if (count==5){
+        if (count>=5){
             // console.log(pieceColour)
             return pieceColour;
         }
@@ -104,7 +104,7 @@ function leftBottoRightTopCheck (pieceColour,pieceRowCoord,pieceColCoord,board){
 
 
         // console.log(count)
-        if (count==5){
+        if (count>=5){
             // console.log(pieceColour)
             return pieceColour;
         }
@@ -133,7 +133,7 @@ function topToBotCheck(pieceColour,pieceRowCoord,pieceColCoord,board){
             }
         }
         // console.log(count)
-        if (count==5){
+        if (count>=5){
             // console.log(pieceColour)
             return pieceColour;
         }
@@ -171,7 +171,7 @@ function topLeftToBotRightCheck(pieceColour,pieceRowCoord,pieceColCoord,board){
             colIndex++
         }
         // console.log(count)
-        if (count==5){
+        if (count>=5){
             // console.log(pieceColour)
             return pieceColour;
         }
@@ -212,5 +212,12 @@ function checkWinning(pieceColour,coord,board){
             }
 
 
+function swapColor(color){
+    if (color==="B"){
+        return "W"
+    } else{
+        return "B"
+    }
+}
 
-export { putDownPiece,checkWinning, avalibleMoves,checkDraw};
+export { putDownPiece,checkWinning, avalibleMoves,checkDraw,swapColor};
