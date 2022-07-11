@@ -30,7 +30,7 @@ function isArrayEqualArray(array1,array2){
     let rowArray=[];
     let rowIndex,colIndex;
     for (rowIndex=0;rowIndex<array.length;rowIndex++){
-      for (colIndex=0;colIndex<array.length;colIndex++){
+      for (colIndex=0;colIndex<array[rowIndex].length;colIndex++){
         rowArray.push(array[rowIndex][colIndex])
       }
       twoDimArray.push(rowArray)

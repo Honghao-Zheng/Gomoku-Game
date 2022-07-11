@@ -14,16 +14,21 @@ function fitness(moveComb,pieceColor,defFactor,board){
     for(index=0;index<moveComb.length;index++){
         moveMade=moveComb[index];
         //discard illegal moveComb
-        if(boardCopy[moveMade[0]][moveMade[1]] ===" " 
-            && moveMade[0]<15 && moveMade[0]>=0 && moveMade[1]<15 && moveMade[1]>=0){
-                putDownPiece(moveMade,turn,boardCopy)
-                if(turn===pieceColor){
-                    totalFitnessScore+=moveEvaluation(moveMade,turn,defFactor,boardCopy)
-                } else{
-                    totalFitnessScore-=moveEvaluation(moveMade,turn,defFactor,boardCopy)
+        if(
+            moveMade[0]<15 && moveMade[0]>=0 && moveMade[1]<15 && moveMade[1]>=0){
+                if(boardCopy[moveMade[0]][moveMade[1]] ===" "){
+                    putDownPiece(moveMade,turn,boardCopy)
+                    if(turn===pieceColor){
+                        totalFitnessScore+=moveEvaluation(moveMade,turn,defFactor,boardCopy)
+                    } else{
+                        totalFitnessScore-=moveEvaluation(moveMade,turn,defFactor,boardCopy)
+                    }
+            
+                    turn=swapColor(turn)
+                } else {
+                    return -10000
                 }
-        
-                turn=swapColor(turn)
+
         } else{
             return -10000;
         }
@@ -44,19 +49,22 @@ function uniformCrossover(mom,dad){
     let child1=new individual();
     let child2=new individual();
     let child1Moves=[];
-    let child2Moves=[]
+    let child2Moves=[];
+    let randomBit;
     let momCopy=copyTwoDimArray(mom.moveComb);
     let dadCopy=copyTwoDimArray(dad.moveComb);
-    let randomBit;
+    // console.log(mom.moveComb)
+    // console.log(dad.moveComb)
+    
     for(var moveIndex=0;moveIndex<momCopy.length;moveIndex++){
         randomBit=random(2);
         if (randomBit===1){
-            child1Moves.push(momCopy.moveComb[moveIndex])
-            child2Moves.push(dadCopy.moveComb[moveIndex])
+            child1Moves.push(momCopy[moveIndex])
+            child2Moves.push(dadCopy[moveIndex])
         }
         if (randomBit===0){
-            child1Moves.push(dadCopy.moveComb[moveIndex])
-            child2Moves.push(momCopy.moveComb[moveIndex])
+            child1Moves.push(dadCopy[moveIndex])
+            child2Moves.push(momCopy[moveIndex])
         }
 
     }
@@ -97,6 +105,7 @@ function createDumyIterationArray(numOfIteration){
 }
 
 function GAmove(pieceColor,board){
+    console.log(pieceColor)
 let numOfPopulation=500;
 let numOfIteration=100;
 let numOfChildren=500;
@@ -121,6 +130,7 @@ let child1,child2;
 for (var i=0;i<numOfPopulation;i++){
     ind=new individual();
     ind.moveComb=initIndMoves(pieceColor,depth,board)
+    
     ind.score=fitness(ind.moveComb,pieceColor,defFactor,board)
     population.push(ind)
     if (ind.score>bestScore){
@@ -129,7 +139,8 @@ for (var i=0;i<numOfPopulation;i++){
         bestInd.score=ind.score;
     }
 }
-
+// console.log(population[0].moveComb)
+// console.log("forst ind in population: "+population[0].moveComb)
 //iterations
 for (it=0;it<=numOfIteration;it++){
     for (childIndex=0;childIndex<produceChildIt;childIndex++){
@@ -140,6 +151,7 @@ for (it=0;it<=numOfIteration;it++){
         dadIndex=dumyIterationArray[1]
         mom=population[momIndex];
         dad=population[dadIndex];
+
         //produce two childen
         [child1,child2]=uniformCrossover(mom,dad)
         //mutate two childen

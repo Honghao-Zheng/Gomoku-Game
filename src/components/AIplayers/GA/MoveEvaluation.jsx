@@ -10,24 +10,28 @@ function atkMoveEvaluation(move,pieceColor,board){
     let fourOneCount=0;
     let fiveCount=0;
     let vThreat=threatRecognise(verticalCheck(rowCoord,colCoord,pieceColor,board));
+    // console.log("vThreat: "+vThreat)
     let hThreat=threatRecognise(horizontalCheck(rowCoord,colCoord,pieceColor,board));
+    // console.log("hThreat: "+hThreat)
     let d1Threat=threatRecognise(leftBotToRightTopCheck(rowCoord,colCoord,pieceColor,board));
+    // console.log("d1Threat: "+d1Threat)
     let d2Threat=threatRecognise(leftTopToRightBotCheck(rowCoord,colCoord,pieceColor,board));
+    // console.log("d2Threat: "+d2Threat)
+
     let threats=[vThreat,hThreat,d1Threat,d2Threat];
-    threats.map((threat,index)=>{
-        switch(threat){
-            case 2:
-                score+=2;
-                break;
-            case 21:
-                score +=1;
-                break;
-            case 31:
-                score+=4;
-                break;
-            // two 3 in a row form a winning threat so high point, more than that no much point
-            case 3:
-                threeCount++;
+    // let threats=[hThreat];
+    let threatIndex;
+    let threat;
+    for (threatIndex=0;threatIndex<threats.length;threatIndex++){
+        threat=threats[threatIndex]
+        if (threat===2){
+            score+=2;
+        } else if(threat===21){
+            score +=1;
+        } else if(threat===31){
+            score+=4;
+        } else if(threat===3){
+            threeCount++;
                 if (threeCount===2 ){
                     score+=22
                 } else if (threeCount>=3){
@@ -39,36 +43,26 @@ function atkMoveEvaluation(move,pieceColor,board){
                         score+=8
                     }                    
                 }             
-                break;
-            //no much point for multiple 4 in a row
-            case 4:
-                fourCount++;
-                if (fourCount>=2 ){
-                    score+=1
-                } else {
-                    score+=32;
-                }
-                
-                break;
-            case 41:
-                fourOneCount++;
-                if (fourOneCount===1){
-                    if(threeCount===1){
-                        score+=22
+        } else if(threat===4){
+            fourCount++;
+            if (fourCount>=2 ){
+                score+=1
+            } else {
+                score+=32;
+            }
+        } else if(threat===41){
+            fourOneCount++;
+            if (fourOneCount===1){
+                if(threeCount===1){
+                    score+=22
 
-                    }else{
-                        score+=16
-                    }
-                } else{
-                    score+=1
+                }else{
+                    score+=16
                 }
-                
-                
-                break;
-            default:
-                score+=0;
-    }
-    if(threat===5){
+            } else{
+                score+=1
+            }
+    }   else if(threat===5){
         fiveCount++;
         if (fiveCount===1){
             score+=128;
@@ -76,11 +70,9 @@ function atkMoveEvaluation(move,pieceColor,board){
             score+=1;
         }
     }
+}
+    // console.log("attack move evaluation:"+score)
     return score
-
-    })
-
-
 
 }
 
@@ -91,30 +83,52 @@ function verticalCheck(rowCoord,colCoord,pieceColor,board){
     let colIndex=colCoord;
     let occupant;
     let counts;
-
-    while(board[rowIndex][colIndex]!==" " && rowIndex>=0){
+    // console.log("rowIndex: "+rowIndex)
+    // console.log("colIndex: "+colIndex)
+    // console.log("board[rowIndex][colIndex]: "+board[rowIndex][colIndex])
+    while( rowIndex>=0){
         occupant=board[rowIndex][colIndex];
-        if (occupant===pieceColor){
-            sameColorCount++
+        if (occupant!==" " ){
+            // console.log("check top rowIndex: "+rowIndex)
+            // console.log("check top colIndex: "+colIndex)
+            
+            if (occupant===pieceColor){
+                sameColorCount++
+            } else {
+                oppositeColorCount++;
+                break;
+            }
+            rowIndex--;
         } else {
-            oppositeColorCount++;
             break;
+        };
+
         }
-        rowIndex--;
-    };
+
     rowIndex=rowCoord;
     colIndex=colCoord;
-    while(board[rowIndex][colIndex]!==" " && rowIndex<15){
+    while(rowIndex<15){
         occupant=board[rowIndex][colIndex];
-        if (occupant===pieceColor){
-            sameColorCount++
-        } else {
-            oppositeColorCount++;
+        if(occupant!==" "){
+            // console.log("check bot rowIndex: "+rowIndex)
+            // console.log("check bot colIndex: "+colIndex)
+            
+            if (occupant===pieceColor){
+                sameColorCount++
+            } else {
+                oppositeColorCount++;
+                break;
+            }
+            rowIndex++;
+
+        } else{
             break;
         }
-        rowIndex++;
+
     }
     counts={sameColor:sameColorCount, oppositeColor:oppositeColorCount}
+    // console.log("vertical same counts: "+counts.sameColor)
+    // console.log("vertical opposite counts: "+counts.oppositeColor)
     return counts
 }
 
@@ -124,32 +138,48 @@ function horizontalCheck(rowCoord,colCoord,pieceColor,board){
     let oppositeColorCount=0;
     let rowIndex=rowCoord;
     let colIndex=colCoord;
+    // console.log("rowCoord: "+rowCoord)
+    // console.log("colCoord: "+colCoord)
+    // console.log("pieceColor: "+pieceColor)
     let occupant;
     let counts;
 
-    while(board[rowIndex][colIndex]!==" " && colIndex>=0){
+    while( colIndex>=0){
         occupant=board[rowIndex][colIndex];
-        if (occupant===pieceColor){
-            sameColorCount++
+        if (occupant!==" "){
+            
+            if (occupant===pieceColor){
+                sameColorCount++
+            } else {
+                oppositeColorCount++;
+                break;
+            }
+            colIndex--;
         } else {
-            oppositeColorCount++;
             break;
         }
-        colIndex--;
+
     };
     rowIndex=rowCoord;
     colIndex=colCoord;
-    while(board[rowIndex][colIndex]!==" " && colIndex<15){
+    while(colIndex<15){
         occupant=board[rowIndex][colIndex];
-        if (occupant===pieceColor){
-            sameColorCount++
+        if(occupant!==" " ){
+            if (occupant===pieceColor){
+                sameColorCount++
+            } else {
+                oppositeColorCount++;
+                break;
+            }
+            colIndex++;
         } else {
-            oppositeColorCount++;
             break;
         }
-        colIndex++;
+
     }
     counts={sameColor:sameColorCount, oppositeColor:oppositeColorCount}
+    // console.log("horizontal same counts: "+counts.sameColor)
+    // console.log("horizontal opposite counts: "+counts.oppositeColor)
     return counts
 }
 
@@ -164,31 +194,47 @@ function leftBotToRightTopCheck (rowCoord,colCoord,pieceColor,board){
     let counts;
 
     //to right top
-        while(board[rowIndex][colIndex]!==" " && rowIndex>=0 && colIndex<15){
-        occupant=board[rowIndex][colIndex];
-        if (occupant===pieceColor){
-            sameColorCount++;    
-            // console.log(count)        
-        } else {
-            oppositeColorCount++;
-            break;
-        }
-        rowIndex--;
-        colIndex++;
+        while(rowIndex>=0 && colIndex<15){
+            occupant=board[rowIndex][colIndex];
+            if(occupant!==" "){
+                
+                // console.log("rowIndex: "+rowIndex) 
+                // console.log("colIndex: "+colIndex) 
+                // console.log("occupant: "+occupant) 
+                if (occupant===pieceColor){
+                    sameColorCount++;    
+                    // console.log("sameColorCount: "+sameColorCount)        
+                } else {
+                    oppositeColorCount++;
+                    break;
+                }
+                rowIndex--;
+                colIndex++;
+            } else{
+                break;
+            }
+
     }
     //to left bot
-    while(board[rowIndex][colIndex]!==" " && colIndex>=0 && rowIndex<15){
+    rowIndex=rowCoord;
+    colIndex=colCoord;
+    while( colIndex>=0 && rowIndex<15){
         occupant=board[rowIndex][colIndex];
-        if (occupant===pieceColor){
-            sameColorCount++;    
-            // console.log(count)        
-        } else {
-            oppositeColorCount++;
+        if (occupant!==" "){
+            if (occupant===pieceColor){
+                sameColorCount++;    
+                // console.log(count)        
+            } else {
+                oppositeColorCount++;
+                break;
+            }
+            colIndex--;
+            rowIndex++;
+        } else{
             break;
         }
-        colIndex--;
-        rowIndex++;
-    }
+
+    } 
 
     counts={sameColor:sameColorCount, oppositeColor:oppositeColorCount}
     return counts
@@ -205,29 +251,41 @@ function leftTopToRightBotCheck (rowCoord,colCoord,pieceColor,board){
     let occupant;
     let counts;
     //to leftTop
-        while(board[rowIndex][colIndex]!==" " && rowIndex>=0 && colIndex>=0){
+        while(rowIndex>=0 && colIndex>=0){
         occupant=board[rowIndex][colIndex];
-        if (occupant===pieceColor){
-            sameColorCount++;    
-            // console.log(count)        
-        } else {
-            oppositeColorCount++;
+        if(occupant!==" " ){
+            if (occupant===pieceColor){
+                sameColorCount++;    
+                // console.log(count)        
+            } else {
+                oppositeColorCount++;
+                break;
+            }
+            rowIndex--;
+            colIndex--;
+        } else{
             break;
         }
-        rowIndex--;
-        colIndex--;
+
     }
-    while(board[rowIndex][colIndex]!==" " && colIndex<15 && rowIndex<15){
+    rowIndex=rowCoord;
+    colIndex=colCoord;
+    while(colIndex<15 && rowIndex<15){
         occupant=board[rowIndex][colIndex];
-        if (occupant===pieceColor){
-            sameColorCount++;    
-            // console.log(count)        
-        } else {
-            oppositeColorCount++;
+        if(occupant!==" " ){
+            if (occupant===pieceColor){
+                sameColorCount++;    
+                // console.log(count)        
+            } else {
+                oppositeColorCount++;
+                break;
+            }
+            colIndex++;
+            rowIndex++;
+        } else{
             break;
         }
-        colIndex++;
-        rowIndex++;
+
     }
 
     counts={sameColor:sameColorCount, oppositeColor:oppositeColorCount}
@@ -237,32 +295,27 @@ function leftTopToRightBotCheck (rowCoord,colCoord,pieceColor,board){
 function threatRecognise(counts){
     let sameColorCount= counts.sameColor;
     let oppositeColorCount=counts.oppositeColor;
+    // console.log("threatRecognise sameColorCount: "+sameColorCount)
+    // console.log("threatRecognise oppositeColorCount: "+oppositeColorCount)
     let threat=null;
-    switch([sameColorCount,oppositeColorCount]){
-        case [2,0]:
-            threat=2;
-            break;
-        case [2,1]:
-            threat=21;
-            break;
-        case [3,0]:
-            threat=3;
-            break;
-        case [3,1]:
-            threat=31;
-            break;
-        case [4,0]:
-            threat=4;
-            break;
-        case [4,1]:
-            threat=41;
-            break;
-        default:
-            threat=null;
-}
-if (sameColorCount>=5){
+    if (sameColorCount===2 && oppositeColorCount===0){
+        threat=2
+    } else if (sameColorCount===2 && oppositeColorCount===1) {
+        threat=21
+    } else if (sameColorCount===2 && oppositeColorCount===1) {
+        threat=21
+    } else if (sameColorCount===3 && oppositeColorCount===0) {
+        threat=3
+    } else if (sameColorCount===3 && oppositeColorCount===1) {
+        threat=31
+    } else if (sameColorCount===4 && oppositeColorCount===0) {
+        threat=4
+    } else if (sameColorCount===4 && oppositeColorCount===1) {
+        threat=41
+    } else if ( sameColorCount>=5){
     threat=5
-}
+    }
+
 return threat
 }
 
@@ -273,6 +326,8 @@ function moveEvaluation(move,pieceColor,defFactor,board){
     boardCopy[move[0]][move[1]]=oppositeColor;
     let defenceScore=atkMoveEvaluation(move,oppositeColor,boardCopy)*defFactor;
     let totalScore=offenceScore+defenceScore;
+    // let totalScore=offenceScore;
+    // console.log("moveEvaluation function score:"+totalScore)
     return totalScore;
 
 }
