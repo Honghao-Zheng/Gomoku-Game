@@ -3,11 +3,11 @@
 import Board from "../Board";
 import {NavButton,FunctionButton} from "../Buttons";
 import chooseRandomMove from "../AIplayers/RandomPlayer"
-import { putDownPiece, checkWinning } from "../GameLogic"
+import { putDownPiece, checkWinning,avalibleMoves } from "../GameLogic";
 import { useState } from "react";
 import ShowText from "../ShowText";
-import GAmove from "../AIplayers/GA/GAalgorithm"
-
+import GAmove from "../AIplayers/GA/GAalgorithm";
+import {initdrawCheckBoard} from "../SharedData";
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -25,7 +25,8 @@ let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "]
   ];
-
+//   let boardArrangement=drawCheckBoard();
+let depth=3;
 function PlayerVsComputer(props){
     let whoPlaysFirst=props.settings.whoGoFirst;
     let AIalgorithm=props.settings.computer;    
@@ -41,17 +42,20 @@ function PlayerVsComputer(props){
       const [moveState,setMove]=useState({
         moveMade:[]
       })
+    //   const [depth,setDepth]=useState({
+    //     num:5
+    //   })
+    
 
 
 
     function AImakeMove(AI,turn,board){
         let computerMove;
         if(AI==="Random"){
-            // computerMove=chooseRandomMove(board)
-            computerMove=GAmove(turn,board)
-            
+            computerMove=chooseRandomMove(board)
         } else if(AI==="Minimax") {
-        } else if(AI==="Greedy"){
+        } else if(AI==="Genetic"){
+            computerMove=GAmove(depth,turn,board)
         }
         putDownPiece(computerMove,turn,board)
         return computerMove
@@ -61,17 +65,30 @@ function PlayerVsComputer(props){
       let turn=turnState.isBlackTurn?"B":"W";
       let isMoveMade;
       let whoWin;
-
+    let avaMoves;
+    let numMoveLeft;
+    let moveMade;
+    let isGameEnded=false;
       isMoveMade = putDownPiece(clickedIntersectionCoord,turn,boardArrangement);
+      moveMade=clickedIntersectionCoord;
       if (isMoveMade){
         whoWin =checkWinning(turn,clickedIntersectionCoord,boardArrangement);
+        avaMoves=avalibleMoves(boardArrangement);
+        numMoveLeft=avaMoves.length;
         if (whoWin!==null){
           setGame({
             isStarted:gameState.isStarted,
             isEnded:true,
             winner:whoWin
           })
-        }; 
+          isGameEnded=true;
+        }else if(numMoveLeft===0){
+            setGame({
+              isEnded:true,
+              winner:"D"
+            })
+            isGameEnded=true;
+          };
         // console.log(moveState.moveMade)
         // setTurn({isBlackTurn:turnState.isBlackTurn?false:true});
         if(turn==="B"){
@@ -79,15 +96,35 @@ function PlayerVsComputer(props){
         }else{
             turn="B"
         }
-      let moveMade=AImakeMove(AIalgorithm,turn,boardArrangement)
-      whoWin =checkWinning(turn,moveMade,boardArrangement);
-      if (whoWin!==null){
-        setGame({
-            isStarted:gameState.isStarted,
-          isEnded:true,
-          winner:whoWin
-        })
-      }; 
+        // console.log("numMoveLeft: "+numMoveLeft)
+        // console.log("depth: "+depth)
+        if(numMoveLeft<=depth+1){
+            // setDepth({
+            //     num:numMoveLeft
+            // })
+            depth=numMoveLeft-1
+            // console.log("depth: "+depth)
+        }
+
+        if(!isGameEnded){
+            moveMade=AImakeMove(AIalgorithm,turn,boardArrangement)
+            whoWin =checkWinning(turn,moveMade,boardArrangement);
+            if (whoWin!==null){
+              setGame({
+                  isStarted:gameState.isStarted,
+                isEnded:true,
+                winner:whoWin
+              })
+            }  else if(numMoveLeft===0){
+              setGame({
+              isStarted:gameState.isStarted,
+                isEnded:true,
+                winner:"D"
+              })
+
+            }
+        }
+
       setMove({moveMade:moveMade})
       } 
     }
@@ -127,7 +164,7 @@ function PlayerVsComputer(props){
     }
 
     function startGame(whoPlaysFirst){
-        if(whoPlaysFirst!=="Player 1"){          
+        if(whoPlaysFirst!=="Player"){          
             let moveMade=AImakeMove(AIalgorithm,"B",boardArrangement)
             // console.log(moveMade)
             setMove({moveMade:moveMade});
@@ -157,7 +194,7 @@ function PlayerVsComputer(props){
                 returnHome(boardArrangement)
             }}/>
 
-            <h1>Player 1 VS Computer</h1>
+            <h1>Human VS Computer</h1>
         </div>
         
 
@@ -194,14 +231,14 @@ function PlayerVsComputer(props){
                     />
                     }
                     <ShowText textColour="textBlack"
-                        condition={whoPlaysFirst==="Player 1"}
-                        textIfTrue="Black Piece: Player 1"
-                        textIfFalse="Black Piece: Computer"
+                        condition={whoPlaysFirst==="Player"}
+                        textIfTrue="Black Piece: Player (Human)"
+                        textIfFalse={"Black Piece: Computer("+AIalgorithm+")"}
                     />
                        <ShowText textColour="textBlack"
-                        condition={whoPlaysFirst!=="Player 1"}
-                        textIfTrue="White Piece: Player 1"
-                        textIfFalse="White Piece: Computer"
+                        condition={whoPlaysFirst!=="Player"}
+                        textIfTrue="White Piece: Player (Human)"
+                        textIfFalse={"White Piece: Computer("+AIalgorithm+")"}
                     />                  
                 </div>
 

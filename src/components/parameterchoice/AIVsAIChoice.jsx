@@ -4,7 +4,7 @@ import ComputerVsComputer from "../gameplaypage/ComputerVsComputer";
 
 function AIVsAIChoice(props) {
   let players = ["Computer 1", "Computer 2"];
-  let AIalgorithms = ["Random", "Minimax", "Greedy"];
+  let AIalgorithms = ["Random", "Minimax", "Genetic"];
   let defaultBlack = players[0];
   let defaultAlgorithms = AIalgorithms[0];
   const [gameSetting, changeSetting] = useState({

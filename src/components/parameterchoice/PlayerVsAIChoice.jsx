@@ -3,8 +3,8 @@ import { RadioButtons, NavButton } from "../Buttons";
 import PlayerVsComputer from "../gameplaypage/PlayerVsComputer";
 
 function PlayerVsAIChoice(props) {
-  let players = ["Player 1", "Computer"];
-  let AIalgorithms = ["Random", "Minimax", "Greedy"];
+  let players = ["Player", "Computer"];
+  let AIalgorithms = ["Random", "Minimax", "Genetic"];
   let defaultBlack = players[0];
   let defaultAlgorithms = AIalgorithms[0];
   const [gameSetting, changeSetting] = useState({

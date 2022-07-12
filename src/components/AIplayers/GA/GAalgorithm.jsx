@@ -11,6 +11,7 @@ function fitness(moveComb,pieceColor,defFactor,board){
     let totalFitnessScore=0;
     let moveMade;
     let boardCopy=copyTwoDimArray(board);
+    // console.log("moveComb1: "+moveComb)
     for(index=0;index<moveComb.length;index++){
         moveMade=moveComb[index];
         //discard illegal moveComb
@@ -51,6 +52,8 @@ function uniformCrossover(mom,dad){
     let child1Moves=[];
     let child2Moves=[];
     let randomBit;
+    // console.log("mom.moveComb:"+mom.moveComb)
+    // console.log("dad:"+dad)
     let momCopy=copyTwoDimArray(mom.moveComb);
     let dadCopy=copyTwoDimArray(dad.moveComb);
     // console.log(mom.moveComb)
@@ -104,13 +107,13 @@ function createDumyIterationArray(numOfIteration){
     return array
 }
 
-function GAmove(pieceColor,board){
-    console.log(pieceColor)
+function GAmove(depth,pieceColor,board){
+    // console.log(pieceColor)
 let numOfPopulation=500;
 let numOfIteration=100;
 let numOfChildren=500;
 let population=[]
-let depth=5;
+
 let mutateProp=0.1
 let defFactor=0.6;
 let ind;
@@ -130,14 +133,16 @@ let child1,child2;
 for (var i=0;i<numOfPopulation;i++){
     ind=new individual();
     ind.moveComb=initIndMoves(pieceColor,depth,board)
-    
+    // console.log("initial indivisual "+i)
     ind.score=fitness(ind.moveComb,pieceColor,defFactor,board)
+    // console.log("score "+ind.score)
     population.push(ind)
-    if (ind.score>bestScore){
+    if (ind.score>=bestScore){
         bestInd=new individual();
         bestInd.moveComb=ind.moveComb;
         bestInd.score=ind.score;
     }
+    // console.log("bestInd moveComb: "+bestInd.moveComb)
 }
 // console.log(population[0].moveComb)
 // console.log("forst ind in population: "+population[0].moveComb)

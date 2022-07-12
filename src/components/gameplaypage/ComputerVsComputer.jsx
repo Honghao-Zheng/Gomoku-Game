@@ -3,10 +3,10 @@
 import Board from "../Board";
 import {NavButton,FunctionButton} from "../Buttons";
 import chooseRandomMove from "../AIplayers/RandomPlayer"
-import { putDownPiece, checkWinning } from "../GameLogic"
+import { putDownPiece, checkWinning,avalibleMoves } from "../GameLogic"
 import { useState } from "react";
 import ShowText from "../ShowText";
-
+import GAmove from "../AIplayers/GA/GAalgorithm"
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -24,7 +24,7 @@ let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "]
   ];
-
+  let depth=6;
 function ComputerVsComputer(props){
     let whoPlaysFirst=props.settings.whoGoFirst;
     let AI1=props.settings.computer1;    
@@ -57,7 +57,8 @@ function ComputerVsComputer(props){
         if(AI==="Random"){
             computerMove=chooseRandomMove(board)
         } else if(AI==="Minimax") {
-        } else if(AI==="Greedy"){
+        } else if(AI==="Genetic"){
+            computerMove=GAmove(depth,turn,board)
         }
         putDownPiece(computerMove,turn,board)
         return computerMove
@@ -67,6 +68,8 @@ function ComputerVsComputer(props){
       let turn=turnState.isBlackTurn?"B":"W";
       let isMoveMade;
       let whoWin;
+      let avaMoves;
+      let numMoveLeft
 
 //if it is AI1's turn, then use AI1's algorithm
       if(AI1PieceColour===turn){
@@ -80,6 +83,8 @@ function ComputerVsComputer(props){
         // setTurn({isBlackTurn:turnState.isBlackTurn?false:true});
 
       let moveMade=AImakeMove(AIalgorithm,turn,boardArrangement)
+      avaMoves=avalibleMoves(boardArrangement);
+      numMoveLeft=avaMoves.length;
       whoWin =checkWinning(turn,moveMade,boardArrangement);
       if (whoWin!==null){
         setGame({
@@ -87,9 +92,21 @@ function ComputerVsComputer(props){
           isEnded:true,
           winner:whoWin
         })
-      }; 
+      }else if(numMoveLeft===0){
+        setGame({
+          isEnded:true,
+          winner:"D"
+        })
+      };
       setMove({moveMade:moveMade})
       setTurn({isBlackTurn:turnState.isBlackTurn?false:true})
+      if(numMoveLeft<=depth.num){
+        // setDepth({
+        //     num:numMoveLeft
+        // })
+        depth=numMoveLeft
+        console.log("depth: "+depth)
+    }
       
     }
 

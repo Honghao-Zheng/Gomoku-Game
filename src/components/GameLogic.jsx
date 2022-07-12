@@ -192,9 +192,7 @@ function checkWinning(pieceColour,coord,board){
     // console.log(leftright!==null)
     let topLeftToBotRight=topLeftToBotRightCheck(pieceColour,pieceRowCoord,pieceColCoord,board);
     // console.log(topLeftToBotRight!==null)
-    if (checkDraw(board)===true){
-        whoWin="D"
-    }
+
 //if after draw no one wins then it is a draw
     if (topBot!==null){
         whoWin=topBot;

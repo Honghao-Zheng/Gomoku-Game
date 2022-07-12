@@ -1,7 +1,7 @@
 import Board from "../Board";
 import {NavButton,FunctionButton} from "../Buttons";
 
-import { putDownPiece, checkWinning } from "../GameLogic"
+import { putDownPiece, checkWinning,avalibleMoves } from "../GameLogic"
 import { useState } from "react";
 import ShowText from "../ShowText";
 
@@ -40,17 +40,28 @@ function PlayerVsPlayer(props){
       
       let turn=turnState.isBlackTurn?"B":"W";
       let isMoveMade;
-      let whoWin;
+      let winner;
+
+      let avaMoves;
+      let numMoveLeft;
 
       isMoveMade = putDownPiece(clickedIntersectionCoord,turn,boardArrangement);
       if (isMoveMade){
-        whoWin =checkWinning(turn,clickedIntersectionCoord,boardArrangement);
-        if (whoWin!==null){
+        avaMoves=avalibleMoves(boardArrangement);
+        numMoveLeft=avaMoves.length;
+        winner =checkWinning(turn,clickedIntersectionCoord,boardArrangement);
+        if (winner!==null){
           setGame({
             isEnded:true,
-            winner:whoWin
+            winner:winner
           })
-        }; 
+        } else if(numMoveLeft===0){
+          setGame({
+            isEnded:true,
+            winner:"D"
+          })
+        }
+        
         // console.log(moveState.moveMade)
         setMove({moveMade:clickedIntersectionCoord})
         setTurn({isBlackTurn:turnState.isBlackTurn?false:true});
