@@ -31,7 +31,7 @@ function fitness(moveComb, pieceColor, defFactor, board) {
   let turn = pieceColor;
   let totalFitnessScore = 0;
   let moveMade;
-  let boardCopy = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.copyTwoDimArray)(board);
+  let boardCopy = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.copyTwoDimArray)(board); // console.log("moveComb1: "+moveComb)
 
   for (index = 0; index < moveComb.length; index++) {
     moveMade = moveComb[index]; //discard illegal moveComb
@@ -69,7 +69,9 @@ function uniformCrossover(mom, dad) {
   let child2 = new _Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
   let child1Moves = [];
   let child2Moves = [];
-  let randomBit;
+  let randomBit; // console.log("mom.moveComb:"+mom.moveComb)
+  // console.log("dad:"+dad)
+
   let momCopy = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.copyTwoDimArray)(mom.moveComb);
   let dadCopy = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.copyTwoDimArray)(dad.moveComb); // console.log(mom.moveComb)
   // console.log(dad.moveComb)
@@ -126,13 +128,12 @@ function createDumyIterationArray(numOfIteration) {
   return array;
 }
 
-function GAmove(pieceColor, board) {
-  console.log(pieceColor);
+function GAmove(depth, pieceColor, board) {
+  // console.log(pieceColor)
   let numOfPopulation = 500;
   let numOfIteration = 100;
   let numOfChildren = 500;
   let population = [];
-  let depth = 5;
   let mutateProp = 0.1;
   let defFactor = 0.6;
   let ind;
@@ -148,15 +149,18 @@ function GAmove(pieceColor, board) {
 
   for (var i = 0; i < numOfPopulation; i++) {
     ind = new _Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
-    ind.moveComb = (0,_InitIndMoves__WEBPACK_IMPORTED_MODULE_1__["default"])(pieceColor, depth, board);
-    ind.score = fitness(ind.moveComb, pieceColor, defFactor, board);
+    ind.moveComb = (0,_InitIndMoves__WEBPACK_IMPORTED_MODULE_1__["default"])(pieceColor, depth, board); // console.log("initial indivisual "+i)
+
+    ind.score = fitness(ind.moveComb, pieceColor, defFactor, board); // console.log("score "+ind.score)
+
     population.push(ind);
 
-    if (ind.score > bestScore) {
+    if (ind.score >= bestScore) {
       bestInd = new _Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
       bestInd.moveComb = ind.moveComb;
       bestInd.score = ind.score;
-    }
+    } // console.log("bestInd moveComb: "+bestInd.moveComb)
+
   } // console.log(population[0].moveComb)
   // console.log("forst ind in population: "+population[0].moveComb)
   //iterations
@@ -1436,11 +1440,7 @@ function checkWinning(pieceColour, coord, board) {
   let leftright = leftToRightCheck(pieceColour, pieceRowCoord, pieceColCoord, board); // console.log(leftright!==null)
 
   let topLeftToBotRight = topLeftToBotRightCheck(pieceColour, pieceRowCoord, pieceColCoord, board); // console.log(topLeftToBotRight!==null)
-
-  if (checkDraw(board) === true) {
-    whoWin = "D";
-  } //if after draw no one wins then it is a draw
-
+  //if after draw no one wins then it is a draw
 
   if (topBot !== null) {
     whoWin = topBot;
@@ -1930,6 +1930,66 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
+/***/ "./src/components/SharedData.jsx":
+/*!***************************************!*\
+  !*** ./src/components/SharedData.jsx ***!
+  \***************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "drawCheckBoard": () => (/* binding */ drawCheckBoard),
+/* harmony export */   "initialBoard": () => (/* binding */ initialBoard)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+
+function initialBoard() {
+  let initialBoard = [[" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "]];
+  return initialBoard;
+}
+
+function drawCheckBoard() {
+  let drawCheckBoard = [["B", "B", "B", "W", "W", "W", "B", "B", "B", "W", "W", "W", "B", "B", "B"], ["B", "B", "B", "W", "W", "W", "B", "B", "B", "W", "W", "W", "B", "B", "B"], ["B", "B", "B", "W", "W", "W", "B", "B", "B", "W", "W", "W", "B", "B", "B"], ["W", "W", "W", "B", "B", "B", "W", "W", "W", "B", "B", "B", "W", "W", "W"], ["B", "B", "B", "W", "W", "W", "B", "B", "B", "W", "W", "W", "B", "B", "B"], ["B", "B", "B", "W", "W", "W", "B", "B", "B", "W", "W", "W", "B", "B", "B"], ["B", "B", "B", "W", "W", "W", "B", "B", "B", "W", "W", "W", "B", "B", "B"], ["W", "W", "W", "B", "B", "B", "W", "W", "W", "B", "B", "B", "W", "W", "W"], ["B", "B", "B", "W", "W", "W", "B", "B", "B", "W", "W", "W", "B", "B", "B"], ["B", "B", "B", "W", "W", "W", "B", "B", "B", "W", "W", "W", "B", "B", "B"], ["B", "B", "B", "W", "W", "W", "B", "B", "B", "W", "W", "W", "B", "B", "B"], ["W", "W", "W", "B", "B", "B", "W", "W", "W", "B", "B", "B", "W", "W", "W"], ["B", "B", "B", "W", "W", "W", "B", "B", "B", "W", "W", "W", "B", "B", "B"], ["B", "B", "B", "W", "W", "W", "B", "B", "B", "W", "W", "W", "B", "B", "B"], ["B", "B", "B", "W", "W", "W", "B", "B", " ", " ", " ", " ", " ", " ", " "]];
+  return drawCheckBoard;
+}
+
+
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
 /***/ "./src/components/ShowText.jsx":
 /*!*************************************!*\
   !*** ./src/components/ShowText.jsx ***!
@@ -2028,7 +2088,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _ShowText__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ShowText */ "./src/components/ShowText.jsx");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var _AIplayers_GA_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../AIplayers/GA/GAalgorithm */ "./src/components/AIplayers/GA/GAalgorithm.jsx");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 
@@ -2042,7 +2103,9 @@ var _jsxFileName = "C:\\Users\\Jason\\Desktop\\hxz157\\gomoku\\src\\components\\
 
 
 
+
 let boardArrangement = [[" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "]];
+let depth = 6;
 
 function ComputerVsComputer(props) {
   _s();
@@ -2080,7 +2143,9 @@ function ComputerVsComputer(props) {
 
     if (AI === "Random") {
       computerMove = (0,_AIplayers_RandomPlayer__WEBPACK_IMPORTED_MODULE_2__["default"])(board);
-    } else if (AI === "Minimax") {} else if (AI === "Greedy") {}
+    } else if (AI === "Minimax") {} else if (AI === "Genetic") {
+      computerMove = (0,_AIplayers_GA_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__["default"])(depth, turn, board);
+    }
 
     (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.putDownPiece)(computerMove, turn, board);
     return computerMove;
@@ -2090,7 +2155,9 @@ function ComputerVsComputer(props) {
     let AIalgorithm;
     let turn = turnState.isBlackTurn ? "B" : "W";
     let isMoveMade;
-    let whoWin; //if it is AI1's turn, then use AI1's algorithm
+    let whoWin;
+    let avaMoves;
+    let numMoveLeft; //if it is AI1's turn, then use AI1's algorithm
 
     if (AI1PieceColour === turn) {
       AIalgorithm = AI1;
@@ -2101,6 +2168,8 @@ function ComputerVsComputer(props) {
 
 
     let moveMade = AImakeMove(AIalgorithm, turn, boardArrangement);
+    avaMoves = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.avalibleMoves)(boardArrangement);
+    numMoveLeft = avaMoves.length;
     whoWin = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.checkWinning)(turn, moveMade, boardArrangement);
 
     if (whoWin !== null) {
@@ -2108,6 +2177,11 @@ function ComputerVsComputer(props) {
         isStarted: gameState.isStarted,
         isEnded: true,
         winner: whoWin
+      });
+    } else if (numMoveLeft === 0) {
+      setGame({
+        isEnded: true,
+        winner: "D"
       });
     }
 
@@ -2118,6 +2192,14 @@ function ComputerVsComputer(props) {
     setTurn({
       isBlackTurn: turnState.isBlackTurn ? false : true
     });
+
+    if (numMoveLeft <= depth.num) {
+      // setDepth({
+      //     num:numMoveLeft
+      // })
+      depth = numMoveLeft;
+      console.log("depth: " + depth);
+    }
   }
 
   function getWinningDeclaration(whowin) {
@@ -2163,12 +2245,20 @@ function ComputerVsComputer(props) {
   }
 
   function startGame(whoPlaysFirst) {
-    console.log(whoPlaysFirst);
-    console.log(AI1);
-    console.log(AI2);
-
-    if (whoPlaysFirst !== "Player 1") {
-      let moveMade = AImakeMove(AI1, "B", boardArrangement); // console.log(moveMade)
+    // console.log(whoPlaysFirst)
+    // console.log(AI1)
+    // console.log(AI2)
+    if (whoPlaysFirst === "Computer 1") {
+      let moveMade = AImakeMove(AI1, "B", boardArrangement);
+      console.log(moveMade);
+      setMove({
+        moveMade: moveMade
+      });
+      setTurn({
+        isBlackTurn: turnState.isBlackTurn ? false : true
+      });
+    } else if (whoPlaysFirst === "Computer 2") {
+      let moveMade = AImakeMove(AI2, "B", boardArrangement); // console.log(moveMade)
 
       setMove({
         moveMade: moveMade
@@ -2196,34 +2286,34 @@ function ComputerVsComputer(props) {
   // console.log(boardArrangement1vs1)
 
 
-  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)("div", {
+  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("div", {
       className: "rows",
-      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
+      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
         text: "Home",
         onClick: () => {
           returnHome(boardArrangement);
         }
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 160,
+        lineNumber: 182,
         columnNumber: 9
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)("h1", {
+      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("h1", {
         children: "Computer VS Computer"
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 164,
+        lineNumber: 186,
         columnNumber: 13
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 159,
+      lineNumber: 181,
       columnNumber: 9
-    }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)("div", {
+    }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("div", {
       className: "gameScreen",
-      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("div", {
         className: "gameboard",
-        children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)(_Board__WEBPACK_IMPORTED_MODULE_0__["default"], {
+        children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_Board__WEBPACK_IMPORTED_MODULE_0__["default"], {
           boardArrangement: boardArrangement,
           onClick: isGamePlayEnabled() ? _ref => {
             let [rowNum, colNum] = _ref;
@@ -2232,81 +2322,81 @@ function ComputerVsComputer(props) {
           moveMade: moveState.moveMade
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 171,
+          lineNumber: 193,
           columnNumber: 21
         }, this)
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 170,
+        lineNumber: 192,
         columnNumber: 17
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)("div", {
+      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("div", {
         className: "des",
-        children: [gameState.isStarted ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
+        children: [gameState.isStarted ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
           text: "reset",
           onClick: () => resetGame(boardArrangement)
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 182,
+          lineNumber: 204,
           columnNumber: 21
-        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
+        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
           text: "start",
           onClick: () => {
             startGame(whoPlaysFirst);
           }
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 183,
+          lineNumber: 205,
           columnNumber: 21
-        }, this), gameState.isEnded ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this), gameState.isEnded ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textRed",
           condition: gameState.isEnded,
           textIfTrue: getWinningDeclaration(gameState.winner),
           textIfFalse: ""
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 189,
+          lineNumber: 211,
           columnNumber: 21
-        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
           condition: turnState.isBlackTurn,
           textIfTrue: "Turn: Black",
           textIfFalse: "Turn: White"
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 194,
+          lineNumber: 216,
           columnNumber: 20
-        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
           condition: whoPlaysFirst === "Computer 1",
           textIfTrue: textBlackC1,
           textIfFalse: textBlackC2
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 200,
+          lineNumber: 222,
           columnNumber: 21
-        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
           condition: whoPlaysFirst !== "Computer 1",
           textIfTrue: textWhiteC1,
           textIfFalse: textWhiteC2
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 205,
+          lineNumber: 227,
           columnNumber: 24
         }, this)]
       }, void 0, true, {
         fileName: _jsxFileName,
-        lineNumber: 179,
+        lineNumber: 201,
         columnNumber: 17
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 168,
+      lineNumber: 190,
       columnNumber: 9
     }, this)]
   }, void 0, true, {
     fileName: _jsxFileName,
-    lineNumber: 158,
+    lineNumber: 180,
     columnNumber: 9
   }, this);
 }
@@ -2372,7 +2462,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _ShowText__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ShowText */ "./src/components/ShowText.jsx");
 /* harmony import */ var _AIplayers_GA_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../AIplayers/GA/GAalgorithm */ "./src/components/AIplayers/GA/GAalgorithm.jsx");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var _SharedData__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../SharedData */ "./src/components/SharedData.jsx");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 
@@ -2387,7 +2478,10 @@ var _jsxFileName = "C:\\Users\\Jason\\Desktop\\hxz157\\gomoku\\src\\components\\
 
 
 
-let boardArrangement = [[" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "]];
+
+let boardArrangement = [[" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "]]; //   let boardArrangement=drawCheckBoard();
+
+let depth = 3;
 
 function PlayerVsComputer(props) {
   _s();
@@ -2404,15 +2498,18 @@ function PlayerVsComputer(props) {
   });
   const [moveState, setMove] = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)({
     moveMade: []
-  });
+  }); //   const [depth,setDepth]=useState({
+  //     num:5
+  //   })
 
   function AImakeMove(AI, turn, board) {
     let computerMove;
 
     if (AI === "Random") {
-      // computerMove=chooseRandomMove(board)
-      computerMove = (0,_AIplayers_GA_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__["default"])(turn, board);
-    } else if (AI === "Minimax") {} else if (AI === "Greedy") {}
+      computerMove = (0,_AIplayers_RandomPlayer__WEBPACK_IMPORTED_MODULE_2__["default"])(board);
+    } else if (AI === "Minimax") {} else if (AI === "Genetic") {
+      computerMove = (0,_AIplayers_GA_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__["default"])(depth, turn, board);
+    }
 
     (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.putDownPiece)(computerMove, turn, board);
     return computerMove;
@@ -2422,10 +2519,17 @@ function PlayerVsComputer(props) {
     let turn = turnState.isBlackTurn ? "B" : "W";
     let isMoveMade;
     let whoWin;
+    let avaMoves;
+    let numMoveLeft;
+    let moveMade;
+    let isGameEnded = false;
     isMoveMade = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.putDownPiece)(clickedIntersectionCoord, turn, boardArrangement);
+    moveMade = clickedIntersectionCoord;
 
     if (isMoveMade) {
       whoWin = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.checkWinning)(turn, clickedIntersectionCoord, boardArrangement);
+      avaMoves = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.avalibleMoves)(boardArrangement);
+      numMoveLeft = avaMoves.length;
 
       if (whoWin !== null) {
         setGame({
@@ -2433,6 +2537,13 @@ function PlayerVsComputer(props) {
           isEnded: true,
           winner: whoWin
         });
+        isGameEnded = true;
+      } else if (numMoveLeft === 0) {
+        setGame({
+          isEnded: true,
+          winner: "D"
+        });
+        isGameEnded = true;
       }
 
       ; // console.log(moveState.moveMade)
@@ -2442,20 +2553,36 @@ function PlayerVsComputer(props) {
         turn = "W";
       } else {
         turn = "B";
+      } // console.log("numMoveLeft: "+numMoveLeft)
+      // console.log("depth: "+depth)
+
+
+      if (numMoveLeft <= depth + 1) {
+        // setDepth({
+        //     num:numMoveLeft
+        // })
+        depth = numMoveLeft - 1; // console.log("depth: "+depth)
       }
 
-      let moveMade = AImakeMove(AIalgorithm, turn, boardArrangement);
-      whoWin = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.checkWinning)(turn, moveMade, boardArrangement);
+      if (!isGameEnded) {
+        moveMade = AImakeMove(AIalgorithm, turn, boardArrangement);
+        whoWin = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.checkWinning)(turn, moveMade, boardArrangement);
 
-      if (whoWin !== null) {
-        setGame({
-          isStarted: gameState.isStarted,
-          isEnded: true,
-          winner: whoWin
-        });
+        if (whoWin !== null) {
+          setGame({
+            isStarted: gameState.isStarted,
+            isEnded: true,
+            winner: whoWin
+          });
+        } else if (numMoveLeft === 0) {
+          setGame({
+            isStarted: gameState.isStarted,
+            isEnded: true,
+            winner: "D"
+          });
+        }
       }
 
-      ;
       setMove({
         moveMade: moveMade
       });
@@ -2505,7 +2632,7 @@ function PlayerVsComputer(props) {
   }
 
   function startGame(whoPlaysFirst) {
-    if (whoPlaysFirst !== "Player 1") {
+    if (whoPlaysFirst !== "Player") {
       let moveMade = AImakeMove(AIalgorithm, "B", boardArrangement); // console.log(moveMade)
 
       setMove({
@@ -2534,34 +2661,34 @@ function PlayerVsComputer(props) {
   // console.log(boardArrangement1vs1)
 
 
-  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("div", {
+  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
       className: "rows",
-      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
+      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
         text: "Home",
         onClick: () => {
           returnHome(boardArrangement);
         }
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 156,
+        lineNumber: 193,
         columnNumber: 9
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("h1", {
-        children: "Player 1 VS Computer"
+      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("h1", {
+        children: "Human VS Computer"
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 160,
+        lineNumber: 197,
         columnNumber: 13
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 155,
+      lineNumber: 192,
       columnNumber: 9
-    }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("div", {
+    }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
       className: "gameScreen",
-      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
         className: "gameboard",
-        children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_Board__WEBPACK_IMPORTED_MODULE_0__["default"], {
+        children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Board__WEBPACK_IMPORTED_MODULE_0__["default"], {
           boardArrangement: boardArrangement,
           onClick: isGamePlayEnabled() ? _ref => {
             let [rowNum, colNum] = _ref;
@@ -2570,81 +2697,81 @@ function PlayerVsComputer(props) {
           moveMade: moveState.moveMade
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 167,
+          lineNumber: 204,
           columnNumber: 21
         }, this)
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 166,
+        lineNumber: 203,
         columnNumber: 17
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("div", {
+      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
         className: "des",
-        children: [gameState.isStarted ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
+        children: [gameState.isStarted ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
           text: "reset",
           onClick: () => resetGame(boardArrangement)
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 178,
+          lineNumber: 215,
           columnNumber: 21
-        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
+        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
           text: "start",
           onClick: () => {
             startGame(whoPlaysFirst);
           }
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 179,
+          lineNumber: 216,
           columnNumber: 21
-        }, this), gameState.isEnded ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this), gameState.isEnded ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textRed",
           condition: gameState.isEnded,
           textIfTrue: getWinningDeclaration(gameState.winner),
           textIfFalse: ""
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 185,
+          lineNumber: 222,
           columnNumber: 21
-        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
           condition: turnState.isBlackTurn,
           textIfTrue: "Turn: Black",
           textIfFalse: "Turn: White"
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 190,
+          lineNumber: 227,
           columnNumber: 20
-        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
-          condition: whoPlaysFirst === "Player 1",
-          textIfTrue: "Black Piece: Player 1",
-          textIfFalse: "Black Piece: Computer"
+          condition: whoPlaysFirst === "Player",
+          textIfTrue: "Black Piece: Player (Human)",
+          textIfFalse: "Black Piece: Computer(" + AIalgorithm + ")"
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 196,
+          lineNumber: 233,
           columnNumber: 21
-        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
-          condition: whoPlaysFirst !== "Player 1",
-          textIfTrue: "White Piece: Player 1",
-          textIfFalse: "White Piece: Computer"
+          condition: whoPlaysFirst !== "Player",
+          textIfTrue: "White Piece: Player (Human)",
+          textIfFalse: "White Piece: Computer(" + AIalgorithm + ")"
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 201,
+          lineNumber: 238,
           columnNumber: 24
         }, this)]
       }, void 0, true, {
         fileName: _jsxFileName,
-        lineNumber: 175,
+        lineNumber: 212,
         columnNumber: 17
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 164,
+      lineNumber: 201,
       columnNumber: 9
     }, this)]
   }, void 0, true, {
     fileName: _jsxFileName,
-    lineNumber: 154,
+    lineNumber: 191,
     columnNumber: 9
   }, this);
 }
@@ -2740,20 +2867,28 @@ function PlayerVsPlayer(props) {
   function handleMoveClick(clickedIntersectionCoord) {
     let turn = turnState.isBlackTurn ? "B" : "W";
     let isMoveMade;
-    let whoWin;
+    let winner;
+    let avaMoves;
+    let numMoveLeft;
     isMoveMade = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_2__.putDownPiece)(clickedIntersectionCoord, turn, boardArrangement);
 
     if (isMoveMade) {
-      whoWin = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_2__.checkWinning)(turn, clickedIntersectionCoord, boardArrangement);
+      avaMoves = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_2__.avalibleMoves)(boardArrangement);
+      numMoveLeft = avaMoves.length;
+      winner = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_2__.checkWinning)(turn, clickedIntersectionCoord, boardArrangement);
 
-      if (whoWin !== null) {
+      if (winner !== null) {
         setGame({
           isEnded: true,
-          winner: whoWin
+          winner: winner
         });
-      }
+      } else if (numMoveLeft === 0) {
+        setGame({
+          isEnded: true,
+          winner: "D"
+        });
+      } // console.log(moveState.moveMade)
 
-      ; // console.log(moveState.moveMade)
 
       setMove({
         moveMade: clickedIntersectionCoord
@@ -2818,18 +2953,18 @@ function PlayerVsPlayer(props) {
         }
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 101,
+        lineNumber: 112,
         columnNumber: 9
       }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)("h1", {
         children: "Player 1 VS Player 2"
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 105,
+        lineNumber: 116,
         columnNumber: 13
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 100,
+      lineNumber: 111,
       columnNumber: 9
     }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)("div", {
       className: "gameScreen",
@@ -2844,12 +2979,12 @@ function PlayerVsPlayer(props) {
           moveMade: moveState.moveMade
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 112,
+          lineNumber: 123,
           columnNumber: 21
         }, this)
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 111,
+        lineNumber: 122,
         columnNumber: 17
       }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)("div", {
         className: "des",
@@ -2858,7 +2993,7 @@ function PlayerVsPlayer(props) {
           onClick: () => resetGame(boardArrangement)
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 122,
+          lineNumber: 133,
           columnNumber: 21
         }, this), gameState.isEnded ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_4__["default"], {
           textColour: "textRed",
@@ -2867,7 +3002,7 @@ function PlayerVsPlayer(props) {
           textIfFalse: ""
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 125,
+          lineNumber: 136,
           columnNumber: 21
         }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_4__["default"], {
           textColour: "textBlack",
@@ -2876,7 +3011,7 @@ function PlayerVsPlayer(props) {
           textIfFalse: "Turn: White"
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 130,
+          lineNumber: 141,
           columnNumber: 20
         }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_4__["default"], {
           textColour: "textBlack",
@@ -2885,7 +3020,7 @@ function PlayerVsPlayer(props) {
           textIfFalse: ""
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 136,
+          lineNumber: 147,
           columnNumber: 21
         }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_4__["default"], {
           textColour: "textBlack",
@@ -2894,22 +3029,22 @@ function PlayerVsPlayer(props) {
           textIfFalse: ""
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 141,
+          lineNumber: 152,
           columnNumber: 24
         }, this)]
       }, void 0, true, {
         fileName: _jsxFileName,
-        lineNumber: 120,
+        lineNumber: 131,
         columnNumber: 17
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 109,
+      lineNumber: 120,
       columnNumber: 9
     }, this)]
   }, void 0, true, {
     fileName: _jsxFileName,
-    lineNumber: 99,
+    lineNumber: 110,
     columnNumber: 9
   }, this);
 }
@@ -2987,7 +3122,7 @@ function AIVsAIChoice(props) {
   _s();
 
   let players = ["Computer 1", "Computer 2"];
-  let AIalgorithms = ["Random", "Minimax", "Greedy"];
+  let AIalgorithms = ["Random", "Minimax", "Genetic"];
   let defaultBlack = players[0];
   let defaultAlgorithms = AIalgorithms[0];
   const [gameSetting, changeSetting] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
@@ -3159,8 +3294,8 @@ var _jsxFileName = "C:\\Users\\Jason\\Desktop\\hxz157\\gomoku\\src\\components\\
 function PlayerVsAIChoice(props) {
   _s();
 
-  let players = ["Player 1", "Computer"];
-  let AIalgorithms = ["Random", "Minimax", "Greedy"];
+  let players = ["Player", "Computer"];
+  let AIalgorithms = ["Random", "Minimax", "Genetic"];
   let defaultBlack = players[0];
   let defaultAlgorithms = AIalgorithms[0];
   const [gameSetting, changeSetting] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
@@ -45524,14 +45659,14 @@ var WebSocketClient = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=0.0.0.0&port=3001&pathname=%2Fws&logging=none&reconnect=10":
+/***/ "./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=0.0.0.0&port=3000&pathname=%2Fws&logging=none&reconnect=10":
 /*!********************************************************************************************************************************************!*\
-  !*** ./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=0.0.0.0&port=3001&pathname=%2Fws&logging=none&reconnect=10 ***!
+  !*** ./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=0.0.0.0&port=3000&pathname=%2Fws&logging=none&reconnect=10 ***!
   \********************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-var __resourceQuery = "?protocol=ws%3A&hostname=0.0.0.0&port=3001&pathname=%2Fws&logging=none&reconnect=10";
+var __resourceQuery = "?protocol=ws%3A&hostname=0.0.0.0&port=3000&pathname=%2Fws&logging=none&reconnect=10";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var webpack_hot_log_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! webpack/hot/log.js */ "./node_modules/webpack/hot/log.js");
 /* harmony import */ var webpack_hot_log_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(webpack_hot_log_js__WEBPACK_IMPORTED_MODULE_0__);
@@ -47870,7 +48005,7 @@ if (true) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("7b00726234d127d6ea30")
+/******/ 		__webpack_require__.h = () => ("1e44b9eea702a2d9ce81")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
@@ -48937,7 +49072,7 @@ if (true) {
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	__webpack_require__("./node_modules/@pmmmwh/react-refresh-webpack-plugin/client/ReactRefreshEntry.js");
-/******/ 	__webpack_require__("./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=0.0.0.0&port=3001&pathname=%2Fws&logging=none&reconnect=10");
+/******/ 	__webpack_require__("./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=0.0.0.0&port=3000&pathname=%2Fws&logging=none&reconnect=10");
 /******/ 	__webpack_require__("./node_modules/webpack/hot/dev-server.js");
 /******/ 	var __webpack_exports__ = __webpack_require__("./src/index.js");
 /******/ 	

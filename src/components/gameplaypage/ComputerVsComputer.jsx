@@ -100,13 +100,13 @@ function ComputerVsComputer(props){
       };
       setMove({moveMade:moveMade})
       setTurn({isBlackTurn:turnState.isBlackTurn?false:true})
-      if(numMoveLeft<=depth.num){
-        // setDepth({
-        //     num:numMoveLeft
-        // })
-        depth=numMoveLeft
-        console.log("depth: "+depth)
-    }
+              if(numMoveLeft<=depth.num){
+            // setDepth({
+            //     num:numMoveLeft
+            // })
+            depth=numMoveLeft
+            console.log("depth: "+depth)
+        }
       
     }
 
@@ -145,15 +145,20 @@ function ComputerVsComputer(props){
     }
 
     function startGame(whoPlaysFirst){
-        console.log(whoPlaysFirst)
-        console.log(AI1)
-        console.log(AI2)
-        if(whoPlaysFirst!=="Player 1"){          
+        // console.log(whoPlaysFirst)
+        // console.log(AI1)
+        // console.log(AI2)
+        if(whoPlaysFirst==="Computer 1"){          
             let moveMade=AImakeMove(AI1,"B",boardArrangement)
-            // console.log(moveMade)
+            console.log(moveMade)
             setMove({moveMade:moveMade});
             setTurn({isBlackTurn:turnState.isBlackTurn?false:true});    
 
+        } else if(whoPlaysFirst==="Computer 2"){
+            let moveMade=AImakeMove(AI2,"B",boardArrangement)
+            // console.log(moveMade)
+            setMove({moveMade:moveMade});
+            setTurn({isBlackTurn:turnState.isBlackTurn?false:true}); 
         }
         setGame({
             isStarted:true,isEnded:false,winner:null
