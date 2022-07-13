@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { RadioButtons, NavButton } from "../Buttons";
 import ComputerVsComputer from "../gameplaypage/ComputerVsComputer";
-
+import Simulation from "../gameplaypage/Simulation";
 function SimulationChoice(props) {
   let players = ["Computer 1", "Computer 2"];
-  let AIalgorithms = ["Random", "Minimax", "Greedy"];
+  let AIalgorithms = ["Random", "Minimax", "Genetic"];
   let defaultBlack = players[0];
   let defaultAlgorithms = AIalgorithms[0];
   const [gameSetting, changeSetting] = useState({
@@ -21,7 +21,7 @@ function SimulationChoice(props) {
 // console.log(gameState.isStarted)
   if (gameState.isStarted) {
     return (
-        <ComputerVsComputer onClickHome={()=>{
+        <Simulation onClickHome={()=>{
              props.onClickHome();
              
         }}
@@ -39,7 +39,7 @@ function SimulationChoice(props) {
           }}
         />
 
-<RadioButtons 
+{/* <RadioButtons 
         groupName="Who Plays First" 
         values={players}
         defaultValue={gameSetting.whoGoFirst} 
@@ -50,7 +50,7 @@ function SimulationChoice(props) {
                 computer2:gameSetting.computer2
             })
         }}
-        />
+        /> */}
         <RadioButtons
           groupName="Computer 1"
           values={AIalgorithms}

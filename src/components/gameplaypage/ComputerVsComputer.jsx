@@ -26,16 +26,16 @@ let boardArrangement=[
   ];
   let depth=6;
 function ComputerVsComputer(props){
-    let whoPlaysFirst=props.settings.whoGoFirst;
+    let whoPlaysFirst="Computer 1";
     let AI1=props.settings.computer1;    
     let AI2=props.settings.computer2;  
     let AI1PieceColour;
     let textBlackC1,textBlackC2,textWhiteC1,textWhiteC2;
-    if (whoPlaysFirst==="Computer 1"){
+    // if (whoPlaysFirst==="Computer 1"){
       AI1PieceColour="B";
       textBlackC1="Black Piece: Computer 1 ("+AI1+")";
       textWhiteC2="White Piece: Computer 2 ("+AI2+")";
-    } else {AI1PieceColour="W"}
+    // } else {AI1PieceColour="W"}
     textBlackC2="Black Piece: Computer 2 ("+AI2+")";
     textWhiteC1="White Piece: Computer 1 ("+AI1+")";
     const [turnState,setTurn]=useState({
@@ -66,7 +66,6 @@ function ComputerVsComputer(props){
     function handleMoveClick(clickedIntersectionCoord){
         let AIalgorithm;
       let turn=turnState.isBlackTurn?"B":"W";
-      let isMoveMade;
       let whoWin;
       let avaMoves;
       let numMoveLeft
@@ -148,9 +147,11 @@ function ComputerVsComputer(props){
         // console.log(whoPlaysFirst)
         // console.log(AI1)
         // console.log(AI2)
+        
+
         if(whoPlaysFirst==="Computer 1"){          
             let moveMade=AImakeMove(AI1,"B",boardArrangement)
-            console.log(moveMade)
+            // console.log(moveMade)
             setMove({moveMade:moveMade});
             setTurn({isBlackTurn:turnState.isBlackTurn?false:true});    
 
@@ -163,7 +164,10 @@ function ComputerVsComputer(props){
         setGame({
             isStarted:true,isEnded:false,winner:null
         })
+
     }
+
+
 
     function isGamePlayEnabled(){
         if(!gameState.isEnded && gameState.isStarted){

@@ -39,7 +39,7 @@ function AIVsAIChoice(props) {
           }}
         />
 
-<RadioButtons 
+{/* <RadioButtons 
         groupName="Who Plays First" 
         values={players}
         defaultValue={gameSetting.whoGoFirst} 
@@ -50,7 +50,7 @@ function AIVsAIChoice(props) {
                 computer2:gameSetting.computer2
             })
         }}
-        />
+        /> */}
         <RadioButtons
           groupName="Computer 1"
           values={AIalgorithms}

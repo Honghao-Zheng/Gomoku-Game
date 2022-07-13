@@ -26,7 +26,7 @@ let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "]
   ];
 //   let boardArrangement=drawCheckBoard();
-let depth=3;
+let depth=6;
 function PlayerVsComputer(props){
     let whoPlaysFirst=props.settings.whoGoFirst;
     let AIalgorithm=props.settings.computer;    

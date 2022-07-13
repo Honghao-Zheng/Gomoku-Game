@@ -109,9 +109,9 @@ function createDumyIterationArray(numOfIteration){
 
 function GAmove(depth,pieceColor,board){
     // console.log(pieceColor)
-let numOfPopulation=500;
-let numOfIteration=100;
-let numOfChildren=500;
+let numOfPopulation=50;
+let numOfIteration=10;
+let numOfChildren=50;
 let population=[]
 
 let mutateProp=0.1
@@ -185,6 +185,7 @@ for (it=0;it<=numOfIteration;it++){
     
 
 }
+// console.log(bestInd.moveComb)
 return bestInd.moveComb[0]
 }
 
