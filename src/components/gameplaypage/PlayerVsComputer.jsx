@@ -6,7 +6,7 @@ import chooseRandomMove from "../AIplayers/RandomPlayer"
 import { putDownPiece, checkWinning,avalibleMoves } from "../GameLogic";
 import { useState } from "react";
 import ShowText from "../ShowText";
-import GAmove from "../AIplayers/GA/GAalgorithm";
+import {GAmove,GAModifiedMove} from "../AIplayers/GA/GAalgorithm";
 import {initdrawCheckBoard} from "../SharedData";
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -26,7 +26,7 @@ let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "]
   ];
 //   let boardArrangement=drawCheckBoard();
-let depth=6;
+let depth=10;
 function PlayerVsComputer(props){
     let whoPlaysFirst=props.settings.whoGoFirst;
     let AIalgorithm=props.settings.computer;    
@@ -56,6 +56,9 @@ function PlayerVsComputer(props){
         } else if(AI==="Minimax") {
         } else if(AI==="Genetic"){
             computerMove=GAmove(depth,turn,board)
+        }
+        else if(AI==="GeneticModified"){
+            computerMove=GAModifiedMove(depth,turn,board)
         }
         putDownPiece(computerMove,turn,board)
         return computerMove

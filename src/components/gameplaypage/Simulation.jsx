@@ -6,7 +6,7 @@ import chooseRandomMove from "../AIplayers/RandomPlayer"
 import { putDownPiece, checkWinning,avalibleMoves } from "../GameLogic"
 import { useState } from "react";
 import ShowText from "../ShowText";
-import GAmove from "../AIplayers/GA/GAalgorithm"
+import {GAmove,GAModifiedMove} from "../AIplayers/GA/GAalgorithm"
 import { copyTwoDimArray } from "../GeneralAlgorithms";
 
 let boardArrangement=[
@@ -26,12 +26,26 @@ let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "]
   ];
-let depth=6;
+let depth=4;
 function Simulation(props){
     let whoPlaysFirst="Computer 1";
     let AI1=props.settings.computer1;    
     let AI2=props.settings.computer2; 
-    
+
+    function AImakeMove(AI,turn,board){
+        let computerMove;
+        if(AI==="Random"){
+            computerMove=chooseRandomMove(board)
+        } else if(AI==="Minimax") {
+        } else if(AI==="Genetic"){
+            computerMove=GAmove(depth,turn,board)
+        } else if(AI==="GeneticModified"){
+            computerMove=GAModifiedMove(depth,turn,board)
+        }
+        putDownPiece(computerMove,turn,board)
+        return computerMove
+    } 
+
     function runSimulation(numOfRound,board){
         let gameRound;
         // let result={
@@ -58,7 +72,7 @@ function Simulation(props){
             turn="B";
             AIalgorithm=AI1;
             console.log("gameRound:"+gameRound)
-            const start=performance.now()
+            // const start=performance.now()
             while (!isGameEnded){
                 moveMade=AImakeMove(AIalgorithm,turn,gameBoard)
                 avaMoves=avalibleMoves(gameBoard);
@@ -83,8 +97,8 @@ function Simulation(props){
                   //   console.log("depth: "+depth)
                 }
             }
-            const timetaken=performance.now() - start
-            console.log("timetaken: "+timetaken+"For round "+gameRound)
+            // const timetaken=performance.now() - start
+            // console.log("timetaken: "+timetaken+"For round "+gameRound)
             //end of while loop, end of one game
             if(whoWin==="B"){
                 computer1Win++
@@ -93,6 +107,7 @@ function Simulation(props){
             } else {
                 draw++
             }
+            console.log("whoWin: "+whoWin)
         }
         //end of N games
         console.log("computer1Win: "+computer1Win)
@@ -101,24 +116,14 @@ function Simulation(props){
         
     }
     
-    runSimulation(1000,boardArrangement)
+    runSimulation(10,boardArrangement)
     
    
   
 
 
 
-    function AImakeMove(AI,turn,board){
-        let computerMove;
-        if(AI==="Random"){
-            computerMove=chooseRandomMove(board)
-        } else if(AI==="Minimax") {
-        } else if(AI==="Genetic"){
-            computerMove=GAmove(depth,turn,board)
-        }
-        putDownPiece(computerMove,turn,board)
-        return computerMove
-    } 
+
 
 
 
