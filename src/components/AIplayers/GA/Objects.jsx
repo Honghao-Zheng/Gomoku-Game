@@ -1,9 +1,3 @@
-class parameters{
-    constructor(it,pop){
-        this.iteration=it
-        this.population=pop
-    }
-}
 
 class individual{
     constructor(){
@@ -12,5 +6,11 @@ class individual{
     }
 }
 
+class choice{
+    constructor(){
+        this.move=null;
+        this.score=null;
+    }
+}
 
-export {parameters,individual}
+export {individual,choice}
