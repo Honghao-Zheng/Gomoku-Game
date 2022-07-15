@@ -15,7 +15,6 @@ function minimaxMove(turn,depth,defFactor,board){
     let moveMade2;
     let B1Score;
     let B2Score;
-    let payoffListWithMove=[];
     let bestScore1;
     let bestScore2
     let avalibleMoves2;
