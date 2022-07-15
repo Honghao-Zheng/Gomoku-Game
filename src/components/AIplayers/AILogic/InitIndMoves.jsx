@@ -78,4 +78,4 @@ function movesSearch(board){
     }
     return moveCollection;
 }
-export  default initIndMoves;
+export   {initIndMoves,movesSearch};

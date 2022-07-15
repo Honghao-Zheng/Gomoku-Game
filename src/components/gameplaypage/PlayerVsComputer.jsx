@@ -6,8 +6,9 @@ import chooseRandomMove from "../AIplayers/RandomPlayer"
 import { putDownPiece, checkWinning,avalibleMoves } from "../GameLogic";
 import { useState } from "react";
 import ShowText from "../ShowText";
-import {GAmove,GAModifiedMove} from "../AIplayers/GA/GAalgorithm";
+import {GAmove,GAModifiedMove} from "../AIplayers/GAalgorithm";
 import {initdrawCheckBoard} from "../SharedData";
+import minimaxMove from "../AIplayers/MinimaxAlg";
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -54,6 +55,7 @@ function PlayerVsComputer(props){
         if(AI==="Random"){
             computerMove=chooseRandomMove(board)
         } else if(AI==="Minimax") {
+          computerMove=minimaxMove(turn,board)
         } else if(AI==="Genetic"){
             computerMove=GAmove(depth,turn,board)
         }

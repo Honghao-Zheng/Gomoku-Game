@@ -6,7 +6,7 @@ import chooseRandomMove from "../AIplayers/RandomPlayer"
 import { putDownPiece, checkWinning,avalibleMoves } from "../GameLogic"
 import { useState } from "react";
 import ShowText from "../ShowText";
-import {GAmove,GAModifiedMove} from "../AIplayers/GA/GAalgorithm"
+import {GAmove,GAModifiedMove} from "../AIplayers/GAalgorithm"
 import { copyTwoDimArray } from "../GeneralAlgorithms";
 
 let boardArrangement=[

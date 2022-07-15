@@ -1,8 +1,8 @@
-import moveEvaluation from "./MoveEvaluation";
-import initIndMoves from "./InitIndMoves";
-import {individual} from "./Objects";
-import {swapColor,putDownPiece} from "../../GameLogic.jsx"
-import {copyTwoDimArray,random,shuffle} from "../../GeneralAlgorithms.jsx"
+import moveEvaluation from "./AILogic/MoveEvaluation";
+import {initIndMoves} from "./AILogic/InitIndMoves";
+import {individual} from "./AILogic/Objects";
+import {swapColor,putDownPiece} from "../GameLogic.jsx"
+import {copyTwoDimArray,random,shuffle} from "../GeneralAlgorithms.jsx"
 //fitness function
 
 
