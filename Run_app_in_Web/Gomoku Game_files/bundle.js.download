@@ -1,269 +1,22 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/components/AIplayers/GA/GAalgorithm.jsx":
-/*!*****************************************************!*\
-  !*** ./src/components/AIplayers/GA/GAalgorithm.jsx ***!
-  \*****************************************************/
+/***/ "./src/components/AIplayers/AILogic/InitIndMoves.jsx":
+/*!***********************************************************!*\
+  !*** ./src/components/AIplayers/AILogic/InitIndMoves.jsx ***!
+  \***********************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _MoveEvaluation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MoveEvaluation */ "./src/components/AIplayers/GA/MoveEvaluation.jsx");
-/* harmony import */ var _InitIndMoves__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InitIndMoves */ "./src/components/AIplayers/GA/InitIndMoves.jsx");
-/* harmony import */ var _Objects__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Objects */ "./src/components/AIplayers/GA/Objects.jsx");
-/* harmony import */ var _GameLogic_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../GameLogic.jsx */ "./src/components/GameLogic.jsx");
-/* harmony import */ var _GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../GeneralAlgorithms.jsx */ "./src/components/GeneralAlgorithms.jsx");
-/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
-__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
-
-
-
-
-
- //fitness function
-
-function fitness(moveComb, pieceColor, defFactor, board) {
-  let index;
-  let turn = pieceColor;
-  let totalFitnessScore = 0;
-  let moveMade;
-  let boardCopy = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.copyTwoDimArray)(board); // console.log("moveComb1: "+moveComb)
-
-  for (index = 0; index < moveComb.length; index++) {
-    moveMade = moveComb[index]; //discard illegal moveComb
-
-    if (moveMade[0] < 15 && moveMade[0] >= 0 && moveMade[1] < 15 && moveMade[1] >= 0) {
-      if (boardCopy[moveMade[0]][moveMade[1]] === " ") {
-        (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_3__.putDownPiece)(moveMade, turn, boardCopy);
-
-        if (turn === pieceColor) {
-          totalFitnessScore += (0,_MoveEvaluation__WEBPACK_IMPORTED_MODULE_0__["default"])(moveMade, turn, defFactor, boardCopy);
-        } else {
-          totalFitnessScore -= (0,_MoveEvaluation__WEBPACK_IMPORTED_MODULE_0__["default"])(moveMade, turn, defFactor, boardCopy);
-        }
-
-        turn = (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_3__.swapColor)(turn);
-      } else {
-        return -10000;
-      }
-    } else {
-      return -10000;
-    }
-
-    return totalFitnessScore;
-  }
-} // function createUniformRandomArr(size){
-//     let arr=[]
-//     for(var i=0;i<size;i++){
-//         arr.push(random(2))
-//     }
-// }
-
-
-function uniformCrossover(mom, dad) {
-  let child1 = new _Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
-  let child2 = new _Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
-  let child1Moves = [];
-  let child2Moves = [];
-  let randomBit; // console.log("mom.moveComb:"+mom.moveComb)
-  // console.log("dad:"+dad)
-
-  let momCopy = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.copyTwoDimArray)(mom.moveComb);
-  let dadCopy = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.copyTwoDimArray)(dad.moveComb); // console.log(mom.moveComb)
-  // console.log(dad.moveComb)
-
-  for (var moveIndex = 0; moveIndex < momCopy.length; moveIndex++) {
-    randomBit = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.random)(2);
-
-    if (randomBit === 1) {
-      child1Moves.push(momCopy[moveIndex]);
-      child2Moves.push(dadCopy[moveIndex]);
-    }
-
-    if (randomBit === 0) {
-      child1Moves.push(dadCopy[moveIndex]);
-      child2Moves.push(momCopy[moveIndex]);
-    }
-  }
-
-  child1.moveComb = child1Moves;
-  child2.moveComb = child2Moves;
-  return [child1, child2];
-}
-
-function mutate(ind, prop) {
-  let randomNum;
-  let moveIndex;
-  let mutationChange = [-1, 1];
-  let rowMuation, colMutation;
-  let moveMutated;
-
-  for (moveIndex = 0; moveIndex < ind.moveComb.length; moveIndex++) {
-    randomNum = Math.random();
-
-    if (randomNum < prop) {
-      rowMuation = mutationChange[(0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.random)(2)];
-      colMutation = mutationChange[(0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.random)(2)];
-      moveMutated = ind.moveComb[moveIndex];
-      ind.moveComb[moveIndex] = [moveMutated[0] + rowMuation, moveMutated[1] + colMutation];
-    }
-  }
-}
-
-function sortPopulation(population) {
-  population.sort((ind1, ind2) => ind2.score - ind1.score);
-}
-
-function createDumyIterationArray(numOfIteration) {
-  let array = [];
-
-  for (var i = 0; i < numOfIteration; i++) {
-    array.push(i);
-  }
-
-  return array;
-}
-
-function GAmove(depth, pieceColor, board) {
-  // console.log(pieceColor)
-  let numOfPopulation = 500;
-  let numOfIteration = 100;
-  let numOfChildren = 500;
-  let population = [];
-  let mutateProp = 0.1;
-  let defFactor = 0.6;
-  let ind;
-  let it;
-  let childIndex;
-  let bestInd;
-  let bestScore = 0;
-  let produceChildIt = Math.floor(numOfChildren / 2);
-  let mom, momIndex;
-  let dad, dadIndex;
-  let dumyIterationArray;
-  let child1, child2; //initialise population
-
-  for (var i = 0; i < numOfPopulation; i++) {
-    ind = new _Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
-    ind.moveComb = (0,_InitIndMoves__WEBPACK_IMPORTED_MODULE_1__["default"])(pieceColor, depth, board); // console.log("initial indivisual "+i)
-
-    ind.score = fitness(ind.moveComb, pieceColor, defFactor, board); // console.log("score "+ind.score)
-
-    population.push(ind);
-
-    if (ind.score >= bestScore) {
-      bestInd = new _Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
-      bestInd.moveComb = ind.moveComb;
-      bestInd.score = ind.score;
-    } // console.log("bestInd moveComb: "+bestInd.moveComb)
-
-  } // console.log(population[0].moveComb)
-  // console.log("forst ind in population: "+population[0].moveComb)
-  //iterations
-
-
-  for (it = 0; it <= numOfIteration; it++) {
-    for (childIndex = 0; childIndex < produceChildIt; childIndex++) {
-      //choose random parents in the population
-      dumyIterationArray = createDumyIterationArray(numOfIteration);
-      (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.shuffle)(dumyIterationArray);
-      momIndex = dumyIterationArray[0];
-      dadIndex = dumyIterationArray[1];
-      mom = population[momIndex];
-      dad = population[dadIndex]; //produce two childen
-
-      [child1, child2] = uniformCrossover(mom, dad); //mutate two childen
-
-      mutate(child1, mutateProp);
-      mutate(child2, mutateProp); //evaluate the child performance
-
-      child1.score = fitness(child1.moveComb, pieceColor, defFactor, board);
-
-      if (child1.score > bestScore) {
-        bestInd = new _Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
-        bestInd.moveComb = child1.moveComb;
-        bestInd.score = child1.score;
-      }
-
-      child2.score = fitness(child2.moveComb, pieceColor, defFactor, board);
-
-      if (child2.score > bestScore) {
-        bestInd = new _Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
-        bestInd.moveComb = child2.moveComb;
-        bestInd.score = child2.score;
-      } //add the child to population
-
-
-      population.push(child1);
-      population.push(child2); //sort population in descending order
-    }
-
-    sortPopulation(population);
-    population = population.slice(0, numOfPopulation - 1);
-  }
-
-  return bestInd.moveComb[0];
-}
-
-_c = GAmove;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GAmove);
-
-var _c;
-
-__webpack_require__.$Refresh$.register(_c, "GAmove");
-
-const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
-const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
-	$ReactRefreshModuleId$
-);
-
-function $ReactRefreshModuleRuntime$(exports) {
-	if (true) {
-		let errorOverlay;
-		if (true) {
-			errorOverlay = false;
-		}
-		let testMode;
-		if (typeof __react_refresh_test__ !== 'undefined') {
-			testMode = __react_refresh_test__;
-		}
-		return __react_refresh_utils__.executeRuntime(
-			exports,
-			$ReactRefreshModuleId$,
-			module.hot,
-			errorOverlay,
-			testMode
-		);
-	}
-}
-
-if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
-	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
-} else {
-	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
-}
-
-/***/ }),
-
-/***/ "./src/components/AIplayers/GA/InitIndMoves.jsx":
-/*!******************************************************!*\
-  !*** ./src/components/AIplayers/GA/InitIndMoves.jsx ***!
-  \******************************************************/
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "initIndMoves": () => (/* binding */ initIndMoves),
+/* harmony export */   "movesSearch": () => (/* binding */ movesSearch)
 /* harmony export */ });
 /* harmony import */ var _GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../GeneralAlgorithms.jsx */ "./src/components/GeneralAlgorithms.jsx");
 /* harmony import */ var _RandomPlayer_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../RandomPlayer.jsx */ "./src/components/AIplayers/RandomPlayer.jsx");
 /* harmony import */ var _GameLogic_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../GameLogic.jsx */ "./src/components/GameLogic.jsx");
-/* harmony import */ var _MoveEvaluation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MoveEvaluation */ "./src/components/AIplayers/GA/MoveEvaluation.jsx");
+/* harmony import */ var _MoveEvaluation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MoveEvaluation */ "./src/components/AIplayers/AILogic/MoveEvaluation.jsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 
@@ -315,10 +68,12 @@ function movesSearch(board) {
   // let i,j
 
   let rowIndex, colIndex;
-  let moveRow, moveCol;
+  let moveRow, moveCol; // console.log(board)
 
   for (rowCoord = 0; rowCoord < 15; rowCoord++) {
     for (colCoord = 0; colCoord < 15; colCoord++) {
+      // console.log("rowCoord: "+rowCoord)
+      // console.log("colCoord: "+colCoord)
       if (board[rowCoord][colCoord] !== " ") {
         // console.log(board[rowCoord][colCoord])
         for (rowIndex = -1; rowIndex <= 1; rowIndex++) {
@@ -342,7 +97,7 @@ function movesSearch(board) {
   return moveCollection;
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (initIndMoves);
+
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -377,10 +132,10 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "./src/components/AIplayers/GA/MoveEvaluation.jsx":
-/*!********************************************************!*\
-  !*** ./src/components/AIplayers/GA/MoveEvaluation.jsx ***!
-  \********************************************************/
+/***/ "./src/components/AIplayers/AILogic/MoveEvaluation.jsx":
+/*!*************************************************************!*\
+  !*** ./src/components/AIplayers/AILogic/MoveEvaluation.jsx ***!
+  \*************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -737,10 +492,16 @@ function threatRecognise(counts) {
 
 function moveEvaluation(move, pieceColor, defFactor, board) {
   let offenceScore = atkMoveEvaluation(move, pieceColor, board);
-  let oppositeColor = (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.swapColor)(pieceColor);
-  let boardCopy = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_1__.copyTwoDimArray)(board);
-  boardCopy[move[0]][move[1]] = oppositeColor;
-  let defenceScore = atkMoveEvaluation(move, oppositeColor, boardCopy) * defFactor;
+  let oppositeColor = (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.swapColor)(pieceColor); // console.log("occupied colour before change: "+board[move[0]][move[1]])
+
+  board[move[0]][move[1]] = oppositeColor; // console.log("occupied colour after change: "+board[move[0]][move[1]])
+
+  let defenceScore = atkMoveEvaluation(move, oppositeColor, board) * defFactor;
+  board[move[0]][move[1]] = pieceColor; // console.log("occupied colour after change back: "+board[move[0]][move[1]])
+  // let boardCopy=copyTwoDimArray(board);
+  // boardCopy[move[0]][move[1]]=oppositeColor;
+  // let defenceScore=atkMoveEvaluation(move,oppositeColor,boardCopy)*defFactor;
+
   let totalScore = offenceScore + defenceScore; // let totalScore=offenceScore;
   // console.log("moveEvaluation function score:"+totalScore)
 
@@ -782,28 +543,592 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "./src/components/AIplayers/GA/Objects.jsx":
-/*!*************************************************!*\
-  !*** ./src/components/AIplayers/GA/Objects.jsx ***!
-  \*************************************************/
+/***/ "./src/components/AIplayers/AILogic/MoveEvaluationMinimax.jsx":
+/*!********************************************************************!*\
+  !*** ./src/components/AIplayers/AILogic/MoveEvaluationMinimax.jsx ***!
+  \********************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "individual": () => (/* binding */ individual),
-/* harmony export */   "parameters": () => (/* binding */ parameters)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../GameLogic.jsx */ "./src/components/GameLogic.jsx");
+/* harmony import */ var _GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../GeneralAlgorithms.jsx */ "./src/components/GeneralAlgorithms.jsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 
-class parameters {
-  constructor(it, pop) {
-    this.iteration = it;
-    this.population = pop;
+
+
+
+function atkMoveEvaluation(move, pieceColor, board) {
+  let rowCoord = move[0];
+  let colCoord = move[1];
+  let score = 0;
+  let threeCount = 0;
+  let fourCount = 0;
+  let fourOneCount = 0;
+  let fiveCount = 0;
+  let vThreat = threatRecognise(verticalCheck(rowCoord, colCoord, pieceColor, board)); // console.log("vThreat: "+vThreat)
+
+  let hThreat = threatRecognise(horizontalCheck(rowCoord, colCoord, pieceColor, board)); // console.log("hThreat: "+hThreat)
+
+  let d1Threat = threatRecognise(leftBotToRightTopCheck(rowCoord, colCoord, pieceColor, board)); // console.log("d1Threat: "+d1Threat)
+
+  let d2Threat = threatRecognise(leftTopToRightBotCheck(rowCoord, colCoord, pieceColor, board)); // console.log("d2Threat: "+d2Threat)
+
+  let threats = [vThreat, hThreat, d1Threat, d2Threat]; // let threats=[hThreat];
+
+  let threatIndex;
+  let threat;
+
+  for (threatIndex = 0; threatIndex < threats.length; threatIndex++) {
+    threat = threats[threatIndex];
+
+    if (threat === 2) {
+      score += 2;
+    } else if (threat === 21) {
+      score += 1;
+    } else if (threat === 31) {
+      score += 4;
+    } else if (threat === 3) {
+      threeCount++;
+
+      if (threeCount === 2) {
+        score += 22;
+      } else if (threeCount >= 3) {
+        score += 1;
+      } else {
+        if (fourOneCount === 1) {
+          score += 14;
+        } else {
+          score += 8;
+        }
+      }
+    } else if (threat === 4) {
+      fourCount++;
+
+      if (fourCount >= 2) {
+        score += 1;
+      } else {
+        score += 32;
+      }
+    } else if (threat === 41) {
+      fourOneCount++;
+
+      if (fourOneCount === 1) {
+        if (threeCount === 1) {
+          score += 22;
+        } else {
+          score += 16;
+        }
+      } else {
+        score += 1;
+      }
+    } else if (threat === 5) {
+      fiveCount++;
+
+      if (fiveCount === 1) {
+        score += 128;
+      } else {
+        score += 1;
+      }
+    }
+  } // console.log("attack move evaluation:"+score)
+
+
+  return {
+    score: score,
+    threats: threats
+  };
+}
+
+function verticalCheck(rowCoord, colCoord, pieceColor, board) {
+  let sameColorCount = -1;
+  let oppositeColorCount = 0;
+  let rowIndex = rowCoord;
+  let colIndex = colCoord;
+  let occupant;
+  let counts; // console.log("rowIndex: "+rowIndex)
+  // console.log("colIndex: "+colIndex)
+  // console.log("board[rowIndex][colIndex]: "+board[rowIndex][colIndex])
+
+  while (rowIndex >= 0) {
+    occupant = board[rowIndex][colIndex];
+
+    if (occupant !== " ") {
+      // console.log("check top rowIndex: "+rowIndex)
+      // console.log("check top colIndex: "+colIndex)
+      if (occupant === pieceColor) {
+        sameColorCount++;
+      } else {
+        oppositeColorCount++;
+        break;
+      }
+
+      rowIndex--;
+    } else {
+      break;
+    }
+
+    ;
   }
 
+  rowIndex = rowCoord;
+  colIndex = colCoord;
+
+  while (rowIndex < 15) {
+    occupant = board[rowIndex][colIndex];
+
+    if (occupant !== " ") {
+      // console.log("check bot rowIndex: "+rowIndex)
+      // console.log("check bot colIndex: "+colIndex)
+      if (occupant === pieceColor) {
+        sameColorCount++;
+      } else {
+        oppositeColorCount++;
+        break;
+      }
+
+      rowIndex++;
+    } else {
+      break;
+    }
+  }
+
+  counts = {
+    sameColor: sameColorCount,
+    oppositeColor: oppositeColorCount
+  }; // console.log("vertical same counts: "+counts.sameColor)
+  // console.log("vertical opposite counts: "+counts.oppositeColor)
+
+  return counts;
 }
+
+function horizontalCheck(rowCoord, colCoord, pieceColor, board) {
+  let sameColorCount = -1;
+  let oppositeColorCount = 0;
+  let rowIndex = rowCoord;
+  let colIndex = colCoord; // console.log("rowCoord: "+rowCoord)
+  // console.log("colCoord: "+colCoord)
+  // console.log("pieceColor: "+pieceColor)
+
+  let occupant;
+  let counts;
+
+  while (colIndex >= 0) {
+    occupant = board[rowIndex][colIndex];
+
+    if (occupant !== " ") {
+      if (occupant === pieceColor) {
+        sameColorCount++;
+      } else {
+        oppositeColorCount++;
+        break;
+      }
+
+      colIndex--;
+    } else {
+      break;
+    }
+  }
+
+  ;
+  rowIndex = rowCoord;
+  colIndex = colCoord;
+
+  while (colIndex < 15) {
+    occupant = board[rowIndex][colIndex];
+
+    if (occupant !== " ") {
+      if (occupant === pieceColor) {
+        sameColorCount++;
+      } else {
+        oppositeColorCount++;
+        break;
+      }
+
+      colIndex++;
+    } else {
+      break;
+    }
+  }
+
+  counts = {
+    sameColor: sameColorCount,
+    oppositeColor: oppositeColorCount
+  }; // console.log("horizontal same counts: "+counts.sameColor)
+  // console.log("horizontal opposite counts: "+counts.oppositeColor)
+
+  return counts;
+}
+
+function leftBotToRightTopCheck(rowCoord, colCoord, pieceColor, board) {
+  let sameColorCount = -1;
+  let oppositeColorCount = 0;
+  let rowIndex = rowCoord;
+  let colIndex = colCoord;
+  let occupant;
+  let counts; //to right top
+
+  while (rowIndex >= 0 && colIndex < 15) {
+    occupant = board[rowIndex][colIndex];
+
+    if (occupant !== " ") {
+      // console.log("rowIndex: "+rowIndex) 
+      // console.log("colIndex: "+colIndex) 
+      // console.log("occupant: "+occupant) 
+      if (occupant === pieceColor) {
+        sameColorCount++; // console.log("sameColorCount: "+sameColorCount)        
+      } else {
+        oppositeColorCount++;
+        break;
+      }
+
+      rowIndex--;
+      colIndex++;
+    } else {
+      break;
+    }
+  } //to left bot
+
+
+  rowIndex = rowCoord;
+  colIndex = colCoord;
+
+  while (colIndex >= 0 && rowIndex < 15) {
+    occupant = board[rowIndex][colIndex];
+
+    if (occupant !== " ") {
+      if (occupant === pieceColor) {
+        sameColorCount++; // console.log(count)        
+      } else {
+        oppositeColorCount++;
+        break;
+      }
+
+      colIndex--;
+      rowIndex++;
+    } else {
+      break;
+    }
+  }
+
+  counts = {
+    sameColor: sameColorCount,
+    oppositeColor: oppositeColorCount
+  };
+  return counts;
+}
+
+function leftTopToRightBotCheck(rowCoord, colCoord, pieceColor, board) {
+  let sameColorCount = -1;
+  let oppositeColorCount = 0;
+  let rowIndex = rowCoord;
+  let colIndex = colCoord;
+  let occupant;
+  let counts; //to leftTop
+
+  while (rowIndex >= 0 && colIndex >= 0) {
+    occupant = board[rowIndex][colIndex];
+
+    if (occupant !== " ") {
+      if (occupant === pieceColor) {
+        sameColorCount++; // console.log(count)        
+      } else {
+        oppositeColorCount++;
+        break;
+      }
+
+      rowIndex--;
+      colIndex--;
+    } else {
+      break;
+    }
+  }
+
+  rowIndex = rowCoord;
+  colIndex = colCoord;
+
+  while (colIndex < 15 && rowIndex < 15) {
+    occupant = board[rowIndex][colIndex];
+
+    if (occupant !== " ") {
+      if (occupant === pieceColor) {
+        sameColorCount++; // console.log(count)        
+      } else {
+        oppositeColorCount++;
+        break;
+      }
+
+      colIndex++;
+      rowIndex++;
+    } else {
+      break;
+    }
+  }
+
+  counts = {
+    sameColor: sameColorCount,
+    oppositeColor: oppositeColorCount
+  };
+  return counts;
+}
+
+function threatRecognise(counts) {
+  let sameColorCount = counts.sameColor;
+  let oppositeColorCount = counts.oppositeColor; // console.log("threatRecognise sameColorCount: "+sameColorCount)
+  // console.log("threatRecognise oppositeColorCount: "+oppositeColorCount)
+
+  let threat = null;
+
+  if (sameColorCount === 2 && oppositeColorCount === 0) {
+    threat = 2;
+  } else if (sameColorCount === 2 && oppositeColorCount === 1) {
+    threat = 21;
+  } else if (sameColorCount === 2 && oppositeColorCount === 1) {
+    threat = 21;
+  } else if (sameColorCount === 3 && oppositeColorCount === 0) {
+    threat = 3;
+  } else if (sameColorCount === 3 && oppositeColorCount === 1) {
+    threat = 31;
+  } else if (sameColorCount === 4 && oppositeColorCount === 0) {
+    threat = 4;
+  } else if (sameColorCount === 4 && oppositeColorCount === 1) {
+    threat = 41;
+  } else if (sameColorCount >= 5) {
+    threat = 5;
+  }
+
+  return threat;
+}
+
+function moveEvaluation(move, pieceColor, defFactor, board) {
+  let offence = atkMoveEvaluation(move, pieceColor, board);
+  let offenceScore = offence.score;
+  let atkThreats = offence.threats;
+  let oppositeColor = (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.swapColor)(pieceColor);
+  board[move[0]][move[1]] = oppositeColor;
+  let defence = atkMoveEvaluation(move, oppositeColor, board);
+  let defenceScore = defence.score * defFactor;
+  let defThreats = defence.threats;
+  board[move[0]][move[1]] = pieceColor;
+  let totalScore = offenceScore + defenceScore; // let totalScore=offenceScore;
+  // console.log("moveEvaluation function score:"+totalScore)
+
+  return {
+    score: totalScore,
+    atkThreats: atkThreats,
+    defThreats: defThreats
+  };
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (moveEvaluation);
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "./src/components/AIplayers/AILogic/MoveSearch.jsx":
+/*!*********************************************************!*\
+  !*** ./src/components/AIplayers/AILogic/MoveSearch.jsx ***!
+  \*********************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _MoveEvaluationMinimax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MoveEvaluationMinimax */ "./src/components/AIplayers/AILogic/MoveEvaluationMinimax.jsx");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+
+
+
+function movesSearch(turn, defFactor, board, branchFactor) {
+  let rowCoord;
+  let colCoord;
+  let movePriorities = [];
+  let moveNormals = [];
+  let moveCollection = []; // let searchRange=[-1,1]
+  // let i,j
+
+  let rowIndex, colIndex;
+  let moveRow, moveCol;
+  let moveObject;
+  let atkThreats;
+  let defThreats;
+  let moveValue;
+  let atkThreatIndex;
+  let defThreatsIndex;
+  let moveWithScore;
+  let moveIndex;
+  let move; //two for loop to scan every sqaure in the board.
+
+  for (rowCoord = 0; rowCoord < 15; rowCoord++) {
+    for (colCoord = 0; colCoord < 15; colCoord++) {
+      //check if the sqaure has stone
+      // console.log("rowCoord: "+rowCoord)
+      // console.log("colCoord: "+colCoord)
+      // console.log("board[rowCoord][colCoord]: "+board[rowCoord][colCoord])
+      if (board[rowCoord][colCoord] !== " ") {
+        // console.log(board[rowCoord][colCoord])
+        //search for neib sqaure
+        for (rowIndex = -1; rowIndex <= 1; rowIndex++) {
+          for (colIndex = -1; colIndex <= 1; colIndex++) {
+            if (rowIndex !== 0 || colIndex !== 0) {
+              moveRow = rowCoord + rowIndex;
+              moveCol = colCoord + colIndex; //sqaure within the board range
+
+              if (moveRow >= 0 && moveRow <= 14 && moveCol >= 0 && moveCol <= 14) {
+                //if sqaure empty,make imaginary move to see its value.
+                if (board[moveRow][moveCol] === " ") {
+                  board[moveRow][moveCol] = turn;
+                  moveObject = (0,_MoveEvaluationMinimax__WEBPACK_IMPORTED_MODULE_0__["default"])([moveRow, moveCol], turn, defFactor, board);
+                  moveValue = moveObject.score;
+                  atkThreats = moveObject.atkThreats;
+                  defThreats = moveObject.defThreats; //check offence threats, if there is move to form five in-a-row threat, only consider such threat
+
+                  for (atkThreatIndex = 0; atkThreatIndex < 4; atkThreatIndex++) {
+                    if (atkThreats[atkThreatIndex] === 5) {
+                      moveCollection = [[moveRow, moveCol]];
+                      return moveCollection;
+                    }
+                  } //check offence threats, if there is move to prevent five in-a-row threat, only consider such threat
+
+
+                  for (defThreatsIndex = 0; defThreatsIndex < 4; defThreatsIndex++) {
+                    if (defThreats[defThreatsIndex] === 5) {
+                      moveCollection = [[moveRow, moveCol]];
+                      return moveCollection;
+                    }
+                  }
+
+                  moveWithScore = {
+                    move: [moveRow, moveCol],
+                    score: moveValue
+                  }; //second priority moves
+
+                  if (moveValue >= 30 * defFactor) {
+                    movePriorities.push(moveWithScore); //third priority moves
+                  } else {
+                    // console.log("moveWithScore.move: "+moveWithScore.move)
+                    // console.log("moveWithScore.score: "+moveWithScore.score)
+                    moveNormals.push(moveWithScore);
+                  } //reverse the move to make the board unchanged
+
+
+                  board[moveRow][moveCol] = " ";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if (movePriorities.length !== 0) {
+    movePriorities.sort((move1, move2) => move1.score - move2.score);
+
+    for (moveIndex = 0; moveIndex < movePriorities.length; moveIndex++) {
+      moveCollection.push(movePriorities[moveIndex].move);
+    }
+
+    return moveCollection;
+  } else {
+    moveNormals.sort((move1, move2) => move1.score - move2.score); // console.log("moveNormals: "+moveNormals)
+
+    for (moveIndex = 0; moveIndex < branchFactor; moveIndex++) {
+      // console.log("move: "+moveNormals[moveIndex].move)
+      move = moveNormals[moveIndex].move;
+      moveCollection.push(move);
+    }
+
+    return moveCollection;
+  }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (movesSearch);
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "./src/components/AIplayers/AILogic/Objects.jsx":
+/*!******************************************************!*\
+  !*** ./src/components/AIplayers/AILogic/Objects.jsx ***!
+  \******************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "choice": () => (/* binding */ choice),
+/* harmony export */   "individual": () => (/* binding */ individual)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 
 class individual {
   constructor() {
@@ -813,7 +1138,577 @@ class individual {
 
 }
 
+class choice {
+  constructor() {
+    this.move = null;
+    this.score = null;
+  }
 
+}
+
+
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "./src/components/AIplayers/GAalgorithm.jsx":
+/*!**************************************************!*\
+  !*** ./src/components/AIplayers/GAalgorithm.jsx ***!
+  \**************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "GAModifiedMove": () => (/* binding */ GAModifiedMove),
+/* harmony export */   "GAmove": () => (/* binding */ GAmove)
+/* harmony export */ });
+/* harmony import */ var _AILogic_MoveEvaluation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AILogic/MoveEvaluation */ "./src/components/AIplayers/AILogic/MoveEvaluation.jsx");
+/* harmony import */ var _AILogic_InitIndMoves__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AILogic/InitIndMoves */ "./src/components/AIplayers/AILogic/InitIndMoves.jsx");
+/* harmony import */ var _AILogic_Objects__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AILogic/Objects */ "./src/components/AIplayers/AILogic/Objects.jsx");
+/* harmony import */ var _GameLogic_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../GameLogic.jsx */ "./src/components/GameLogic.jsx");
+/* harmony import */ var _GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../GeneralAlgorithms.jsx */ "./src/components/GeneralAlgorithms.jsx");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+
+
+
+
+
+ //fitness function
+// function createUniformRandomArr(size){
+//     let arr=[]
+//     for(var i=0;i<size;i++){
+//         arr.push(random(2))
+//     }
+// }
+
+function uniformCrossover(mom, dad) {
+  let child1 = new _AILogic_Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
+  let child2 = new _AILogic_Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
+  let child1Moves = [];
+  let child2Moves = [];
+  let randomBit; // console.log("mom.moveComb:"+mom.moveComb)
+  // console.log("dad:"+dad)
+
+  let momCopy = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.copyTwoDimArray)(mom.moveComb);
+  let dadCopy = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.copyTwoDimArray)(dad.moveComb); // console.log(mom.moveComb)
+  // console.log(dad.moveComb)
+
+  for (var moveIndex = 0; moveIndex < momCopy.length; moveIndex++) {
+    randomBit = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.random)(2);
+
+    if (randomBit === 1) {
+      child1Moves.push(momCopy[moveIndex]);
+      child2Moves.push(dadCopy[moveIndex]);
+    }
+
+    if (randomBit === 0) {
+      child1Moves.push(dadCopy[moveIndex]);
+      child2Moves.push(momCopy[moveIndex]);
+    }
+  }
+
+  child1.moveComb = child1Moves;
+  child2.moveComb = child2Moves;
+  return [child1, child2];
+}
+
+function mutate(ind, prop) {
+  let randomNum;
+  let moveIndex;
+  let mutationChange = [-1, 1];
+  let rowMuation, colMutation;
+  let moveMutated;
+
+  for (moveIndex = 0; moveIndex < ind.moveComb.length; moveIndex++) {
+    randomNum = Math.random();
+
+    if (randomNum < prop) {
+      rowMuation = mutationChange[(0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.random)(2)];
+      colMutation = mutationChange[(0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.random)(2)];
+      moveMutated = ind.moveComb[moveIndex];
+      ind.moveComb[moveIndex] = [moveMutated[0] + rowMuation, moveMutated[1] + colMutation];
+    }
+  }
+}
+
+function sortPopulation(population) {
+  population.sort((ind1, ind2) => ind2.score - ind1.score);
+}
+
+function createDumyIterationArray(numOfIteration) {
+  let array = [];
+
+  for (var i = 0; i < numOfIteration; i++) {
+    array.push(i);
+  }
+
+  return array;
+}
+
+function fitness(moveComb, pieceColor, defFactor, board) {
+  let index;
+  let turn = pieceColor;
+  let totalFitnessScore = 0;
+  let moveMade;
+  let boardCopy = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.copyTwoDimArray)(board); // console.log("moveComb1: "+moveComb)
+
+  for (index = 0; index < moveComb.length; index++) {
+    moveMade = moveComb[index]; //discard illegal moveComb
+
+    if (moveMade[0] < 15 && moveMade[0] >= 0 && moveMade[1] < 15 && moveMade[1] >= 0) {
+      if (boardCopy[moveMade[0]][moveMade[1]] === " ") {
+        (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_3__.putDownPiece)(moveMade, turn, boardCopy);
+
+        if (turn === pieceColor) {
+          totalFitnessScore += (0,_AILogic_MoveEvaluation__WEBPACK_IMPORTED_MODULE_0__["default"])(moveMade, turn, defFactor, boardCopy) / Math.pow(index + 1, 3);
+        } // else{
+        //     totalFitnessScore+=0.1*moveEvaluation(moveMade,turn,defFactor,boardCopy)/((index+1)**2)
+        // }
+        // turn=swapColor(turn)
+
+      } else {
+        return -10000;
+      }
+    } else {
+      return -10000;
+    }
+  }
+
+  return totalFitnessScore;
+}
+
+function GAmove(depth, pieceColor, board) {
+  // console.log(pieceColor)
+  let numOfPopulation = 300;
+  let numOfIteration = 100;
+  let numOfChildren = 300;
+  let population = [];
+  let mutateProp = 0.1;
+  let defFactor = 0.9;
+  let ind;
+  let it;
+  let childIndex;
+  let bestInd;
+  let bestScore = 0;
+  let produceChildIt = Math.floor(numOfChildren / 2);
+  let mom, momIndex;
+  let dad, dadIndex;
+  let dumyIterationArray;
+  let child1, child2; //initialise population
+
+  for (var i = 0; i < numOfPopulation; i++) {
+    ind = new _AILogic_Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
+    ind.moveComb = (0,_AILogic_InitIndMoves__WEBPACK_IMPORTED_MODULE_1__.initIndMoves)(pieceColor, depth, board); // console.log("initial indivisual "+i)
+
+    ind.score = fitness(ind.moveComb, pieceColor, defFactor, board); // console.log("score "+ind.score)
+
+    population.push(ind);
+
+    if (ind.score >= bestScore) {
+      bestInd = new _AILogic_Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
+      bestInd.moveComb = ind.moveComb;
+      bestInd.score = ind.score;
+    } // console.log("bestInd moveComb: "+bestInd.moveComb)
+
+  } // console.log(population[0].moveComb)
+  // console.log("forst ind in population: "+population[0].moveComb)
+  //iterations
+
+
+  for (it = 0; it <= numOfIteration; it++) {
+    for (childIndex = 0; childIndex < produceChildIt; childIndex++) {
+      //choose random parents in the population
+      dumyIterationArray = createDumyIterationArray(numOfPopulation - 1);
+      (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.shuffle)(dumyIterationArray);
+      momIndex = dumyIterationArray[0];
+      dadIndex = dumyIterationArray[1];
+      mom = population[momIndex];
+      dad = population[dadIndex]; //produce two childen
+
+      [child1, child2] = uniformCrossover(mom, dad); //mutate two childen
+
+      mutate(child1, mutateProp);
+      mutate(child2, mutateProp); //evaluate the child performance
+
+      child1.score = fitness(child1.moveComb, pieceColor, defFactor, board);
+
+      if (child1.score > bestScore) {
+        bestInd = new _AILogic_Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
+        bestInd.moveComb = child1.moveComb;
+        bestInd.score = child1.score;
+      }
+
+      child2.score = fitness(child2.moveComb, pieceColor, defFactor, board);
+
+      if (child2.score > bestScore) {
+        bestInd = new _AILogic_Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
+        bestInd.moveComb = child2.moveComb;
+        bestInd.score = child2.score;
+      } //add the child to population
+
+
+      population.push(child1);
+      population.push(child2); //sort population in descending order
+    }
+
+    sortPopulation(population);
+    population = population.slice(0, numOfPopulation - 1);
+  } // console.log(bestInd.moveComb)
+
+
+  return bestInd.moveComb[0];
+}
+
+_c = GAmove;
+
+function fitness2(moveComb, pieceColor, defFactor, board) {
+  let index;
+  let turn = pieceColor;
+  let totalFitnessScore = 0;
+  let moveMade;
+  let boardCopy = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.copyTwoDimArray)(board); // console.log("moveComb1: "+moveComb)
+
+  for (index = 0; index < moveComb.length; index++) {
+    moveMade = moveComb[index]; //discard illegal moveComb
+
+    if (moveMade[0] < 15 && moveMade[0] >= 0 && moveMade[1] < 15 && moveMade[1] >= 0) {
+      if (boardCopy[moveMade[0]][moveMade[1]] === " ") {
+        (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_3__.putDownPiece)(moveMade, turn, boardCopy);
+
+        if (turn === pieceColor) {
+          totalFitnessScore += (0,_AILogic_MoveEvaluation__WEBPACK_IMPORTED_MODULE_0__["default"])(moveMade, turn, defFactor, boardCopy);
+        } else {
+          totalFitnessScore -= (0,_AILogic_MoveEvaluation__WEBPACK_IMPORTED_MODULE_0__["default"])(moveMade, turn, defFactor, boardCopy);
+        }
+      } else {
+        return -10000;
+      }
+    } else {
+      return -10000;
+    }
+
+    turn = (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_3__.swapColor)(turn);
+    return totalFitnessScore;
+  }
+}
+
+function GAModifiedMove(depth, pieceColor, board) {
+  // console.log(pieceColor)
+  let numOfPopulation = 300;
+  let numOfIteration = 100;
+  let numOfChildren = 300;
+  let population = [];
+  let mutateProp = 0.1;
+  let defFactor = 0.9;
+  let ind;
+  let it;
+  let childIndex;
+  let bestInd;
+  let bestScore = 0;
+  let produceChildIt = Math.floor(numOfChildren / 2);
+  let mom, momIndex;
+  let dad, dadIndex;
+  let dumyIterationArray;
+  let child1, child2; //initialise population
+
+  for (var i = 0; i < numOfPopulation; i++) {
+    ind = new _AILogic_Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
+    ind.moveComb = (0,_AILogic_InitIndMoves__WEBPACK_IMPORTED_MODULE_1__.initIndMoves)(pieceColor, depth, board); // console.log("initial indivisual "+i)
+
+    ind.score = fitness2(ind.moveComb, pieceColor, defFactor, board); // console.log("score "+ind.score)
+
+    population.push(ind);
+
+    if (ind.score >= bestScore) {
+      bestInd = new _AILogic_Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
+      bestInd.moveComb = ind.moveComb;
+      bestInd.score = ind.score;
+    } // console.log("bestInd moveComb: "+bestInd.moveComb)
+
+  } // console.log(population[0].moveComb)
+  // console.log("forst ind in population: "+population[0].moveComb)
+  //iterations
+
+
+  for (it = 0; it <= numOfIteration; it++) {
+    for (childIndex = 0; childIndex < produceChildIt; childIndex++) {
+      //choose random parents in the population
+      dumyIterationArray = createDumyIterationArray(numOfPopulation - 1);
+      (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_4__.shuffle)(dumyIterationArray);
+      momIndex = dumyIterationArray[0];
+      dadIndex = dumyIterationArray[1];
+      mom = population[momIndex];
+      dad = population[dadIndex]; //produce two childen
+
+      [child1, child2] = uniformCrossover(mom, dad); //mutate two childen
+
+      mutate(child1, mutateProp);
+      mutate(child2, mutateProp); //evaluate the child performance
+
+      child1.score = fitness2(child1.moveComb, pieceColor, defFactor, board);
+
+      if (child1.score > bestScore) {
+        bestInd = new _AILogic_Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
+        bestInd.moveComb = child1.moveComb;
+        bestInd.score = child1.score;
+      }
+
+      child2.score = fitness2(child2.moveComb, pieceColor, defFactor, board);
+
+      if (child2.score > bestScore) {
+        bestInd = new _AILogic_Objects__WEBPACK_IMPORTED_MODULE_2__.individual();
+        bestInd.moveComb = child2.moveComb;
+        bestInd.score = child2.score;
+      } //add the child to population
+
+
+      population.push(child1);
+      population.push(child2); //sort population in descending order
+    }
+
+    sortPopulation(population);
+    population = population.slice(0, numOfPopulation - 1);
+  } // console.log(bestInd.moveComb)
+
+
+  return bestInd.moveComb[0];
+}
+
+_c2 = GAModifiedMove;
+
+
+var _c, _c2;
+
+__webpack_require__.$Refresh$.register(_c, "GAmove");
+__webpack_require__.$Refresh$.register(_c2, "GAModifiedMove");
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "./src/components/AIplayers/MinimaxAlg.jsx":
+/*!*************************************************!*\
+  !*** ./src/components/AIplayers/MinimaxAlg.jsx ***!
+  \*************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../GameLogic.jsx */ "./src/components/GameLogic.jsx");
+/* harmony import */ var _GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../GeneralAlgorithms.jsx */ "./src/components/GeneralAlgorithms.jsx");
+/* harmony import */ var _AILogic_MoveSearch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AILogic/MoveSearch */ "./src/components/AIplayers/AILogic/MoveSearch.jsx");
+/* harmony import */ var _AILogic_MoveEvaluationMinimax__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AILogic/MoveEvaluationMinimax */ "./src/components/AIplayers/AILogic/MoveEvaluationMinimax.jsx");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+
+
+
+
+ // import {movesSearch} from "./AILogic/InitIndMoves";
+// import moveEvaluation from "./AILogic/MoveEvaluation";
+
+function minimaxMove(turn, board) {
+  let defFactor = 0.9;
+  let branchFactor = 5;
+  let opponentColor = (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.swapColor)(turn);
+  let avalibleMoves0;
+  let avalibleMoves1;
+  let avalibleMoves2;
+  let avalibleMoves3;
+  let avalibleMoves4;
+  let moveIndex1;
+  let moveIndex2;
+  let moveIndex3;
+  let moveIndex4;
+  let moveMade1;
+  let moveMade2;
+  let moveMade3;
+  let moveMade4;
+  let B1Score;
+  let B2Score;
+  let B3Score;
+  let B4Score;
+  let bestScore1;
+  let bestScore2;
+  let bestScore3;
+  let bestScore4;
+  let bestMove;
+  let B1;
+  let B2;
+  let B3;
+  let B4;
+  bestScore1 = -100000;
+  avalibleMoves0 = (0,_AILogic_MoveSearch__WEBPACK_IMPORTED_MODULE_2__["default"])(turn, defFactor, board, branchFactor); //first depth, consider different computer moves
+
+  for (moveIndex1 = 0; moveIndex1 < avalibleMoves0.length; moveIndex1++) {
+    B1 = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_1__.copyTwoDimArray)(board);
+    moveMade1 = avalibleMoves0[moveIndex1];
+    (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.putDownPiece)(moveMade1, turn, B1);
+    avalibleMoves1 = (0,_AILogic_MoveSearch__WEBPACK_IMPORTED_MODULE_2__["default"])(opponentColor, defFactor, B1, branchFactor);
+    bestScore2 = 100000; //second depth, consider different opponent moves
+
+    for (moveIndex2 = 0; moveIndex2 < avalibleMoves1.length; moveIndex2++) {
+      B2 = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_1__.copyTwoDimArray)(B1);
+      moveMade2 = avalibleMoves1[moveIndex2];
+      (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.putDownPiece)(moveMade2, opponentColor, B2);
+      avalibleMoves2 = (0,_AILogic_MoveSearch__WEBPACK_IMPORTED_MODULE_2__["default"])(turn, defFactor, B2, branchFactor);
+      bestScore3 = -100000; //evaluate score for move once it reached the leaf node
+
+      for (moveIndex3 = 0; moveIndex3 < avalibleMoves2.length; moveIndex3++) {
+        B3 = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_1__.copyTwoDimArray)(B2);
+        moveMade3 = avalibleMoves2[moveIndex3];
+        (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.putDownPiece)(moveMade3, turn, B3);
+        avalibleMoves3 = (0,_AILogic_MoveSearch__WEBPACK_IMPORTED_MODULE_2__["default"])(opponentColor, defFactor, B3, branchFactor);
+        bestScore4 = 100000;
+
+        for (moveIndex4 = 0; moveIndex4 < avalibleMoves3.length; moveIndex4++) {
+          B4 = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_1__.copyTwoDimArray)(B3);
+          moveMade4 = avalibleMoves3[moveIndex4];
+          (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.putDownPiece)(moveMade4, opponentColor, B4);
+          B4Score = -(0,_AILogic_MoveEvaluationMinimax__WEBPACK_IMPORTED_MODULE_3__["default"])(moveMade4, opponentColor, defFactor, B4).score;
+        }
+
+        if (B4Score <= bestScore4) {
+          bestScore4 = B4Score;
+        }
+      }
+
+      B3Score = bestScore4;
+
+      if (B3Score >= bestScore3) {
+        bestScore3 = B3Score;
+      }
+    }
+
+    B2Score = bestScore3;
+
+    if (B2Score <= bestScore2) {
+      bestScore2 = B2Score;
+    }
+  }
+
+  B1Score = bestScore2;
+
+  if (B1Score >= bestScore1) {
+    bestScore1 = B1Score;
+    bestMove = moveMade1;
+  }
+
+  return bestMove;
+} // function minimaxMove(turn,board){
+//     let opponentColor=swapColor(turn)
+//     let defFactor=0.9;
+//     let branchFactor=5
+//     // let avalibleMoves1= movesSearch(turn,defFactor,board,branchFactor)
+//     let avalibleMoves1= movesSearch(turn,defFactor,board,branchFactor)
+//     let moveIndex1;
+//     let moveIndex2;
+//     let moveMade1;
+//     let moveMade2;
+//     let B1Score;
+//     let B2Score;
+//     let bestScore1;
+//     let bestScore2
+//     let avalibleMoves2;
+//     let bestMove;
+//     let B1;
+//     let B2;
+//     bestScore1=-100000;
+//     //first depth, consider different computer moves
+//     for (moveIndex1=0;moveIndex1<avalibleMoves1.length;moveIndex1++){
+//         B1=copyTwoDimArray(board)
+//         moveMade1=avalibleMoves1[moveIndex1]
+//         putDownPiece(moveMade1,turn,B1)
+//         avalibleMoves2=movesSearch(opponentColor,defFactor,B1,branchFactor)
+//         bestScore2=100000;
+//         //second depth, consider different opponent moves
+//         for (moveIndex2=0;moveIndex2<avalibleMoves2.length;moveIndex2++){
+//             B2=copyTwoDimArray(board)
+//             moveMade2=avalibleMoves2[moveIndex2]
+//             putDownPiece(moveMade2,opponentColor,B2)
+//             //compute score for move
+//             B2Score=-moveEvaluation(moveMade2,opponentColor,defFactor,B2).score
+//             //assume there is at least one B2 board, selecting the minimum B2 score.
+//             if(B2Score<=bestScore2){
+//                 bestScore2=B2Score
+//             }
+//         }
+//         //compute the minimum score picked by the opponent, the minimum score will be the score of B1
+//         B1Score=bestScore2;
+//         if(B1Score>=bestScore1){
+//             bestScore1=B1Score;
+//             bestMove=moveMade1;
+//         }    
+//     }
+//     return bestMove;
+// }
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (minimaxMove);
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -1520,6 +2415,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 
 //jshint esversion:6
+//reference: general algorithms function, "isArrayEqualArray,arraysHasArray,copyTwoDimArray" 
+//came from the Honghao Zheng's github (Zheng,2021). 
 function isArrayEqualArray(array1, array2) {
   if (array1.length === array2.length) {
     let index;
@@ -1567,7 +2464,8 @@ function copyTwoDimArray(array) {
 function random(max) {
   const num = Math.floor(Math.random() * max);
   return num;
-}
+} //reference: from stackoverflow: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+
 
 function shuffle(arr) {
   let arrIndex;
@@ -2088,13 +2986,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _ShowText__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ShowText */ "./src/components/ShowText.jsx");
-/* harmony import */ var _AIplayers_GA_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../AIplayers/GA/GAalgorithm */ "./src/components/AIplayers/GA/GAalgorithm.jsx");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var _AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../AIplayers/GAalgorithm */ "./src/components/AIplayers/GAalgorithm.jsx");
+/* harmony import */ var _AIplayers_MinimaxAlg__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../AIplayers/MinimaxAlg */ "./src/components/AIplayers/MinimaxAlg.jsx");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 
 var _jsxFileName = "C:\\Users\\Jason\\Desktop\\hxz157\\gomoku\\src\\components\\gameplaypage\\ComputerVsComputer.jsx",
     _s = __webpack_require__.$Refresh$.signature();
+
 
 
 
@@ -2110,19 +3010,15 @@ let depth = 6;
 function ComputerVsComputer(props) {
   _s();
 
-  let whoPlaysFirst = props.settings.whoGoFirst;
+  let whoPlaysFirst = "Computer 1";
   let AI1 = props.settings.computer1;
   let AI2 = props.settings.computer2;
   let AI1PieceColour;
-  let textBlackC1, textBlackC2, textWhiteC1, textWhiteC2;
+  let textBlackC1, textBlackC2, textWhiteC1, textWhiteC2; // if (whoPlaysFirst==="Computer 1"){
 
-  if (whoPlaysFirst === "Computer 1") {
-    AI1PieceColour = "B";
-    textBlackC1 = "Black Piece: Computer 1 (" + AI1 + ")";
-    textWhiteC2 = "White Piece: Computer 2 (" + AI2 + ")";
-  } else {
-    AI1PieceColour = "W";
-  }
+  AI1PieceColour = "B";
+  textBlackC1 = "Black Piece: Computer 1 (" + AI1 + ")";
+  textWhiteC2 = "White Piece: Computer 2 (" + AI2 + ")"; // } else {AI1PieceColour="W"}
 
   textBlackC2 = "Black Piece: Computer 2 (" + AI2 + ")";
   textWhiteC1 = "White Piece: Computer 1 (" + AI1 + ")";
@@ -2143,8 +3039,10 @@ function ComputerVsComputer(props) {
 
     if (AI === "Random") {
       computerMove = (0,_AIplayers_RandomPlayer__WEBPACK_IMPORTED_MODULE_2__["default"])(board);
-    } else if (AI === "Minimax") {} else if (AI === "Genetic") {
-      computerMove = (0,_AIplayers_GA_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__["default"])(depth, turn, board);
+    } else if (AI === "Minimax") {
+      computerMove = (0,_AIplayers_MinimaxAlg__WEBPACK_IMPORTED_MODULE_7__["default"])(turn, board);
+    } else if (AI === "Genetic") {
+      computerMove = (0,_AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__.GAmove)(depth, turn, board);
     }
 
     (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.putDownPiece)(computerMove, turn, board);
@@ -2154,7 +3052,6 @@ function ComputerVsComputer(props) {
   function handleMoveClick(clickedIntersectionCoord) {
     let AIalgorithm;
     let turn = turnState.isBlackTurn ? "B" : "W";
-    let isMoveMade;
     let whoWin;
     let avaMoves;
     let numMoveLeft; //if it is AI1's turn, then use AI1's algorithm
@@ -2249,8 +3146,8 @@ function ComputerVsComputer(props) {
     // console.log(AI1)
     // console.log(AI2)
     if (whoPlaysFirst === "Computer 1") {
-      let moveMade = AImakeMove(AI1, "B", boardArrangement);
-      console.log(moveMade);
+      let moveMade = AImakeMove(AI1, "B", boardArrangement); // console.log(moveMade)
+
       setMove({
         moveMade: moveMade
       });
@@ -2286,34 +3183,34 @@ function ComputerVsComputer(props) {
   // console.log(boardArrangement1vs1)
 
 
-  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("div", {
+  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
       className: "rows",
-      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
+      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
         text: "Home",
         onClick: () => {
           returnHome(boardArrangement);
         }
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 182,
+        lineNumber: 188,
         columnNumber: 9
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("h1", {
+      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("h1", {
         children: "Computer VS Computer"
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 186,
+        lineNumber: 192,
         columnNumber: 13
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 181,
+      lineNumber: 187,
       columnNumber: 9
-    }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("div", {
+    }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
       className: "gameScreen",
-      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
         className: "gameboard",
-        children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_Board__WEBPACK_IMPORTED_MODULE_0__["default"], {
+        children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Board__WEBPACK_IMPORTED_MODULE_0__["default"], {
           boardArrangement: boardArrangement,
           onClick: isGamePlayEnabled() ? _ref => {
             let [rowNum, colNum] = _ref;
@@ -2322,81 +3219,81 @@ function ComputerVsComputer(props) {
           moveMade: moveState.moveMade
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 193,
+          lineNumber: 199,
           columnNumber: 21
         }, this)
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 192,
+        lineNumber: 198,
         columnNumber: 17
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)("div", {
+      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
         className: "des",
-        children: [gameState.isStarted ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
+        children: [gameState.isStarted ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
           text: "reset",
           onClick: () => resetGame(boardArrangement)
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 204,
+          lineNumber: 210,
           columnNumber: 21
-        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
+        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
           text: "start",
           onClick: () => {
             startGame(whoPlaysFirst);
           }
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 205,
+          lineNumber: 211,
           columnNumber: 21
-        }, this), gameState.isEnded ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this), gameState.isEnded ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textRed",
           condition: gameState.isEnded,
           textIfTrue: getWinningDeclaration(gameState.winner),
           textIfFalse: ""
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 211,
+          lineNumber: 217,
           columnNumber: 21
-        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
           condition: turnState.isBlackTurn,
           textIfTrue: "Turn: Black",
           textIfFalse: "Turn: White"
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 216,
+          lineNumber: 222,
           columnNumber: 20
-        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
           condition: whoPlaysFirst === "Computer 1",
           textIfTrue: textBlackC1,
           textIfFalse: textBlackC2
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 222,
+          lineNumber: 228,
           columnNumber: 21
-        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
           condition: whoPlaysFirst !== "Computer 1",
           textIfTrue: textWhiteC1,
           textIfFalse: textWhiteC2
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 227,
+          lineNumber: 233,
           columnNumber: 24
         }, this)]
       }, void 0, true, {
         fileName: _jsxFileName,
-        lineNumber: 201,
+        lineNumber: 207,
         columnNumber: 17
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 190,
+      lineNumber: 196,
       columnNumber: 9
     }, this)]
   }, void 0, true, {
     fileName: _jsxFileName,
-    lineNumber: 180,
+    lineNumber: 186,
     columnNumber: 9
   }, this);
 }
@@ -2461,9 +3358,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _ShowText__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ShowText */ "./src/components/ShowText.jsx");
-/* harmony import */ var _AIplayers_GA_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../AIplayers/GA/GAalgorithm */ "./src/components/AIplayers/GA/GAalgorithm.jsx");
+/* harmony import */ var _AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../AIplayers/GAalgorithm */ "./src/components/AIplayers/GAalgorithm.jsx");
 /* harmony import */ var _SharedData__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../SharedData */ "./src/components/SharedData.jsx");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var _AIplayers_MinimaxAlg__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../AIplayers/MinimaxAlg */ "./src/components/AIplayers/MinimaxAlg.jsx");
+/* harmony import */ var _AIplayers_AILogic_MoveEvaluationMinimax__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../AIplayers/AILogic/MoveEvaluationMinimax */ "./src/components/AIplayers/AILogic/MoveEvaluationMinimax.jsx");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 
@@ -2479,9 +3378,11 @@ var _jsxFileName = "C:\\Users\\Jason\\Desktop\\hxz157\\gomoku\\src\\components\\
 
 
 
+
+
 let boardArrangement = [[" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "]]; //   let boardArrangement=drawCheckBoard();
 
-let depth = 3;
+let depth = 10;
 
 function PlayerVsComputer(props) {
   _s();
@@ -2507,8 +3408,12 @@ function PlayerVsComputer(props) {
 
     if (AI === "Random") {
       computerMove = (0,_AIplayers_RandomPlayer__WEBPACK_IMPORTED_MODULE_2__["default"])(board);
-    } else if (AI === "Minimax") {} else if (AI === "Genetic") {
-      computerMove = (0,_AIplayers_GA_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__["default"])(depth, turn, board);
+    } else if (AI === "Minimax") {
+      computerMove = (0,_AIplayers_MinimaxAlg__WEBPACK_IMPORTED_MODULE_8__["default"])(turn, board);
+    } else if (AI === "Genetic") {
+      computerMove = (0,_AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__.GAmove)(depth, turn, board);
+    } else if (AI === "GeneticModified") {
+      computerMove = (0,_AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__.GAModifiedMove)(depth, turn, board);
     }
 
     (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.putDownPiece)(computerMove, turn, board);
@@ -2661,34 +3566,34 @@ function PlayerVsComputer(props) {
   // console.log(boardArrangement1vs1)
 
 
-  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
+  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("div", {
       className: "rows",
-      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
+      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
         text: "Home",
         onClick: () => {
           returnHome(boardArrangement);
         }
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 193,
+        lineNumber: 201,
         columnNumber: 9
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("h1", {
+      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("h1", {
         children: "Human VS Computer"
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 197,
+        lineNumber: 205,
         columnNumber: 13
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 192,
+      lineNumber: 200,
       columnNumber: 9
-    }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
+    }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("div", {
       className: "gameScreen",
-      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("div", {
         className: "gameboard",
-        children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Board__WEBPACK_IMPORTED_MODULE_0__["default"], {
+        children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_Board__WEBPACK_IMPORTED_MODULE_0__["default"], {
           boardArrangement: boardArrangement,
           onClick: isGamePlayEnabled() ? _ref => {
             let [rowNum, colNum] = _ref;
@@ -2697,81 +3602,81 @@ function PlayerVsComputer(props) {
           moveMade: moveState.moveMade
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 204,
+          lineNumber: 212,
           columnNumber: 21
         }, this)
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 203,
+        lineNumber: 211,
         columnNumber: 17
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
+      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("div", {
         className: "des",
-        children: [gameState.isStarted ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
+        children: [gameState.isStarted ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
           text: "reset",
           onClick: () => resetGame(boardArrangement)
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 215,
+          lineNumber: 223,
           columnNumber: 21
-        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
+        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
           text: "start",
           onClick: () => {
             startGame(whoPlaysFirst);
           }
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 216,
+          lineNumber: 224,
           columnNumber: 21
-        }, this), gameState.isEnded ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this), gameState.isEnded ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textRed",
           condition: gameState.isEnded,
           textIfTrue: getWinningDeclaration(gameState.winner),
           textIfFalse: ""
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 222,
+          lineNumber: 230,
           columnNumber: 21
-        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
           condition: turnState.isBlackTurn,
           textIfTrue: "Turn: Black",
           textIfFalse: "Turn: White"
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 227,
+          lineNumber: 235,
           columnNumber: 20
-        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
           condition: whoPlaysFirst === "Player",
           textIfTrue: "Black Piece: Player (Human)",
           textIfFalse: "Black Piece: Computer(" + AIalgorithm + ")"
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 233,
+          lineNumber: 241,
           columnNumber: 21
-        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
           condition: whoPlaysFirst !== "Player",
           textIfTrue: "White Piece: Player (Human)",
           textIfFalse: "White Piece: Computer(" + AIalgorithm + ")"
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 238,
+          lineNumber: 246,
           columnNumber: 24
         }, this)]
       }, void 0, true, {
         fileName: _jsxFileName,
-        lineNumber: 212,
+        lineNumber: 220,
         columnNumber: 17
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 201,
+      lineNumber: 209,
       columnNumber: 9
     }, this)]
   }, void 0, true, {
     fileName: _jsxFileName,
-    lineNumber: 191,
+    lineNumber: 199,
     columnNumber: 9
   }, this);
 }
@@ -2835,12 +3740,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _ShowText__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../ShowText */ "./src/components/ShowText.jsx");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var _AIplayers_AILogic_MoveEvaluationMinimax__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../AIplayers/AILogic/MoveEvaluationMinimax */ "./src/components/AIplayers/AILogic/MoveEvaluationMinimax.jsx");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 
 var _jsxFileName = "C:\\Users\\Jason\\Desktop\\hxz157\\gomoku\\src\\components\\gameplaypage\\PlayerVsPlayer.jsx",
     _s = __webpack_require__.$Refresh$.signature();
+
 
 
 
@@ -2873,6 +3780,7 @@ function PlayerVsPlayer(props) {
     isMoveMade = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_2__.putDownPiece)(clickedIntersectionCoord, turn, boardArrangement);
 
     if (isMoveMade) {
+      console.log("move score: " + (0,_AIplayers_AILogic_MoveEvaluationMinimax__WEBPACK_IMPORTED_MODULE_5__["default"])(clickedIntersectionCoord, turn, 0.9, boardArrangement));
       avaMoves = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_2__.avalibleMoves)(boardArrangement);
       numMoveLeft = avaMoves.length;
       winner = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_2__.checkWinning)(turn, clickedIntersectionCoord, boardArrangement);
@@ -2943,34 +3851,34 @@ function PlayerVsPlayer(props) {
   // console.log(boardArrangement1vs1)
 
 
-  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)("div", {
+  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)("div", {
       className: "rows",
-      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
+      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
         text: "Home",
         onClick: () => {
           returnHome(boardArrangement);
         }
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 112,
+        lineNumber: 113,
         columnNumber: 9
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)("h1", {
+      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)("h1", {
         children: "Player 1 VS Player 2"
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 116,
+        lineNumber: 117,
         columnNumber: 13
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 111,
+      lineNumber: 112,
       columnNumber: 9
-    }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)("div", {
+    }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)("div", {
       className: "gameScreen",
-      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)("div", {
         className: "gameboard",
-        children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(_Board__WEBPACK_IMPORTED_MODULE_0__["default"], {
+        children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)(_Board__WEBPACK_IMPORTED_MODULE_0__["default"], {
           boardArrangement: boardArrangement,
           onClick: gameState.isEnded ? null : _ref => {
             let [rowNum, colNum] = _ref;
@@ -2979,72 +3887,72 @@ function PlayerVsPlayer(props) {
           moveMade: moveState.moveMade
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 123,
+          lineNumber: 124,
           columnNumber: 21
         }, this)
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 122,
+        lineNumber: 123,
         columnNumber: 17
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)("div", {
+      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)("div", {
         className: "des",
-        children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
+        children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
           text: "reset",
           onClick: () => resetGame(boardArrangement)
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 133,
+          lineNumber: 134,
           columnNumber: 21
-        }, this), gameState.isEnded ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        }, this), gameState.isEnded ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_4__["default"], {
           textColour: "textRed",
           condition: gameState.isEnded,
           textIfTrue: getWinningDeclaration(gameState.winner),
           textIfFalse: ""
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 136,
+          lineNumber: 137,
           columnNumber: 21
-        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_4__["default"], {
           textColour: "textBlack",
           condition: turnState.isBlackTurn,
           textIfTrue: "Turn: Black",
           textIfFalse: "Turn: White"
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 141,
+          lineNumber: 142,
           columnNumber: 20
-        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_4__["default"], {
           textColour: "textBlack",
           condition: true,
           textIfTrue: "Black Piece: Player 1",
           textIfFalse: ""
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 147,
+          lineNumber: 148,
           columnNumber: 21
-        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_4__["default"], {
           textColour: "textBlack",
           condition: true,
           textIfTrue: "white Piece: Player 2",
           textIfFalse: ""
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 152,
+          lineNumber: 153,
           columnNumber: 24
         }, this)]
       }, void 0, true, {
         fileName: _jsxFileName,
-        lineNumber: 131,
+        lineNumber: 132,
         columnNumber: 17
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 120,
+      lineNumber: 121,
       columnNumber: 9
     }, this)]
   }, void 0, true, {
     fileName: _jsxFileName,
-    lineNumber: 110,
+    lineNumber: 111,
     columnNumber: 9
   }, this);
 }
@@ -3057,6 +3965,183 @@ _c = PlayerVsPlayer;
 var _c;
 
 __webpack_require__.$Refresh$.register(_c, "PlayerVsPlayer");
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (true) {
+			errorOverlay = false;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
+/***/ }),
+
+/***/ "./src/components/gameplaypage/Simulation.jsx":
+/*!****************************************************!*\
+  !*** ./src/components/gameplaypage/Simulation.jsx ***!
+  \****************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Board__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Board */ "./src/components/Board.jsx");
+/* harmony import */ var _Buttons__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Buttons */ "./src/components/Buttons.jsx");
+/* harmony import */ var _AIplayers_RandomPlayer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../AIplayers/RandomPlayer */ "./src/components/AIplayers/RandomPlayer.jsx");
+/* harmony import */ var _GameLogic__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../GameLogic */ "./src/components/GameLogic.jsx");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _ShowText__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ShowText */ "./src/components/ShowText.jsx");
+/* harmony import */ var _AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../AIplayers/GAalgorithm */ "./src/components/AIplayers/GAalgorithm.jsx");
+/* harmony import */ var _GeneralAlgorithms__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../GeneralAlgorithms */ "./src/components/GeneralAlgorithms.jsx");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+
+var _jsxFileName = "C:\\Users\\Jason\\Desktop\\hxz157\\gomoku\\src\\components\\gameplaypage\\Simulation.jsx";
+
+
+
+
+
+
+
+
+
+let boardArrangement = [[" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "]];
+let depth = 4;
+
+function Simulation(props) {
+  let whoPlaysFirst = "Computer 1";
+  let AI1 = props.settings.computer1;
+  let AI2 = props.settings.computer2;
+
+  function AImakeMove(AI, turn, board) {
+    let computerMove;
+
+    if (AI === "Random") {
+      computerMove = (0,_AIplayers_RandomPlayer__WEBPACK_IMPORTED_MODULE_2__["default"])(board);
+    } else if (AI === "Minimax") {} else if (AI === "Genetic") {
+      computerMove = (0,_AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__.GAmove)(depth, turn, board);
+    } else if (AI === "GeneticModified") {
+      computerMove = (0,_AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__.GAModifiedMove)(depth, turn, board);
+    }
+
+    (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.putDownPiece)(computerMove, turn, board);
+    return computerMove;
+  }
+
+  function runSimulation(numOfRound, board) {
+    let gameRound; // let result={
+    //     computer1Win:0
+    // }
+
+    let computer1Win = 0;
+    let computer2Win = 0;
+    let draw = 0;
+    let gameBoard;
+    let isGameEnded;
+    let AIalgorithm;
+    let turn;
+    let moveMade;
+    let whoWin;
+
+    for (gameRound = 0; gameRound < numOfRound; gameRound++) {
+      //initialise the game
+      gameBoard = (0,_GeneralAlgorithms__WEBPACK_IMPORTED_MODULE_7__.copyTwoDimArray)(board);
+      isGameEnded = false;
+      let avaMoves;
+      let numMoveLeft; //AI1 alway play black and play first
+
+      turn = "B";
+      AIalgorithm = AI1;
+      console.log("gameRound:" + gameRound); // const start=performance.now()
+
+      while (!isGameEnded) {
+        moveMade = AImakeMove(AIalgorithm, turn, gameBoard);
+        avaMoves = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.avalibleMoves)(gameBoard);
+        numMoveLeft = avaMoves.length;
+        whoWin = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.checkWinning)(turn, moveMade, gameBoard); //if there is winner,game ended. if there isn't, check draw.
+
+        if (whoWin !== null || numMoveLeft === 0) {
+          isGameEnded = true;
+        } //change turn and AI algorithm for next turn
+
+
+        if (turn === "B") {
+          AIalgorithm = AI2;
+          turn = "W";
+        } else {
+          AIalgorithm = AI1;
+          turn = "B";
+        } // for the last few moves the thinking depth decrease when number of 
+        //avalible move decrease
+
+
+        if (numMoveLeft <= depth.num) {
+          depth = numMoveLeft; //   console.log("depth: "+depth)
+        }
+      } // const timetaken=performance.now() - start
+      // console.log("timetaken: "+timetaken+"For round "+gameRound)
+      //end of while loop, end of one game
+
+
+      if (whoWin === "B") {
+        computer1Win++;
+      } else if (whoWin === "W") {
+        computer2Win++;
+      } else {
+        draw++;
+      }
+
+      console.log("whoWin: " + whoWin);
+    } //end of N games
+
+
+    console.log("computer1Win: " + computer1Win);
+    console.log("computer2Win: " + computer2Win);
+    console.log("draw: " + draw);
+  }
+
+  runSimulation(10, boardArrangement);
+  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {}, void 0, false, {
+    fileName: _jsxFileName,
+    lineNumber: 133,
+    columnNumber: 9
+  }, this);
+}
+
+_c = Simulation;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Simulation);
+
+var _c;
+
+__webpack_require__.$Refresh$.register(_c, "Simulation");
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -3157,21 +4242,6 @@ function AIVsAIChoice(props) {
         fileName: _jsxFileName,
         lineNumber: 35,
         columnNumber: 9
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.RadioButtons, {
-        groupName: "Who Plays First",
-        values: players,
-        defaultValue: gameSetting.whoGoFirst,
-        changeSetting: who => {
-          changeSetting({
-            whoGoFirst: who,
-            computer1: gameSetting.computer1,
-            computer2: gameSetting.computer2
-          });
-        }
-      }, void 0, false, {
-        fileName: _jsxFileName,
-        lineNumber: 42,
-        columnNumber: 1
       }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.RadioButtons, {
         groupName: "Computer 1",
         values: AIalgorithms,
@@ -3295,7 +4365,7 @@ function PlayerVsAIChoice(props) {
   _s();
 
   let players = ["Player", "Computer"];
-  let AIalgorithms = ["Random", "Minimax", "Genetic"];
+  let AIalgorithms = ["Random", "Minimax", "Genetic", "GeneticModified"];
   let defaultBlack = players[0];
   let defaultAlgorithms = AIalgorithms[0];
   const [gameSetting, changeSetting] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
@@ -3434,7 +4504,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Buttons__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Buttons */ "./src/components/Buttons.jsx");
 /* harmony import */ var _gameplaypage_ComputerVsComputer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../gameplaypage/ComputerVsComputer */ "./src/components/gameplaypage/ComputerVsComputer.jsx");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var _gameplaypage_Simulation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../gameplaypage/Simulation */ "./src/components/gameplaypage/Simulation.jsx");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 
@@ -3446,11 +4517,12 @@ var _jsxFileName = "C:\\Users\\Jason\\Desktop\\hxz157\\gomoku\\src\\components\\
 
 
 
+
 function SimulationChoice(props) {
   _s();
 
   let players = ["Computer 1", "Computer 2"];
-  let AIalgorithms = ["Random", "Minimax", "Greedy"];
+  let AIalgorithms = ["Random", "Minimax", "Genetic", "GeneticModified"];
   let defaultBlack = players[0];
   let defaultAlgorithms = AIalgorithms[0];
   const [gameSetting, changeSetting] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
@@ -3464,7 +4536,7 @@ function SimulationChoice(props) {
   // console.log(gameState.isStarted)
 
   if (gameState.isStarted) {
-    return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)(_gameplaypage_ComputerVsComputer__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxDEV)(_gameplaypage_Simulation__WEBPACK_IMPORTED_MODULE_3__["default"], {
       onClickHome: () => {
         props.onClickHome();
       },
@@ -3475,8 +4547,8 @@ function SimulationChoice(props) {
       columnNumber: 9
     }, this);
   } else {
-    return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)("div", {
-      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
+    return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxDEV)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
         text: "Home",
         onClick: () => {
           props.onClickHome();
@@ -3485,22 +4557,7 @@ function SimulationChoice(props) {
         fileName: _jsxFileName,
         lineNumber: 35,
         columnNumber: 9
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.RadioButtons, {
-        groupName: "Who Plays First",
-        values: players,
-        defaultValue: gameSetting.whoGoFirst,
-        changeSetting: who => {
-          changeSetting({
-            whoGoFirst: who,
-            computer1: gameSetting.computer1,
-            computer2: gameSetting.computer2
-          });
-        }
-      }, void 0, false, {
-        fileName: _jsxFileName,
-        lineNumber: 42,
-        columnNumber: 1
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.RadioButtons, {
+      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.RadioButtons, {
         groupName: "Computer 1",
         values: AIalgorithms,
         defaultValue: gameSetting.computer1,
@@ -3515,7 +4572,7 @@ function SimulationChoice(props) {
         fileName: _jsxFileName,
         lineNumber: 54,
         columnNumber: 9
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.RadioButtons, {
+      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.RadioButtons, {
         groupName: "Computer 2",
         values: AIalgorithms,
         defaultValue: gameSetting.computer2,
@@ -3530,7 +4587,7 @@ function SimulationChoice(props) {
         fileName: _jsxFileName,
         lineNumber: 66,
         columnNumber: 13
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
+      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
         text: "Next",
         onClick: () => {
           setState({
@@ -48005,7 +49062,7 @@ if (true) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("1e44b9eea702a2d9ce81")
+/******/ 		__webpack_require__.h = () => ("da9d68e4f32424bb6f1a")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
