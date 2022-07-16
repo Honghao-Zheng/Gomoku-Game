@@ -46,8 +46,11 @@ function movesSearch(board){
     // let i,j
     let rowIndex,colIndex;
     let moveRow,moveCol;
+    // console.log(board)
     for (rowCoord=0;rowCoord<15;rowCoord++){
         for (colCoord=0;colCoord<15;colCoord++){
+            // console.log("rowCoord: "+rowCoord)
+            // console.log("colCoord: "+colCoord)
             if (board[rowCoord][colCoord]!==" "){
                 // console.log(board[rowCoord][colCoord])
                 for (rowIndex=-1;rowIndex<=1;rowIndex++){

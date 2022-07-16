@@ -39,7 +39,6 @@ function uniformCrossover(mom,dad){
             child1Moves.push(dadCopy[moveIndex])
             child2Moves.push(momCopy[moveIndex])
         }
-
     }
     child1.moveComb=child1Moves
     child2.moveComb=child2Moves

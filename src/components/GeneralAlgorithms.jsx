@@ -1,15 +1,16 @@
 //jshint esversion:6
+
+//reference: general algorithms function, "isArrayEqualArray,arraysHasArray,copyTwoDimArray" 
+//came from the Honghao Zheng's github (Zheng,2021). 
 function isArrayEqualArray(array1,array2){
   if (array1.length===array2.length){
-
     let index;
     for(index=0;index<array1.length;index++){
       if (array1[index] !==array2[index]){
-        return (false);
+        return false;
       }
     }
-    
-    return (true);
+    return true;
 }
 
 }
@@ -18,10 +19,10 @@ function isArrayEqualArray(array1,array2){
     let index;
     for (index=0;index<collectionOfArrays.length;index++){
       if (isArrayEqualArray(collectionOfArrays[index],singleArray)){
-        return (true);
+        return true;
       }
     }
-    return (false);
+    return false;
   }
 
 
@@ -41,18 +42,18 @@ function isArrayEqualArray(array1,array2){
   
   //choose a uniform random number between 0 and max-1
   function random(max) {
-    const num = Math.floor(Math.random() * (max));
+    const num = Math.floor(Math.random() * max);
     return num;
   }
 
+
+  //reference: from stackoverflow: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
   function shuffle(arr) {
     let arrIndex;
     let randomNum;
     let temp;
     for (arrIndex = arr.length - 1; arrIndex > 0; arrIndex--) {
-    
       randomNum = random(arrIndex+1)
-            
       temp = arr[arrIndex];
       arr[arrIndex] = arr[randomNum];
       arr[randomNum] = temp;

@@ -9,6 +9,7 @@ import ShowText from "../ShowText";
 import {GAmove,GAModifiedMove} from "../AIplayers/GAalgorithm";
 import {initdrawCheckBoard} from "../SharedData";
 import minimaxMove from "../AIplayers/MinimaxAlg";
+import moveEvaluation from "../AIplayers/AILogic/MoveEvaluationMinimax";
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -63,6 +64,7 @@ function PlayerVsComputer(props){
             computerMove=GAModifiedMove(depth,turn,board)
         }
         putDownPiece(computerMove,turn,board)
+        
         return computerMove
     } 
     function handleMoveClick(clickedIntersectionCoord){
@@ -77,6 +79,7 @@ function PlayerVsComputer(props){
       isMoveMade = putDownPiece(clickedIntersectionCoord,turn,boardArrangement);
       moveMade=clickedIntersectionCoord;
       if (isMoveMade){
+        
         whoWin =checkWinning(turn,clickedIntersectionCoord,boardArrangement);
         avaMoves=avalibleMoves(boardArrangement);
         numMoveLeft=avaMoves.length;

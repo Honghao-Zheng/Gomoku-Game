@@ -315,16 +315,21 @@ function threatRecognise(counts){
     } else if ( sameColorCount>=5){
     threat=5
     }
-
 return threat
 }
 
 function moveEvaluation(move,pieceColor,defFactor,board){
     let offenceScore=atkMoveEvaluation(move,pieceColor,board);
     let oppositeColor=swapColor(pieceColor);
-    let boardCopy=copyTwoDimArray(board);
-    boardCopy[move[0]][move[1]]=oppositeColor;
-    let defenceScore=atkMoveEvaluation(move,oppositeColor,boardCopy)*defFactor;
+    // console.log("occupied colour before change: "+board[move[0]][move[1]])
+    board[move[0]][move[1]]=oppositeColor;
+    // console.log("occupied colour after change: "+board[move[0]][move[1]])
+    let defenceScore=atkMoveEvaluation(move,oppositeColor,board)*defFactor;
+    board[move[0]][move[1]]=pieceColor;
+    // console.log("occupied colour after change back: "+board[move[0]][move[1]])
+    // let boardCopy=copyTwoDimArray(board);
+    // boardCopy[move[0]][move[1]]=oppositeColor;
+    // let defenceScore=atkMoveEvaluation(move,oppositeColor,boardCopy)*defFactor;
     let totalScore=offenceScore+defenceScore;
     // let totalScore=offenceScore;
     // console.log("moveEvaluation function score:"+totalScore)
