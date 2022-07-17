@@ -4,7 +4,7 @@ import PlayerVsComputer from "../gameplaypage/PlayerVsComputer";
 
 function PlayerVsAIChoice(props) {
   let players = ["Player", "Computer"];
-  let AIalgorithms = ["Random", "Minimax", "Genetic","GeneticModified"];
+  let AIalgorithms = ["Random", "Minimax", "MinimaxBad","Genetic","GeneticBad"];
   let defaultBlack = players[0];
   let defaultAlgorithms = AIalgorithms[0];
   const [gameSetting, changeSetting] = useState({

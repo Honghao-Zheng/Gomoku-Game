@@ -1,4 +1,6 @@
 import moveEvaluation from "./MoveEvaluationMinimax";
+import chooseRandomMove from "../RandomPlayer.jsx";
+import {moveObject} from "./Objects";
 function movesSearch(turn,defFactor,board,branchFactor){
     let rowCoord;
     let colCoord;
@@ -9,14 +11,14 @@ function movesSearch(turn,defFactor,board,branchFactor){
     // let i,j
     let rowIndex,colIndex;
     let moveRow,moveCol;
-    let moveObject;
+    let moveEntity;
     let atkThreats;
     let defThreats;
     let moveValue;
     let atkThreatIndex;
     let defThreatsIndex;
     let moveWithScore;
-    
+    let loopNums;
     let moveIndex;
     let move;
     //two for loop to scan every sqaure in the board.
@@ -44,35 +46,35 @@ function movesSearch(turn,defFactor,board,branchFactor){
                             //if sqaure empty,make imaginary move to see its value.
                             if(board[moveRow][moveCol]===" "){
                                 board[moveRow][moveCol]=turn;
-                                moveObject=moveEvaluation([moveRow,moveCol],turn,defFactor,board)
-                                moveValue=moveObject.score
-                                atkThreats=moveObject.atkThreats;
-                                defThreats=moveObject.defThreats;
+                                moveEntity=moveEvaluation([moveRow,moveCol],turn,defFactor,board)
+                                moveValue=moveEntity.score
+                                atkThreats=moveEntity.atkThreats;
+                                defThreats=moveEntity.defThreats;
                                 //check offence threats, if there is move to form five in-a-row threat, only consider such threat
                                 for(atkThreatIndex=0;atkThreatIndex<4;atkThreatIndex++){
                                     if (atkThreats[atkThreatIndex]===5){
-                                        moveCollection=[[moveRow,moveCol]]
+                                        moveCollection=[moveEntity]
                                         return moveCollection
                                     }
                                 }
                                 //check offence threats, if there is move to prevent five in-a-row threat, only consider such threat
                                 for(defThreatsIndex=0;defThreatsIndex<4;defThreatsIndex++){
                                     if (defThreats[defThreatsIndex]===5){
-                                        moveCollection=[[moveRow,moveCol]]
+                                        moveCollection=[moveEntity]
                                         return moveCollection
                                     }
                                 }
-                                moveWithScore={move:[moveRow,moveCol],score:moveValue}
+                                
                                 //second priority moves
                                 if(moveValue>=30*defFactor){
 
-                                    movePriorities.push(moveWithScore)
+                                    movePriorities.push(moveEntity)
 
                                 //third priority moves
                                 } else {
                                     // console.log("moveWithScore.move: "+moveWithScore.move)
                                     // console.log("moveWithScore.score: "+moveWithScore.score)
-                                    moveNormals.push(moveWithScore)
+                                    moveNormals.push(moveEntity)
                                 }
                                 //reverse the move to make the board unchanged
                                 board[moveRow][moveCol]=" ";
@@ -87,20 +89,31 @@ function movesSearch(turn,defFactor,board,branchFactor){
     if (movePriorities.length!==0){
         movePriorities.sort((move1,move2)=>move1.score-move2.score)
         for (moveIndex=0;moveIndex<movePriorities.length;moveIndex++){
-            moveCollection.push(movePriorities[moveIndex].move)
+            moveCollection.push(movePriorities[moveIndex])
 
         }
         return moveCollection
         
-    } else {
+    } else if (moveNormals.length!==0){
         moveNormals.sort((move1,move2)=>move1.score-move2.score)
         // console.log("moveNormals: "+moveNormals)
-        for (moveIndex=0;moveIndex<branchFactor;moveIndex++){
+        if(moveNormals.length<branchFactor){
+            loopNums=moveNormals.length
+        } else{
+            loopNums=branchFactor
+        }
+        for (moveIndex=0;moveIndex<loopNums;moveIndex++){
             // console.log("move: "+moveNormals[moveIndex].move)
-            move=moveNormals[moveIndex].move
+            move=moveNormals[moveIndex]
             moveCollection.push(move)
         }
         return moveCollection;
+    } 
+    else {
+        move =chooseRandomMove(board)
+        let randomMoveEntity=new moveObject(move,null,null,0)
+        moveCollection.push(randomMoveEntity)
+        return moveCollection
     }
 
    

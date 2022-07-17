@@ -4,7 +4,7 @@ import ComputerVsComputer from "../gameplaypage/ComputerVsComputer";
 import Simulation from "../gameplaypage/Simulation";
 function SimulationChoice(props) {
   let players = ["Computer 1", "Computer 2"];
-  let AIalgorithms = ["Random", "Minimax", "Genetic","GeneticModified"];
+  let AIalgorithms = ["Random", "Minimax", "MinimaxBad", "Genetic","GeneticModified"];
   let defaultBlack = players[0];
   let defaultAlgorithms = AIalgorithms[0];
   const [gameSetting, changeSetting] = useState({

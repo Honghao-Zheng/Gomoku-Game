@@ -1,6 +1,6 @@
 import {swapColor} from "../../GameLogic.jsx";
 import {copyTwoDimArray} from "../../GeneralAlgorithms.jsx"
-
+import {moveObject} from "./Objects";
 function atkMoveEvaluation(move,pieceColor,board){
     let rowCoord=move[0];
     let colCoord=move[1];
@@ -331,9 +331,11 @@ function moveEvaluation(move,pieceColor,defFactor,board){
     let defThreats=defence.threats;
     board[move[0]][move[1]]=pieceColor;
     let totalScore=offenceScore+defenceScore;
+    let moveEntity=new moveObject(move,atkThreats,defThreats,totalScore);
+    
     // let totalScore=offenceScore;
     // console.log("moveEvaluation function score:"+totalScore)
-    return {score:totalScore,atkThreats:atkThreats,defThreats:defThreats};
+    return moveEntity
 }
 
 
