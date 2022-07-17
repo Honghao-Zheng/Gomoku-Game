@@ -9,6 +9,7 @@ import ShowText from "../ShowText";
 import {GAmove} from "../AIplayers/GAalgorithm"
 import {minimaxMove,minimaxMoveTwoD} from "../AIplayers/MinimaxAlg"
 import {initdrawCheckBoard,drawCheckBoard} from "../SharedData";
+import moveEvaluation from "../AIplayers/AILogic/MoveEvaluationMinimax"
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -90,6 +91,9 @@ function ComputerVsComputer(props){
         // setTurn({isBlackTurn:turnState.isBlackTurn?false:true});
 
       let moveMade=AImakeMove(AIalgorithm,turn,boardArrangement)
+      // console.log("turn: "+turn)
+      // console.log("atkThreats: "+moveEvaluation(moveMade,turn,0.9,boardArrangement).atkThreats)
+      // console.log("defThreats: "+moveEvaluation(moveMade,turn,0.9,boardArrangement).defThreats)
       avaMoves=avalibleMoves(boardArrangement);
       numMoveLeft=avaMoves.length;
       whoWin =checkWinning(turn,moveMade,boardArrangement);

@@ -151,10 +151,14 @@ function horizontalCheck(rowCoord,colCoord,pieceColor,board){
             
             if (occupant===pieceColor){
                 sameColorCount++
+                if(colIndex===0){
+                    oppositeColorCount++;
+                }
             } else {
                 oppositeColorCount++;
                 break;
             }
+
             colIndex--;
         } else {
             break;
@@ -168,6 +172,9 @@ function horizontalCheck(rowCoord,colCoord,pieceColor,board){
         if(occupant!==" " ){
             if (occupant===pieceColor){
                 sameColorCount++
+                if(colIndex===14){
+                    oppositeColorCount++;
+                }
             } else {
                 oppositeColorCount++;
                 break;
@@ -203,7 +210,10 @@ function leftBotToRightTopCheck (rowCoord,colCoord,pieceColor,board){
                 // console.log("colIndex: "+colIndex) 
                 // console.log("occupant: "+occupant) 
                 if (occupant===pieceColor){
-                    sameColorCount++;    
+                    sameColorCount++;   
+                    if(colIndex===15 || rowIndex===0){
+                        oppositeColorCount++;
+                    } 
                     // console.log("sameColorCount: "+sameColorCount)        
                 } else {
                     oppositeColorCount++;
@@ -223,7 +233,10 @@ function leftBotToRightTopCheck (rowCoord,colCoord,pieceColor,board){
         occupant=board[rowIndex][colIndex];
         if (occupant!==" "){
             if (occupant===pieceColor){
-                sameColorCount++;    
+                sameColorCount++;   
+                if(colIndex===0 || rowIndex===15){
+                    oppositeColorCount++;
+                }  
                 // console.log(count)        
             } else {
                 oppositeColorCount++;
@@ -256,7 +269,10 @@ function leftTopToRightBotCheck (rowCoord,colCoord,pieceColor,board){
         occupant=board[rowIndex][colIndex];
         if(occupant!==" " ){
             if (occupant===pieceColor){
-                sameColorCount++;    
+                sameColorCount++;   
+                if(colIndex===0 || rowIndex===0){
+                    oppositeColorCount++;
+                }  
                 // console.log(count)        
             } else {
                 oppositeColorCount++;
@@ -276,6 +292,9 @@ function leftTopToRightBotCheck (rowCoord,colCoord,pieceColor,board){
         if(occupant!==" " ){
             if (occupant===pieceColor){
                 sameColorCount++;    
+                if(colIndex===15 || rowIndex===15){
+                    oppositeColorCount++;
+                } 
                 // console.log(count)        
             } else {
                 oppositeColorCount++;

@@ -111,7 +111,8 @@ function movesSearch(turn,defFactor,board,branchFactor){
     } 
     else {
         move =chooseRandomMove(board)
-        let randomMoveEntity=new moveObject(move,null,null,0)
+        let emptyThreats=[null,null,null,null]
+        let randomMoveEntity=new moveObject(move,emptyThreats,emptyThreats,0)
         moveCollection.push(randomMoveEntity)
         return moveCollection
     }
