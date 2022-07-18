@@ -8,7 +8,7 @@ import { useState } from "react";
 import ShowText from "../ShowText";
 import {GAmove,GAModifiedMove} from "../AIplayers/GAalgorithm";
 import {initdrawCheckBoard,drawCheckBoard} from "../SharedData";
-import {minimaxMove,minimaxMoveTwoD} from "../AIplayers/MinimaxAlg";
+import {minimaxMove,minimaxMoveBad} from "../AIplayers/MinimaxAlg";
 import moveEvaluation from "../AIplayers/AILogic/MoveEvaluationMinimax";
 
 let boardArrangement=[
@@ -57,9 +57,9 @@ function PlayerVsComputer(props){
         if(AI==="Random"){
             computerMove=chooseRandomMove(board)
         } else if(AI==="Minimax") {
-          computerMove=minimaxMove(turn,board)
+          computerMove=minimaxMove(turn,0,4,board,100000)
         } else if(AI==="MinimaxBad") {
-          computerMove=minimaxMoveTwoD(turn,board)
+          computerMove=minimaxMoveBad(turn,board)
         }
         else if(AI==="Genetic"){
             computerMove=GAmove(depth,turn,board)

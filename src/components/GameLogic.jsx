@@ -6,6 +6,7 @@ if it is a legal move such that the piece is placed in an unoccupied intersectio
 output true
 */
 function putDownPiece(coord,whoTurn,board){
+    // console.log("coord move: "+coord)
     var rowCoord=coord[0];
     var colCoord=coord[1];
     if (board[rowCoord][colCoord] ===" "){

@@ -8,7 +8,7 @@ import { useState } from "react";
 import ShowText from "../ShowText";
 import {GAmove,GAModifiedMove} from "../AIplayers/GAalgorithm"
 import { copyTwoDimArray } from "../GeneralAlgorithms";
-import {minimaxMove,minimaxMoveTwoD} from "../AIplayers/MinimaxAlg"
+import {minimaxMove,minimaxMoveBad} from "../AIplayers/MinimaxAlg"
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -39,7 +39,7 @@ function Simulation(props){
         } else if(AI==="Minimax") {
             computerMove=minimaxMove(turn,board)
         } else if(AI==="MinimaxBad") {
-            computerMove=minimaxMoveTwoD(turn,board)
+            computerMove=minimaxMoveBad(turn,board)
         }else if(AI==="Genetic"){
             computerMove=GAmove(depth,turn,board)
         } else if(AI==="GeneticModified"){
