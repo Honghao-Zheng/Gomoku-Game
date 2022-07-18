@@ -60,8 +60,6 @@ function minimaxMoveBad(turn,depthAwayFromRoot=0,depthAwayFromLeaf=4,board,alpha
             }
 
         }
-
-
         B1Score=bestScore2;
         if(B1Score>=bestScore1){
             bestScore1=B1Score;
@@ -83,24 +81,22 @@ function minimaxMoveBad(turn,depthAwayFromRoot=0,depthAwayFromLeaf=4,board,alpha
     }
     
 }
+
+
 function minimaxMove(turn,depthAwayFromRoot,depthAwayFromLeaf,board,bestScore1=-100000,alphaBetaScore=100000){
     depthAwayFromLeaf-=1;
-    depthAwayFromRoot+=1
+    // console.log("depthAwayFromLeaf: "+depthAwayFromLeaf)
     let defFactor=0.8;
     let branchFactor=5
     let opponentColor=swapColor(turn)
     let avalibleMoves1= movesSearch(turn,defFactor,board,branchFactor)
     let moveIndex1;
-    let moveIndex2;
     let moveMade1;
-    let moveMade2;
     let B1Score;
-    let B2Score;
     let bestScore2;
-    let avalibleMoves2;
     let bestMove;
     let B1;
-    let B2;
+ 
     
     //first depth, consider different computer moves
     for (moveIndex1=0;moveIndex1<avalibleMoves1.length;moveIndex1++){
@@ -115,18 +111,24 @@ function minimaxMove(turn,depthAwayFromRoot,depthAwayFromLeaf,board,bestScore1=-
         bestScore2=-bestScore1;
 
         if(depthAwayFromLeaf===0){
-            if(depthAwayFromRoot%2===1){
+            if((depthAwayFromRoot+1)%2===1){
                 B1Score=moveEvaluation(moveMade1,turn,defFactor,B1).score   
             } else{
                 B1Score=-moveEvaluation(moveMade1,turn,defFactor,B1).score  
             }
             
         } else {
+            depthAwayFromRoot+=1
             B1Score=minimaxMove(opponentColor,depthAwayFromRoot,depthAwayFromLeaf,B1,bestScore2,bestScore1)
             depthAwayFromRoot-=1
         }
+        if(avalibleMoves1[moveIndex1].atkThreats.includes(5)){
+            bestScore1=avalibleMoves1[moveIndex1].score;
+            bestMove=moveMade1
+            break;
+        }
         //odd depth maximiser
-        if(depthAwayFromRoot%2===1){
+        if((depthAwayFromRoot+1)%2===1){
             if(B1Score>=bestScore1){
                 bestScore1=B1Score;
                 bestMove=moveMade1;
@@ -144,15 +146,18 @@ function minimaxMove(turn,depthAwayFromRoot,depthAwayFromLeaf,board,bestScore1=-
                 }
             }
         }
-
-          
     }
-    //return the score back to the parent node if it is not in the first depth
-    if(depthAwayFromRoot !==1  ){
+    //return the score back to the parent node if it is not in the root node
+    if(depthAwayFromRoot !== 0  ){
+        // console.log("------------------------")
+        // console.log("depthAwayFromRoot: "+depthAwayFromRoot)
+        // console.log("bestScore1: "+bestScore1)
         return bestScore1;
     //if already in the first depth, return the move.
     } else {
-        console.log("bestMove: "+bestMove)
+        // console.log("------------------------")
+        // console.log("depthAwayFromRoot: "+depthAwayFromRoot)
+        // console.log("bestMove: "+bestMove)
         return bestMove;
     }
     

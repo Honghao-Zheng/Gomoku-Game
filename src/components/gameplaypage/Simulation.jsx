@@ -2,7 +2,7 @@
 
 import Board from "../Board";
 import {NavButton,FunctionButton} from "../Buttons";
-import chooseRandomMove from "../AIplayers/RandomPlayer"
+import {chooseRandomMove} from "../AIplayers/RandomPlayer"
 import { putDownPiece, checkWinning,avalibleMoves } from "../GameLogic"
 import { useState } from "react";
 import ShowText from "../ShowText";
@@ -26,7 +26,7 @@ let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "]
   ];
-let depth=4;
+let depth=6;
 function Simulation(props){
     let whoPlaysFirst="Computer 1";
     let AI1=props.settings.computer1;    
@@ -37,9 +37,9 @@ function Simulation(props){
         if(AI==="Random"){
             computerMove=chooseRandomMove(board)
         } else if(AI==="Minimax") {
-            computerMove=minimaxMove(turn,board)
+            computerMove=minimaxMove(turn,0,depth,board)
         } else if(AI==="MinimaxBad") {
-            computerMove=minimaxMoveBad(turn,board)
+            computerMove=minimaxMove(turn,0,1,board)
         }else if(AI==="Genetic"){
             computerMove=GAmove(depth,turn,board)
         } else if(AI==="GeneticModified"){

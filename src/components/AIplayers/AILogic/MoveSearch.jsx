@@ -1,6 +1,9 @@
 import moveEvaluation from "./MoveEvaluationMinimax";
-import chooseRandomMove from "../RandomPlayer.jsx";
+import {chooseRandomMoveInit} from "../RandomPlayer.jsx";
 import {moveObject} from "./Objects";
+
+
+
 function movesSearch(turn,defFactor,board,branchFactor){
     let rowCoord;
     let colCoord;
@@ -110,7 +113,8 @@ function movesSearch(turn,defFactor,board,branchFactor){
         return moveCollection;
     } 
     else {
-        move =chooseRandomMove(board)
+        move =chooseRandomMoveInit(board)
+        console.log("init move: "+move)
         let emptyThreats=[null,null,null,null]
         let randomMoveEntity=new moveObject(move,emptyThreats,emptyThreats,0)
         moveCollection.push(randomMoveEntity)

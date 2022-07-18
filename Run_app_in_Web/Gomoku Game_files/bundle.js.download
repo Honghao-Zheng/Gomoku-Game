@@ -42,7 +42,7 @@ function initIndMoves(turn, depth, board) {
   if (numOfMoves !== 0) {
     move = possibleMoves[moveIndex];
   } else {
-    move = (0,_RandomPlayer_jsx__WEBPACK_IMPORTED_MODULE_1__["default"])(boardCopy);
+    move = (0,_RandomPlayer_jsx__WEBPACK_IMPORTED_MODULE_1__.chooseRandomMoveInit)(boardCopy);
   }
 
   individualMoves.push(move);
@@ -248,6 +248,10 @@ function verticalCheck(rowCoord, colCoord, pieceColor, board) {
       // console.log("check top colIndex: "+colIndex)
       if (occupant === pieceColor) {
         sameColorCount++;
+
+        if (rowIndex === 0) {
+          oppositeColorCount++;
+        }
       } else {
         oppositeColorCount++;
         break;
@@ -272,6 +276,10 @@ function verticalCheck(rowCoord, colCoord, pieceColor, board) {
       // console.log("check bot colIndex: "+colIndex)
       if (occupant === pieceColor) {
         sameColorCount++;
+
+        if (rowIndex === 15) {
+          oppositeColorCount++;
+        }
       } else {
         oppositeColorCount++;
         break;
@@ -309,6 +317,10 @@ function horizontalCheck(rowCoord, colCoord, pieceColor, board) {
     if (occupant !== " ") {
       if (occupant === pieceColor) {
         sameColorCount++;
+
+        if (colIndex === 0) {
+          oppositeColorCount++;
+        }
       } else {
         oppositeColorCount++;
         break;
@@ -330,6 +342,10 @@ function horizontalCheck(rowCoord, colCoord, pieceColor, board) {
     if (occupant !== " ") {
       if (occupant === pieceColor) {
         sameColorCount++;
+
+        if (colIndex === 15) {
+          oppositeColorCount++;
+        }
       } else {
         oppositeColorCount++;
         break;
@@ -366,7 +382,12 @@ function leftBotToRightTopCheck(rowCoord, colCoord, pieceColor, board) {
       // console.log("colIndex: "+colIndex) 
       // console.log("occupant: "+occupant) 
       if (occupant === pieceColor) {
-        sameColorCount++; // console.log("sameColorCount: "+sameColorCount)        
+        sameColorCount++;
+
+        if (colIndex === 15 || rowIndex === 0) {
+          oppositeColorCount++;
+        } // console.log("sameColorCount: "+sameColorCount)        
+
       } else {
         oppositeColorCount++;
         break;
@@ -388,7 +409,12 @@ function leftBotToRightTopCheck(rowCoord, colCoord, pieceColor, board) {
 
     if (occupant !== " ") {
       if (occupant === pieceColor) {
-        sameColorCount++; // console.log(count)        
+        sameColorCount++;
+
+        if (colIndex === 0 || rowIndex === 15) {
+          oppositeColorCount++;
+        } // console.log(count)        
+
       } else {
         oppositeColorCount++;
         break;
@@ -421,7 +447,12 @@ function leftTopToRightBotCheck(rowCoord, colCoord, pieceColor, board) {
 
     if (occupant !== " ") {
       if (occupant === pieceColor) {
-        sameColorCount++; // console.log(count)        
+        sameColorCount++;
+
+        if (colIndex === 0 || rowIndex === 15) {
+          oppositeColorCount++;
+        } // console.log(count)        
+
       } else {
         oppositeColorCount++;
         break;
@@ -442,7 +473,11 @@ function leftTopToRightBotCheck(rowCoord, colCoord, pieceColor, board) {
 
     if (occupant !== " ") {
       if (occupant === pieceColor) {
-        sameColorCount++; // console.log(count)        
+        sameColorCount++; // console.log(count)  
+
+        if (colIndex === 15 || rowIndex === 15) {
+          oppositeColorCount++;
+        }
       } else {
         oppositeColorCount++;
         break;
@@ -556,8 +591,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../GameLogic.jsx */ "./src/components/GameLogic.jsx");
 /* harmony import */ var _GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../GeneralAlgorithms.jsx */ "./src/components/GeneralAlgorithms.jsx");
+/* harmony import */ var _Objects__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Objects */ "./src/components/AIplayers/AILogic/Objects.jsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+
 
 
 
@@ -723,6 +760,10 @@ function horizontalCheck(rowCoord, colCoord, pieceColor, board) {
     if (occupant !== " ") {
       if (occupant === pieceColor) {
         sameColorCount++;
+
+        if (colIndex === 0) {
+          oppositeColorCount++;
+        }
       } else {
         oppositeColorCount++;
         break;
@@ -744,6 +785,10 @@ function horizontalCheck(rowCoord, colCoord, pieceColor, board) {
     if (occupant !== " ") {
       if (occupant === pieceColor) {
         sameColorCount++;
+
+        if (colIndex === 14) {
+          oppositeColorCount++;
+        }
       } else {
         oppositeColorCount++;
         break;
@@ -780,7 +825,12 @@ function leftBotToRightTopCheck(rowCoord, colCoord, pieceColor, board) {
       // console.log("colIndex: "+colIndex) 
       // console.log("occupant: "+occupant) 
       if (occupant === pieceColor) {
-        sameColorCount++; // console.log("sameColorCount: "+sameColorCount)        
+        sameColorCount++;
+
+        if (colIndex === 15 || rowIndex === 0) {
+          oppositeColorCount++;
+        } // console.log("sameColorCount: "+sameColorCount)        
+
       } else {
         oppositeColorCount++;
         break;
@@ -802,7 +852,12 @@ function leftBotToRightTopCheck(rowCoord, colCoord, pieceColor, board) {
 
     if (occupant !== " ") {
       if (occupant === pieceColor) {
-        sameColorCount++; // console.log(count)        
+        sameColorCount++;
+
+        if (colIndex === 0 || rowIndex === 15) {
+          oppositeColorCount++;
+        } // console.log(count)        
+
       } else {
         oppositeColorCount++;
         break;
@@ -835,7 +890,12 @@ function leftTopToRightBotCheck(rowCoord, colCoord, pieceColor, board) {
 
     if (occupant !== " ") {
       if (occupant === pieceColor) {
-        sameColorCount++; // console.log(count)        
+        sameColorCount++;
+
+        if (colIndex === 0 || rowIndex === 0) {
+          oppositeColorCount++;
+        } // console.log(count)        
+
       } else {
         oppositeColorCount++;
         break;
@@ -856,7 +916,12 @@ function leftTopToRightBotCheck(rowCoord, colCoord, pieceColor, board) {
 
     if (occupant !== " ") {
       if (occupant === pieceColor) {
-        sameColorCount++; // console.log(count)        
+        sameColorCount++;
+
+        if (colIndex === 15 || rowIndex === 15) {
+          oppositeColorCount++;
+        } // console.log(count)        
+
       } else {
         oppositeColorCount++;
         break;
@@ -914,14 +979,11 @@ function moveEvaluation(move, pieceColor, defFactor, board) {
   let defenceScore = defence.score * defFactor;
   let defThreats = defence.threats;
   board[move[0]][move[1]] = pieceColor;
-  let totalScore = offenceScore + defenceScore; // let totalScore=offenceScore;
+  let totalScore = offenceScore + defenceScore;
+  let moveEntity = new _Objects__WEBPACK_IMPORTED_MODULE_2__.moveObject(move, atkThreats, defThreats, totalScore); // let totalScore=offenceScore;
   // console.log("moveEvaluation function score:"+totalScore)
 
-  return {
-    score: totalScore,
-    atkThreats: atkThreats,
-    defThreats: defThreats
-  };
+  return moveEntity;
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (moveEvaluation);
@@ -971,8 +1033,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _MoveEvaluationMinimax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MoveEvaluationMinimax */ "./src/components/AIplayers/AILogic/MoveEvaluationMinimax.jsx");
+/* harmony import */ var _RandomPlayer_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../RandomPlayer.jsx */ "./src/components/AIplayers/RandomPlayer.jsx");
+/* harmony import */ var _Objects__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Objects */ "./src/components/AIplayers/AILogic/Objects.jsx");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+
+
 
 
 
@@ -986,13 +1052,14 @@ function movesSearch(turn, defFactor, board, branchFactor) {
 
   let rowIndex, colIndex;
   let moveRow, moveCol;
-  let moveObject;
+  let moveEntity;
   let atkThreats;
   let defThreats;
   let moveValue;
   let atkThreatIndex;
   let defThreatsIndex;
   let moveWithScore;
+  let loopNums;
   let moveIndex;
   let move; //two for loop to scan every sqaure in the board.
 
@@ -1015,14 +1082,14 @@ function movesSearch(turn, defFactor, board, branchFactor) {
                 //if sqaure empty,make imaginary move to see its value.
                 if (board[moveRow][moveCol] === " ") {
                   board[moveRow][moveCol] = turn;
-                  moveObject = (0,_MoveEvaluationMinimax__WEBPACK_IMPORTED_MODULE_0__["default"])([moveRow, moveCol], turn, defFactor, board);
-                  moveValue = moveObject.score;
-                  atkThreats = moveObject.atkThreats;
-                  defThreats = moveObject.defThreats; //check offence threats, if there is move to form five in-a-row threat, only consider such threat
+                  moveEntity = (0,_MoveEvaluationMinimax__WEBPACK_IMPORTED_MODULE_0__["default"])([moveRow, moveCol], turn, defFactor, board);
+                  moveValue = moveEntity.score;
+                  atkThreats = moveEntity.atkThreats;
+                  defThreats = moveEntity.defThreats; //check offence threats, if there is move to form five in-a-row threat, only consider such threat
 
                   for (atkThreatIndex = 0; atkThreatIndex < 4; atkThreatIndex++) {
                     if (atkThreats[atkThreatIndex] === 5) {
-                      moveCollection = [[moveRow, moveCol]];
+                      moveCollection = [moveEntity];
                       return moveCollection;
                     }
                   } //check offence threats, if there is move to prevent five in-a-row threat, only consider such threat
@@ -1030,22 +1097,18 @@ function movesSearch(turn, defFactor, board, branchFactor) {
 
                   for (defThreatsIndex = 0; defThreatsIndex < 4; defThreatsIndex++) {
                     if (defThreats[defThreatsIndex] === 5) {
-                      moveCollection = [[moveRow, moveCol]];
+                      moveCollection = [moveEntity];
                       return moveCollection;
                     }
-                  }
+                  } //second priority moves
 
-                  moveWithScore = {
-                    move: [moveRow, moveCol],
-                    score: moveValue
-                  }; //second priority moves
 
                   if (moveValue >= 30 * defFactor) {
-                    movePriorities.push(moveWithScore); //third priority moves
+                    movePriorities.push(moveEntity); //third priority moves
                   } else {
                     // console.log("moveWithScore.move: "+moveWithScore.move)
                     // console.log("moveWithScore.score: "+moveWithScore.score)
-                    moveNormals.push(moveWithScore);
+                    moveNormals.push(moveEntity);
                   } //reverse the move to make the board unchanged
 
 
@@ -1063,19 +1126,32 @@ function movesSearch(turn, defFactor, board, branchFactor) {
     movePriorities.sort((move1, move2) => move1.score - move2.score);
 
     for (moveIndex = 0; moveIndex < movePriorities.length; moveIndex++) {
-      moveCollection.push(movePriorities[moveIndex].move);
+      moveCollection.push(movePriorities[moveIndex]);
+    }
+
+    return moveCollection;
+  } else if (moveNormals.length !== 0) {
+    moveNormals.sort((move1, move2) => move1.score - move2.score); // console.log("moveNormals: "+moveNormals)
+
+    if (moveNormals.length < branchFactor) {
+      loopNums = moveNormals.length;
+    } else {
+      loopNums = branchFactor;
+    }
+
+    for (moveIndex = 0; moveIndex < loopNums; moveIndex++) {
+      // console.log("move: "+moveNormals[moveIndex].move)
+      move = moveNormals[moveIndex];
+      moveCollection.push(move);
     }
 
     return moveCollection;
   } else {
-    moveNormals.sort((move1, move2) => move1.score - move2.score); // console.log("moveNormals: "+moveNormals)
-
-    for (moveIndex = 0; moveIndex < branchFactor; moveIndex++) {
-      // console.log("move: "+moveNormals[moveIndex].move)
-      move = moveNormals[moveIndex].move;
-      moveCollection.push(move);
-    }
-
+    move = (0,_RandomPlayer_jsx__WEBPACK_IMPORTED_MODULE_1__.chooseRandomMoveInit)(board);
+    console.log("init move: " + move);
+    let emptyThreats = [null, null, null, null];
+    let randomMoveEntity = new _Objects__WEBPACK_IMPORTED_MODULE_2__.moveObject(move, emptyThreats, emptyThreats, 0);
+    moveCollection.push(randomMoveEntity);
     return moveCollection;
   }
 }
@@ -1124,8 +1200,8 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "choice": () => (/* binding */ choice),
-/* harmony export */   "individual": () => (/* binding */ individual)
+/* harmony export */   "individual": () => (/* binding */ individual),
+/* harmony export */   "moveObject": () => (/* binding */ moveObject)
 /* harmony export */ });
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
@@ -1138,10 +1214,12 @@ class individual {
 
 }
 
-class choice {
-  constructor() {
-    this.move = null;
-    this.score = null;
+class moveObject {
+  constructor(move, atkThreats, defThreats, score) {
+    this.move = move;
+    this.atkThreats = atkThreats;
+    this.defThreats = defThreats;
+    this.score = score;
   }
 
 }
@@ -1556,7 +1634,8 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "minimaxMove": () => (/* binding */ minimaxMove),
+/* harmony export */   "minimaxMoveBad": () => (/* binding */ minimaxMoveBad)
 /* harmony export */ });
 /* harmony import */ var _GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../GameLogic.jsx */ "./src/components/GameLogic.jsx");
 /* harmony import */ var _GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../GeneralAlgorithms.jsx */ "./src/components/GeneralAlgorithms.jsx");
@@ -1571,144 +1650,163 @@ __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/r
  // import {movesSearch} from "./AILogic/InitIndMoves";
 // import moveEvaluation from "./AILogic/MoveEvaluation";
 
-function minimaxMove(turn, board) {
-  let defFactor = 0.9;
+function minimaxMoveBad(turn) {
+  let depthAwayFromRoot = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  let depthAwayFromLeaf = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 4;
+  let board = arguments.length > 3 ? arguments[3] : undefined;
+  let alphaScore = arguments.length > 4 ? arguments[4] : undefined;
+  depthAwayFromLeaf -= 2;
+  let defFactor = 0.8;
   let branchFactor = 5;
   let opponentColor = (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.swapColor)(turn);
-  let avalibleMoves0;
-  let avalibleMoves1;
-  let avalibleMoves2;
-  let avalibleMoves3;
-  let avalibleMoves4;
+  let avalibleMoves1 = (0,_AILogic_MoveSearch__WEBPACK_IMPORTED_MODULE_2__["default"])(turn, defFactor, board, branchFactor);
   let moveIndex1;
   let moveIndex2;
-  let moveIndex3;
-  let moveIndex4;
   let moveMade1;
   let moveMade2;
-  let moveMade3;
-  let moveMade4;
   let B1Score;
   let B2Score;
-  let B3Score;
-  let B4Score;
   let bestScore1;
   let bestScore2;
-  let bestScore3;
-  let bestScore4;
+  let avalibleMoves2;
   let bestMove;
   let B1;
   let B2;
-  let B3;
-  let B4;
-  bestScore1 = -100000;
-  avalibleMoves0 = (0,_AILogic_MoveSearch__WEBPACK_IMPORTED_MODULE_2__["default"])(turn, defFactor, board, branchFactor); //first depth, consider different computer moves
+  bestScore1 = -100000; //first depth, consider different computer moves
 
-  for (moveIndex1 = 0; moveIndex1 < avalibleMoves0.length; moveIndex1++) {
+  for (moveIndex1 = 0; moveIndex1 < avalibleMoves1.length; moveIndex1++) {
     B1 = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_1__.copyTwoDimArray)(board);
-    moveMade1 = avalibleMoves0[moveIndex1];
+    moveMade1 = avalibleMoves1[moveIndex1].move;
     (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.putDownPiece)(moveMade1, turn, B1);
-    avalibleMoves1 = (0,_AILogic_MoveSearch__WEBPACK_IMPORTED_MODULE_2__["default"])(opponentColor, defFactor, B1, branchFactor);
+    avalibleMoves2 = (0,_AILogic_MoveSearch__WEBPACK_IMPORTED_MODULE_2__["default"])(turn, defFactor, B1, branchFactor);
     bestScore2 = 100000; //second depth, consider different opponent moves
 
-    for (moveIndex2 = 0; moveIndex2 < avalibleMoves1.length; moveIndex2++) {
+    for (moveIndex2 = 0; moveIndex2 < avalibleMoves2.length; moveIndex2++) {
       B2 = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_1__.copyTwoDimArray)(B1);
-      moveMade2 = avalibleMoves1[moveIndex2];
-      (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.putDownPiece)(moveMade2, opponentColor, B2);
-      avalibleMoves2 = (0,_AILogic_MoveSearch__WEBPACK_IMPORTED_MODULE_2__["default"])(turn, defFactor, B2, branchFactor);
-      bestScore3 = -100000; //evaluate score for move once it reached the leaf node
+      moveMade2 = avalibleMoves2[moveIndex2].move;
+      (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.putDownPiece)(moveMade2, opponentColor, B2); //evaluate score for move once it reached the leaf node
 
-      for (moveIndex3 = 0; moveIndex3 < avalibleMoves2.length; moveIndex3++) {
-        B3 = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_1__.copyTwoDimArray)(B2);
-        moveMade3 = avalibleMoves2[moveIndex3];
-        (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.putDownPiece)(moveMade3, turn, B3);
-        avalibleMoves3 = (0,_AILogic_MoveSearch__WEBPACK_IMPORTED_MODULE_2__["default"])(opponentColor, defFactor, B3, branchFactor);
-        bestScore4 = 100000;
-
-        for (moveIndex4 = 0; moveIndex4 < avalibleMoves3.length; moveIndex4++) {
-          B4 = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_1__.copyTwoDimArray)(B3);
-          moveMade4 = avalibleMoves3[moveIndex4];
-          (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.putDownPiece)(moveMade4, opponentColor, B4);
-          B4Score = -(0,_AILogic_MoveEvaluationMinimax__WEBPACK_IMPORTED_MODULE_3__["default"])(moveMade4, opponentColor, defFactor, B4).score;
-        }
-
-        if (B4Score <= bestScore4) {
-          bestScore4 = B4Score;
-        }
+      if (depthAwayFromLeaf === 0) {
+        B2Score = -(0,_AILogic_MoveEvaluationMinimax__WEBPACK_IMPORTED_MODULE_3__["default"])(moveMade2, opponentColor, defFactor, B2).score;
+      } else {
+        depthAwayFromRoot += 2;
+        B2Score = minimaxMove(turn, depthAwayFromRoot, depthAwayFromLeaf, B2, bestScore2);
+        depthAwayFromRoot -= 2;
       }
 
-      B3Score = bestScore4;
+      if (B2Score <= bestScore2) {
+        bestScore2 = B2Score;
 
-      if (B3Score >= bestScore3) {
-        bestScore3 = B3Score;
+        if (B2Score <= bestScore1) {
+          break;
+        }
       }
     }
 
-    B2Score = bestScore3;
+    B1Score = bestScore2;
 
-    if (B2Score <= bestScore2) {
-      bestScore2 = B2Score;
+    if (B1Score >= bestScore1) {
+      bestScore1 = B1Score;
+      bestMove = moveMade1;
+
+      if (depthAwayFromRoot !== 0) {
+        if (B1Score >= alphaScore) {
+          break;
+        }
+      }
     }
+  } //return the score back to the parent node
+
+
+  if (depthAwayFromRoot !== 0) {
+    return bestScore1; //if already in the first two depth, return the move.
+  } else {
+    console.log("bestMove: " + bestMove);
+    return bestMove;
   }
+}
 
-  B1Score = bestScore2;
+function minimaxMove(turn, depthAwayFromRoot, depthAwayFromLeaf, board) {
+  let bestScore1 = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : -100000;
+  let alphaBetaScore = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 100000;
+  depthAwayFromLeaf -= 1; // console.log("depthAwayFromLeaf: "+depthAwayFromLeaf)
 
-  if (B1Score >= bestScore1) {
-    bestScore1 = B1Score;
-    bestMove = moveMade1;
+  let defFactor = 0.8;
+  let branchFactor = 5;
+  let opponentColor = (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.swapColor)(turn);
+  let avalibleMoves1 = (0,_AILogic_MoveSearch__WEBPACK_IMPORTED_MODULE_2__["default"])(turn, defFactor, board, branchFactor);
+  let moveIndex1;
+  let moveMade1;
+  let B1Score;
+  let bestScore2;
+  let bestMove;
+  let B1; //first depth, consider different computer moves
+
+  for (moveIndex1 = 0; moveIndex1 < avalibleMoves1.length; moveIndex1++) {
+    B1 = (0,_GeneralAlgorithms_jsx__WEBPACK_IMPORTED_MODULE_1__.copyTwoDimArray)(board);
+    moveMade1 = avalibleMoves1[moveIndex1].move;
+    (0,_GameLogic_jsx__WEBPACK_IMPORTED_MODULE_0__.putDownPiece)(moveMade1, turn, B1); //alphabeta score is the default score for 
+    //bestScore1 is the default score of current parent node
+    //bestScore2 is the default score of parent node for next branching out
+
+    bestScore2 = -bestScore1;
+
+    if (depthAwayFromLeaf === 0) {
+      if ((depthAwayFromRoot + 1) % 2 === 1) {
+        B1Score = (0,_AILogic_MoveEvaluationMinimax__WEBPACK_IMPORTED_MODULE_3__["default"])(moveMade1, turn, defFactor, B1).score;
+      } else {
+        B1Score = -(0,_AILogic_MoveEvaluationMinimax__WEBPACK_IMPORTED_MODULE_3__["default"])(moveMade1, turn, defFactor, B1).score;
+      }
+    } else {
+      depthAwayFromRoot += 1;
+      B1Score = minimaxMove(opponentColor, depthAwayFromRoot, depthAwayFromLeaf, B1, bestScore2, bestScore1);
+      depthAwayFromRoot -= 1;
+    }
+
+    if (avalibleMoves1[moveIndex1].atkThreats.includes(5)) {
+      bestScore1 = avalibleMoves1[moveIndex1].score;
+      bestMove = moveMade1;
+      break;
+    } //odd depth maximiser
+
+
+    if ((depthAwayFromRoot + 1) % 2 === 1) {
+      if (B1Score >= bestScore1) {
+        bestScore1 = B1Score;
+        bestMove = moveMade1;
+
+        if (B1Score >= alphaBetaScore) {
+          break;
+        }
+      } // even depth minimiser
+
+    } else {
+      if (B1Score <= bestScore1) {
+        bestScore1 = B1Score;
+        bestMove = moveMade1;
+
+        if (B1Score <= alphaBetaScore) {
+          break;
+        }
+      }
+    }
+  } //return the score back to the parent node if it is not in the root node
+
+
+  if (depthAwayFromRoot !== 0) {
+    // console.log("------------------------")
+    // console.log("depthAwayFromRoot: "+depthAwayFromRoot)
+    // console.log("bestScore1: "+bestScore1)
+    return bestScore1; //if already in the first depth, return the move.
+  } else {
+    // console.log("------------------------")
+    // console.log("depthAwayFromRoot: "+depthAwayFromRoot)
+    // console.log("bestMove: "+bestMove)
+    return bestMove;
   }
-
-  return bestMove;
-} // function minimaxMove(turn,board){
-//     let opponentColor=swapColor(turn)
-//     let defFactor=0.9;
-//     let branchFactor=5
-//     // let avalibleMoves1= movesSearch(turn,defFactor,board,branchFactor)
-//     let avalibleMoves1= movesSearch(turn,defFactor,board,branchFactor)
-//     let moveIndex1;
-//     let moveIndex2;
-//     let moveMade1;
-//     let moveMade2;
-//     let B1Score;
-//     let B2Score;
-//     let bestScore1;
-//     let bestScore2
-//     let avalibleMoves2;
-//     let bestMove;
-//     let B1;
-//     let B2;
-//     bestScore1=-100000;
-//     //first depth, consider different computer moves
-//     for (moveIndex1=0;moveIndex1<avalibleMoves1.length;moveIndex1++){
-//         B1=copyTwoDimArray(board)
-//         moveMade1=avalibleMoves1[moveIndex1]
-//         putDownPiece(moveMade1,turn,B1)
-//         avalibleMoves2=movesSearch(opponentColor,defFactor,B1,branchFactor)
-//         bestScore2=100000;
-//         //second depth, consider different opponent moves
-//         for (moveIndex2=0;moveIndex2<avalibleMoves2.length;moveIndex2++){
-//             B2=copyTwoDimArray(board)
-//             moveMade2=avalibleMoves2[moveIndex2]
-//             putDownPiece(moveMade2,opponentColor,B2)
-//             //compute score for move
-//             B2Score=-moveEvaluation(moveMade2,opponentColor,defFactor,B2).score
-//             //assume there is at least one B2 board, selecting the minimum B2 score.
-//             if(B2Score<=bestScore2){
-//                 bestScore2=B2Score
-//             }
-//         }
-//         //compute the minimum score picked by the opponent, the minimum score will be the score of B1
-//         B1Score=bestScore2;
-//         if(B1Score>=bestScore1){
-//             bestScore1=B1Score;
-//             bestMove=moveMade1;
-//         }    
-//     }
-//     return bestMove;
-// }
+}
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (minimaxMove);
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -1752,7 +1850,8 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "chooseRandomMove": () => (/* binding */ chooseRandomMove),
+/* harmony export */   "chooseRandomMoveInit": () => (/* binding */ chooseRandomMoveInit)
 /* harmony export */ });
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
@@ -1772,6 +1871,21 @@ function avalibleMoves(board) {
   return avalibleMoves;
 }
 
+function avalibleMovesInit(board) {
+  let avalibleMoves = [];
+  let row, col;
+
+  for (row = 4; row < board.length - 4; row++) {
+    for (col = 5; col < board[row].length - 5; col++) {
+      if (board[row][col] === " ") {
+        avalibleMoves.push([row, col]);
+      }
+    }
+  }
+
+  return avalibleMoves;
+}
+
 function chooseRandomMove(board) {
   let possibleMoves = avalibleMoves(board);
   let numOfPossibleMoves = possibleMoves.length;
@@ -1780,7 +1894,15 @@ function chooseRandomMove(board) {
   return randomMoveChosen;
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (chooseRandomMove);
+function chooseRandomMoveInit(board) {
+  let possibleMoves = avalibleMovesInit(board);
+  let numOfPossibleMoves = possibleMoves.length;
+  let moveIndex = Math.floor(Math.random() * numOfPossibleMoves);
+  let randomMoveChosen = possibleMoves[moveIndex];
+  return randomMoveChosen;
+}
+
+
 
 const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
 const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
@@ -2140,6 +2262,7 @@ if it is a legal move such that the piece is placed in an unoccupied intersectio
 output true
 */
 function putDownPiece(coord, whoTurn, board) {
+  // console.log("coord move: "+coord)
   var rowCoord = coord[0];
   var colCoord = coord[1];
 
@@ -2988,7 +3111,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ShowText__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ShowText */ "./src/components/ShowText.jsx");
 /* harmony import */ var _AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../AIplayers/GAalgorithm */ "./src/components/AIplayers/GAalgorithm.jsx");
 /* harmony import */ var _AIplayers_MinimaxAlg__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../AIplayers/MinimaxAlg */ "./src/components/AIplayers/MinimaxAlg.jsx");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var _SharedData__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../SharedData */ "./src/components/SharedData.jsx");
+/* harmony import */ var _AIplayers_AILogic_MoveEvaluationMinimax__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../AIplayers/AILogic/MoveEvaluationMinimax */ "./src/components/AIplayers/AILogic/MoveEvaluationMinimax.jsx");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 
@@ -3004,8 +3129,10 @@ var _jsxFileName = "C:\\Users\\Jason\\Desktop\\hxz157\\gomoku\\src\\components\\
 
 
 
+
+
 let boardArrangement = [[" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "]];
-let depth = 6;
+let depth = 6; // boardArrangement=drawCheckBoard();
 
 function ComputerVsComputer(props) {
   _s();
@@ -3038,10 +3165,14 @@ function ComputerVsComputer(props) {
     let computerMove;
 
     if (AI === "Random") {
-      computerMove = (0,_AIplayers_RandomPlayer__WEBPACK_IMPORTED_MODULE_2__["default"])(board);
+      computerMove = (0,_AIplayers_RandomPlayer__WEBPACK_IMPORTED_MODULE_2__.chooseRandomMove)(board);
     } else if (AI === "Minimax") {
-      computerMove = (0,_AIplayers_MinimaxAlg__WEBPACK_IMPORTED_MODULE_7__["default"])(turn, board);
+      computerMove = (0,_AIplayers_MinimaxAlg__WEBPACK_IMPORTED_MODULE_7__.minimaxMove)(turn, 0, depth, board);
+    } else if (AI === "MinimaxBad") {
+      computerMove = (0,_AIplayers_MinimaxAlg__WEBPACK_IMPORTED_MODULE_7__.minimaxMove)(turn, 0, 1, board);
     } else if (AI === "Genetic") {
+      computerMove = (0,_AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__.GAmove)(depth, turn, board);
+    } else if (AI === "GeneticBad") {
       computerMove = (0,_AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__.GAmove)(depth, turn, board);
     }
 
@@ -3064,7 +3195,10 @@ function ComputerVsComputer(props) {
     // setTurn({isBlackTurn:turnState.isBlackTurn?false:true});
 
 
-    let moveMade = AImakeMove(AIalgorithm, turn, boardArrangement);
+    let moveMade = AImakeMove(AIalgorithm, turn, boardArrangement); // console.log("turn: "+turn)
+    // console.log("atkThreats: "+moveEvaluation(moveMade,turn,0.9,boardArrangement).atkThreats)
+    // console.log("defThreats: "+moveEvaluation(moveMade,turn,0.9,boardArrangement).defThreats)
+
     avaMoves = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.avalibleMoves)(boardArrangement);
     numMoveLeft = avaMoves.length;
     whoWin = (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.checkWinning)(turn, moveMade, boardArrangement);
@@ -3183,34 +3317,34 @@ function ComputerVsComputer(props) {
   // console.log(boardArrangement1vs1)
 
 
-  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
+  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("div", {
       className: "rows",
-      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
+      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.NavButton, {
         text: "Home",
         onClick: () => {
           returnHome(boardArrangement);
         }
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 188,
+        lineNumber: 198,
         columnNumber: 9
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("h1", {
+      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("h1", {
         children: "Computer VS Computer"
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 192,
+        lineNumber: 202,
         columnNumber: 13
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 187,
+      lineNumber: 197,
       columnNumber: 9
-    }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
+    }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("div", {
       className: "gameScreen",
-      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("div", {
         className: "gameboard",
-        children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Board__WEBPACK_IMPORTED_MODULE_0__["default"], {
+        children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_Board__WEBPACK_IMPORTED_MODULE_0__["default"], {
           boardArrangement: boardArrangement,
           onClick: isGamePlayEnabled() ? _ref => {
             let [rowNum, colNum] = _ref;
@@ -3219,81 +3353,81 @@ function ComputerVsComputer(props) {
           moveMade: moveState.moveMade
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 199,
+          lineNumber: 209,
           columnNumber: 21
         }, this)
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 198,
+        lineNumber: 208,
         columnNumber: 17
-      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {
+      }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("div", {
         className: "des",
-        children: [gameState.isStarted ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
+        children: [gameState.isStarted ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
           text: "reset",
           onClick: () => resetGame(boardArrangement)
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 210,
+          lineNumber: 220,
           columnNumber: 21
-        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
+        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
           text: "start",
           onClick: () => {
             startGame(whoPlaysFirst);
           }
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 211,
+          lineNumber: 221,
           columnNumber: 21
-        }, this), gameState.isEnded ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this), gameState.isEnded ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textRed",
           condition: gameState.isEnded,
           textIfTrue: getWinningDeclaration(gameState.winner),
           textIfFalse: ""
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 217,
+          lineNumber: 227,
           columnNumber: 21
-        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
           condition: turnState.isBlackTurn,
           textIfTrue: "Turn: Black",
           textIfFalse: "Turn: White"
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 222,
+          lineNumber: 232,
           columnNumber: 20
-        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
           condition: whoPlaysFirst === "Computer 1",
           textIfTrue: textBlackC1,
           textIfFalse: textBlackC2
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 228,
+          lineNumber: 238,
           columnNumber: 21
-        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
           condition: whoPlaysFirst !== "Computer 1",
           textIfTrue: textWhiteC1,
           textIfFalse: textWhiteC2
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 233,
+          lineNumber: 243,
           columnNumber: 24
         }, this)]
       }, void 0, true, {
         fileName: _jsxFileName,
-        lineNumber: 207,
+        lineNumber: 217,
         columnNumber: 17
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 196,
+      lineNumber: 206,
       columnNumber: 9
     }, this)]
   }, void 0, true, {
     fileName: _jsxFileName,
-    lineNumber: 186,
+    lineNumber: 196,
     columnNumber: 9
   }, this);
 }
@@ -3380,9 +3514,10 @@ var _jsxFileName = "C:\\Users\\Jason\\Desktop\\hxz157\\gomoku\\src\\components\\
 
 
 
-let boardArrangement = [[" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "]]; //   let boardArrangement=drawCheckBoard();
+let boardArrangement = [[" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "]]; // boardArrangement=drawCheckBoard();
 
-let depth = 10;
+let minimaxDepth = 6;
+let geneticDepth = 10;
 
 function PlayerVsComputer(props) {
   _s();
@@ -3407,13 +3542,15 @@ function PlayerVsComputer(props) {
     let computerMove;
 
     if (AI === "Random") {
-      computerMove = (0,_AIplayers_RandomPlayer__WEBPACK_IMPORTED_MODULE_2__["default"])(board);
+      computerMove = (0,_AIplayers_RandomPlayer__WEBPACK_IMPORTED_MODULE_2__.chooseRandomMove)(board);
     } else if (AI === "Minimax") {
-      computerMove = (0,_AIplayers_MinimaxAlg__WEBPACK_IMPORTED_MODULE_8__["default"])(turn, board);
+      computerMove = (0,_AIplayers_MinimaxAlg__WEBPACK_IMPORTED_MODULE_8__.minimaxMove)(turn, 0, minimaxDepth, board);
+    } else if (AI === "MinimaxBad") {
+      computerMove = (0,_AIplayers_MinimaxAlg__WEBPACK_IMPORTED_MODULE_8__.minimaxMove)(turn, 0, 1, board);
     } else if (AI === "Genetic") {
-      computerMove = (0,_AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__.GAmove)(depth, turn, board);
-    } else if (AI === "GeneticModified") {
-      computerMove = (0,_AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__.GAModifiedMove)(depth, turn, board);
+      computerMove = (0,_AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__.GAmove)(geneticDepth, turn, board);
+    } else if (AI === "GeneticBad") {
+      computerMove = (0,_AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__.GAModifiedMove)(geneticDepth, turn, board);
     }
 
     (0,_GameLogic__WEBPACK_IMPORTED_MODULE_3__.putDownPiece)(computerMove, turn, board);
@@ -3462,11 +3599,18 @@ function PlayerVsComputer(props) {
       // console.log("depth: "+depth)
 
 
-      if (numMoveLeft <= depth + 1) {
+      if (numMoveLeft <= geneticDepth + 1) {
         // setDepth({
         //     num:numMoveLeft
         // })
-        depth = numMoveLeft - 1; // console.log("depth: "+depth)
+        geneticDepth = numMoveLeft - 1; // console.log("depth: "+depth)
+      }
+
+      if (numMoveLeft <= minimaxDepth + 1) {
+        // setDepth({
+        //     num:numMoveLeft
+        // })
+        minimaxDepth = numMoveLeft - 1; // console.log("depth: "+depth)
       }
 
       if (!isGameEnded) {
@@ -3576,18 +3720,18 @@ function PlayerVsComputer(props) {
         }
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 201,
+        lineNumber: 212,
         columnNumber: 9
       }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("h1", {
         children: "Human VS Computer"
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 205,
+        lineNumber: 216,
         columnNumber: 13
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 200,
+      lineNumber: 211,
       columnNumber: 9
     }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("div", {
       className: "gameScreen",
@@ -3602,12 +3746,12 @@ function PlayerVsComputer(props) {
           moveMade: moveState.moveMade
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 212,
+          lineNumber: 223,
           columnNumber: 21
         }, this)
       }, void 0, false, {
         fileName: _jsxFileName,
-        lineNumber: 211,
+        lineNumber: 222,
         columnNumber: 17
       }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("div", {
         className: "des",
@@ -3616,7 +3760,7 @@ function PlayerVsComputer(props) {
           onClick: () => resetGame(boardArrangement)
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 223,
+          lineNumber: 234,
           columnNumber: 21
         }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_Buttons__WEBPACK_IMPORTED_MODULE_1__.FunctionButton, {
           text: "start",
@@ -3625,7 +3769,7 @@ function PlayerVsComputer(props) {
           }
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 224,
+          lineNumber: 235,
           columnNumber: 21
         }, this), gameState.isEnded ? /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textRed",
@@ -3634,7 +3778,7 @@ function PlayerVsComputer(props) {
           textIfFalse: ""
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 230,
+          lineNumber: 241,
           columnNumber: 21
         }, this) : /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
@@ -3643,7 +3787,7 @@ function PlayerVsComputer(props) {
           textIfFalse: "Turn: White"
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 235,
+          lineNumber: 246,
           columnNumber: 20
         }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
@@ -3652,7 +3796,7 @@ function PlayerVsComputer(props) {
           textIfFalse: "Black Piece: Computer(" + AIalgorithm + ")"
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 241,
+          lineNumber: 252,
           columnNumber: 21
         }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_ShowText__WEBPACK_IMPORTED_MODULE_5__["default"], {
           textColour: "textBlack",
@@ -3661,22 +3805,22 @@ function PlayerVsComputer(props) {
           textIfFalse: "White Piece: Computer(" + AIalgorithm + ")"
         }, void 0, false, {
           fileName: _jsxFileName,
-          lineNumber: 246,
+          lineNumber: 257,
           columnNumber: 24
         }, this)]
       }, void 0, true, {
         fileName: _jsxFileName,
-        lineNumber: 220,
+        lineNumber: 231,
         columnNumber: 17
       }, this)]
     }, void 0, true, {
       fileName: _jsxFileName,
-      lineNumber: 209,
+      lineNumber: 220,
       columnNumber: 9
     }, this)]
   }, void 0, true, {
     fileName: _jsxFileName,
-    lineNumber: 199,
+    lineNumber: 210,
     columnNumber: 9
   }, this);
 }
@@ -4019,7 +4163,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ShowText__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ShowText */ "./src/components/ShowText.jsx");
 /* harmony import */ var _AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../AIplayers/GAalgorithm */ "./src/components/AIplayers/GAalgorithm.jsx");
 /* harmony import */ var _GeneralAlgorithms__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../GeneralAlgorithms */ "./src/components/GeneralAlgorithms.jsx");
-/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var _AIplayers_MinimaxAlg__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../AIplayers/MinimaxAlg */ "./src/components/AIplayers/MinimaxAlg.jsx");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 
@@ -4033,8 +4178,9 @@ var _jsxFileName = "C:\\Users\\Jason\\Desktop\\hxz157\\gomoku\\src\\components\\
 
 
 
+
 let boardArrangement = [[" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "], [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "]];
-let depth = 4;
+let depth = 6;
 
 function Simulation(props) {
   let whoPlaysFirst = "Computer 1";
@@ -4045,8 +4191,12 @@ function Simulation(props) {
     let computerMove;
 
     if (AI === "Random") {
-      computerMove = (0,_AIplayers_RandomPlayer__WEBPACK_IMPORTED_MODULE_2__["default"])(board);
-    } else if (AI === "Minimax") {} else if (AI === "Genetic") {
+      computerMove = (0,_AIplayers_RandomPlayer__WEBPACK_IMPORTED_MODULE_2__.chooseRandomMove)(board);
+    } else if (AI === "Minimax") {
+      computerMove = (0,_AIplayers_MinimaxAlg__WEBPACK_IMPORTED_MODULE_8__.minimaxMove)(turn, 0, depth, board);
+    } else if (AI === "MinimaxBad") {
+      computerMove = (0,_AIplayers_MinimaxAlg__WEBPACK_IMPORTED_MODULE_8__.minimaxMove)(turn, 0, 1, board);
+    } else if (AI === "Genetic") {
       computerMove = (0,_AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__.GAmove)(depth, turn, board);
     } else if (AI === "GeneticModified") {
       computerMove = (0,_AIplayers_GAalgorithm__WEBPACK_IMPORTED_MODULE_6__.GAModifiedMove)(depth, turn, board);
@@ -4129,9 +4279,9 @@ function Simulation(props) {
   }
 
   runSimulation(10, boardArrangement);
-  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxDEV)("div", {}, void 0, false, {
+  return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxDEV)("div", {}, void 0, false, {
     fileName: _jsxFileName,
-    lineNumber: 133,
+    lineNumber: 136,
     columnNumber: 9
   }, this);
 }
@@ -4207,7 +4357,7 @@ function AIVsAIChoice(props) {
   _s();
 
   let players = ["Computer 1", "Computer 2"];
-  let AIalgorithms = ["Random", "Minimax", "Genetic"];
+  let AIalgorithms = ["Random", "Minimax", "MinimaxBad", "Genetic", "GeneticBad"];
   let defaultBlack = players[0];
   let defaultAlgorithms = AIalgorithms[0];
   const [gameSetting, changeSetting] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
@@ -4365,7 +4515,7 @@ function PlayerVsAIChoice(props) {
   _s();
 
   let players = ["Player", "Computer"];
-  let AIalgorithms = ["Random", "Minimax", "Genetic", "GeneticModified"];
+  let AIalgorithms = ["Random", "Minimax", "MinimaxBad", "Genetic", "GeneticBad"];
   let defaultBlack = players[0];
   let defaultAlgorithms = AIalgorithms[0];
   const [gameSetting, changeSetting] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
@@ -4522,7 +4672,7 @@ function SimulationChoice(props) {
   _s();
 
   let players = ["Computer 1", "Computer 2"];
-  let AIalgorithms = ["Random", "Minimax", "Genetic", "GeneticModified"];
+  let AIalgorithms = ["Random", "Minimax", "MinimaxBad", "Genetic", "GeneticModified"];
   let defaultBlack = players[0];
   let defaultAlgorithms = AIalgorithms[0];
   const [gameSetting, changeSetting] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
@@ -49062,7 +49212,7 @@ if (true) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("da9d68e4f32424bb6f1a")
+/******/ 		__webpack_require__.h = () => ("5a848ff536cdd8137626")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

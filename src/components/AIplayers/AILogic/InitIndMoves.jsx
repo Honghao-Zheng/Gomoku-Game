@@ -1,5 +1,5 @@
 import {copyTwoDimArray,random} from "../../GeneralAlgorithms.jsx"
-import chooseRandomMove from "../RandomPlayer.jsx";
+import {chooseRandomMoveInit} from "../RandomPlayer.jsx";
 import {putDownPiece} from "../../GameLogic.jsx"
 import {moveEvaluation} from "./MoveEvaluation"
 //!!!!!!!!!!!!!!!!!!!!!!!
@@ -19,7 +19,7 @@ function initIndMoves(turn,depth,board){
     if (numOfMoves!==0){
         move=possibleMoves[moveIndex];
     } else{
-        move=chooseRandomMove(boardCopy)
+        move=chooseRandomMoveInit(boardCopy)
     }
     individualMoves.push(move)
     
