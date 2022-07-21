@@ -1,31 +1,52 @@
 import moveEvaluation from "./AILogic/MoveEvaluation";
-import {initIndMoves} from "./AILogic/InitIndMoves";
+
 import {individual} from "./AILogic/Objects";
 import {swapColor,putDownPiece} from "../GameLogic.jsx"
 import {copyTwoDimArray,random,shuffle} from "../GeneralAlgorithms.jsx"
-//fitness function
+import {movesSearchGA} from "./AILogic/MoveSearch";
+import {chooseRandomMoveInit} from "./RandomPlayer";
+function initIndMoves(turn,depth,board){
+    let boardCopy=copyTwoDimArray(board)
+    let move;
+    let possibleMoves;
+    let numOfMoves;
+    let d;
+    let moveIndex;
+    let individualMoves=[];
+    possibleMoves=movesSearchGA(boardCopy)
+    numOfMoves=possibleMoves.length;
+    moveIndex=random(numOfMoves);
+    if (numOfMoves!==0){
+        move=possibleMoves[moveIndex];
+    } else{
+        move=chooseRandomMoveInit(boardCopy)
+    }
+    individualMoves.push(move)
+    
+    
+    for(d=1;d<=depth-1;d++){
+        putDownPiece(move,turn,boardCopy)
+        possibleMoves=movesSearchGA(boardCopy);
+        // console.log(possibleMoves)
+        numOfMoves=possibleMoves.length;
+        moveIndex=random(numOfMoves);
+        move=possibleMoves[moveIndex];
+        individualMoves.push(move)
+    }
+    //    console.log(individualMoves)
+    return individualMoves
 
+}
 
+function uniformCrossover(momMoveComb,dadMoveComb){
 
-
-
-// function createUniformRandomArr(size){
-//     let arr=[]
-//     for(var i=0;i<size;i++){
-//         arr.push(random(2))
-//     }
-// }
-
-function uniformCrossover(mom,dad){
-    let child1=new individual();
-    let child2=new individual();
     let child1Moves=[];
     let child2Moves=[];
     let randomBit;
     // console.log("mom.moveComb:"+mom.moveComb)
     // console.log("dad:"+dad)
-    let momCopy=copyTwoDimArray(mom.moveComb);
-    let dadCopy=copyTwoDimArray(dad.moveComb);
+    let momCopy=copyTwoDimArray(momMoveComb);
+    let dadCopy=copyTwoDimArray(dadMoveComb);
     // console.log(mom.moveComb)
     // console.log(dad.moveComb)
     
@@ -40,25 +61,23 @@ function uniformCrossover(mom,dad){
             child2Moves.push(momCopy[moveIndex])
         }
     }
-    child1.moveComb=child1Moves
-    child2.moveComb=child2Moves
-    return [child1,child2]
+    return [child1Moves,child2Moves]
 }
 
 
-function mutate(ind,prop){
+function mutate(moves,prop){
     let randomNum;
     let moveIndex;
-    let mutationChange=[-1,1]
+    let mutationChange=[-1,0,1]
     let rowMuation,colMutation;
     let moveMutated;
-    for (moveIndex=0;moveIndex<ind.moveComb.length;moveIndex++){
+    for (moveIndex=0;moveIndex<moves.length;moveIndex++){
         randomNum=Math.random();
         if (randomNum<prop){
-            rowMuation=mutationChange[random(2)]
-            colMutation=mutationChange[random(2)]
-            moveMutated=ind.moveComb[moveIndex]
-            ind.moveComb[moveIndex]=[moveMutated[0]+rowMuation,moveMutated[1]+colMutation]  
+            rowMuation=mutationChange[random(3)]
+            colMutation=mutationChange[random(3)]
+            moveMutated=moves[moveIndex]
+            moves[moveIndex]=[moveMutated[0]+rowMuation,moveMutated[1]+colMutation]  
         }
     }
 
@@ -68,13 +87,20 @@ function sortPopulation(population){
     population.sort((ind1,ind2)=>ind2.score-ind1.score)
 }
 
-function createDumyIterationArray(numOfIteration){
+
+function pickTwoRandomIndex(len){
     let array=[]
-    for (var i=0;i<numOfIteration;i++){
+    // console.log("len pick: "+len)
+    for (var i=0;i<len;i++){
         array.push(i)
     }
-    return array
-}
+    // console.log("array: "+array)
+    let index1=random(len)
+    array.splice(index1,1)
+    let index2=array[random(len-1)]
+    return [index1,index2]
+  }
+
 
 function fitness(moveComb,pieceColor,defFactor,board){
     let index;
@@ -82,6 +108,7 @@ function fitness(moveComb,pieceColor,defFactor,board){
     let totalFitnessScore=0;
     let moveMade;
     let boardCopy=copyTwoDimArray(board);
+    let indScore;
     // console.log("moveComb1: "+moveComb)
     for(index=0;index<moveComb.length;index++){
         moveMade=moveComb[index];
@@ -90,22 +117,17 @@ function fitness(moveComb,pieceColor,defFactor,board){
                 if(boardCopy[moveMade[0]][moveMade[1]] ===" "){
                     putDownPiece(moveMade,turn,boardCopy)
                     if(turn===pieceColor){
-                        totalFitnessScore+=moveEvaluation(moveMade,turn,defFactor,boardCopy)/Math.pow(index+1,3)
+                        indScore=moveEvaluation(moveMade,turn,defFactor,boardCopy).score
+                        totalFitnessScore+=indScore/Math.pow(index+1,3)
                     } 
-                    // else{
-                    //     totalFitnessScore+=0.1*moveEvaluation(moveMade,turn,defFactor,boardCopy)/((index+1)**2)
-                    // }
-                    // turn=swapColor(turn)
                 } else {
                     return -10000;
                 }
         } else{
             return -10000;
-            
         }
     }
     return totalFitnessScore
-
 }
 
 function GAmove(depth,pieceColor,board){
@@ -114,68 +136,61 @@ function GAmove(depth,pieceColor,board){
     let numOfIteration=100;
     let numOfChildren=300;
 let population=[]
-
 let mutateProp=0.1
 let defFactor=0.9;
 let ind;
-let it;
+let itIndex;
 let childIndex;
 let bestInd;
-let bestScore=0
-let produceChildIt=Math.floor(numOfChildren/2)
+
+let child1Score;
+let child2Score;
 let mom,momIndex;
 let dad,dadIndex;
-let dumyIterationArray;
+
 let child1,child2;
-
-
-
+let child1MoveComb;
+let child2MoveComb;
+let moveComb;
+let score;
 //initialise population
 for (var i=0;i<numOfPopulation;i++){
-    ind=new individual();
-    ind.moveComb=initIndMoves(pieceColor,depth,board)
+    moveComb=initIndMoves(pieceColor,depth,board)
     // console.log("initial indivisual "+i)
-    ind.score=fitness(ind.moveComb,pieceColor,defFactor,board)
+    score=fitness(moveComb,pieceColor,defFactor,board)
+    ind=new individual(moveComb,score);
     // console.log("score "+ind.score)
     population.push(ind)
-    if (ind.score>=bestScore){
-        bestInd=new individual();
-        bestInd.moveComb=ind.moveComb;
-        bestInd.score=ind.score;
-    }
+    // if (ind.score>=bestScore){
+    //     moveComb=ind.moveComb;
+    //     score=ind.score;
+    //     bestInd=new individual(moveComb,score);
+    // }
     // console.log("bestInd moveComb: "+bestInd.moveComb)
 }
 // console.log(population[0].moveComb)
 // console.log("forst ind in population: "+population[0].moveComb)
 //iterations
-for (it=0;it<=numOfIteration;it++){
-    for (childIndex=0;childIndex<produceChildIt;childIndex++){
+for (itIndex=0;itIndex<=numOfIteration;itIndex++){
+    for (childIndex=0;childIndex<Math.floor(numOfChildren/2);childIndex++){
         //choose random parents in the population
-        dumyIterationArray=createDumyIterationArray(numOfPopulation-1);
-        shuffle(dumyIterationArray);
-        momIndex=dumyIterationArray[0]
-        dadIndex=dumyIterationArray[1]
+        [momIndex,dadIndex]=pickTwoRandomIndex(population.length)
+        // console.log("momIndex: "+momIndex)
+        // console.log("dadIndex: "+dadIndex)
+        // console.log("population lenth: "+population.length)
         mom=population[momIndex];
         dad=population[dadIndex];
 
         //produce two childen
-        [child1,child2]=uniformCrossover(mom,dad)
+        [child1MoveComb,child2MoveComb]=uniformCrossover(mom.moveComb,dad.moveComb)
         //mutate two childen
-        mutate(child1,mutateProp)
-        mutate(child2,mutateProp)
+        mutate(child1MoveComb,mutateProp)
+        mutate(child2MoveComb,mutateProp)
         //evaluate the child performance
-        child1.score=fitness(child1.moveComb,pieceColor,defFactor,board)
-        if(child1.score>bestScore){
-            bestInd=new individual();
-            bestInd.moveComb=child1.moveComb;
-            bestInd.score=child1.score;
-        }
-        child2.score=fitness(child2.moveComb,pieceColor,defFactor,board)
-        if(child2.score>bestScore){
-            bestInd=new individual();
-            bestInd.moveComb=child2.moveComb;
-            bestInd.score=child2.score;
-        }
+        child1Score=fitness(child1MoveComb,pieceColor,defFactor,board)
+        child2Score=fitness(child2MoveComb,pieceColor,defFactor,board)
+        child1=new individual(child1MoveComb,child1Score)
+        child2=new individual(child2MoveComb,child2Score)
         //add the child to population
         population.push(child1)
         population.push(child2)
@@ -185,124 +200,16 @@ for (it=0;it<=numOfIteration;it++){
     population=population.slice(0, numOfPopulation-1)
     
 }
-// console.log(bestInd.moveComb)
-return bestInd.moveComb[0]
-}
-
-
-function fitness2(moveComb,pieceColor,defFactor,board){
-    let index;
-    let turn=pieceColor;
-    let totalFitnessScore=0;
-    let moveMade;
-    let boardCopy=copyTwoDimArray(board);
-    // console.log("moveComb1: "+moveComb)
-    for(index=0;index<moveComb.length;index++){
-        moveMade=moveComb[index];
-        //discard illegal moveComb
-        if(
-            moveMade[0]<15 && moveMade[0]>=0 && moveMade[1]<15 && moveMade[1]>=0){
-                if(boardCopy[moveMade[0]][moveMade[1]] ===" "){
-                    putDownPiece(moveMade,turn,boardCopy)
-                    if(turn===pieceColor){
-                        totalFitnessScore+=moveEvaluation(moveMade,turn,defFactor,boardCopy)
-                    } else{
-                        totalFitnessScore-=moveEvaluation(moveMade,turn,defFactor,boardCopy)
-                    }
-                    
-                } else {
-                    return -10000;
-                }
-        } else{
-            return -10000;
-            
-        }
-        turn=swapColor(turn)
-        return totalFitnessScore
-    }
-    
-    
-}
-
-
-function GAModifiedMove(depth,pieceColor,board){
-    // console.log(pieceColor)
-    let numOfPopulation=300;
-    let numOfIteration=100;
-    let numOfChildren=300;
-let population=[]
-
-let mutateProp=0.1
-let defFactor=0.9;
-let ind;
-let it;
-let childIndex;
-let bestInd;
-let bestScore=0
-let produceChildIt=Math.floor(numOfChildren/2)
-let mom,momIndex;
-let dad,dadIndex;
-let dumyIterationArray;
-let child1,child2;
-
-//initialise population
-for (var i=0;i<numOfPopulation;i++){
-    ind=new individual();
-    ind.moveComb=initIndMoves(pieceColor,depth,board)
-    // console.log("initial indivisual "+i)
-    ind.score=fitness2(ind.moveComb,pieceColor,defFactor,board)
-    // console.log("score "+ind.score)
-    population.push(ind)
-    if (ind.score>=bestScore){
-        bestInd=new individual();
-        bestInd.moveComb=ind.moveComb;
-        bestInd.score=ind.score;
-    }
-    // console.log("bestInd moveComb: "+bestInd.moveComb)
-}
-// console.log(population[0].moveComb)
-// console.log("forst ind in population: "+population[0].moveComb)
-//iterations
-for (it=0;it<=numOfIteration;it++){
-    for (childIndex=0;childIndex<produceChildIt;childIndex++){
-        //choose random parents in the population
-        dumyIterationArray=createDumyIterationArray(numOfPopulation-1);
-        shuffle(dumyIterationArray);
-        momIndex=dumyIterationArray[0]
-        dadIndex=dumyIterationArray[1]
-        mom=population[momIndex];
-        dad=population[dadIndex];
-        //produce two childen
-        [child1,child2]=uniformCrossover(mom,dad)
-        //mutate two childen
-        mutate(child1,mutateProp)
-        mutate(child2,mutateProp)
-        //evaluate the child performance
-        child1.score=fitness2(child1.moveComb,pieceColor,defFactor,board)
-        if(child1.score>bestScore){
-            bestInd=new individual();
-            bestInd.moveComb=child1.moveComb;
-            bestInd.score=child1.score;
-        }
-        child2.score=fitness2(child2.moveComb,pieceColor,defFactor,board)
-        if(child2.score>bestScore){
-            bestInd=new individual();
-            bestInd.moveComb=child2.moveComb;
-            bestInd.score=child2.score;
-        }
-        //add the child to population
-        population.push(child1)
-        population.push(child2)
-        //sort population in descending order
-    }
-    sortPopulation(population)
-    population=population.slice(0, numOfPopulation-1)
-    
-}
+bestInd=population[0]
 // console.log(bestInd.moveComb)
 return bestInd.moveComb[0]
 }
 
 
 
-export  {GAmove,GAModifiedMove};
+
+
+
+
+
+export  default GAmove;

@@ -1,0 +1,2 @@
+The Gomoku board design by using reat.js is inspired from my past personal project which is a offline chess game designed with react.js
+

@@ -1,5 +1,6 @@
 import {swapColor} from "../../GameLogic.jsx";
 import {copyTwoDimArray} from "../../GeneralAlgorithms.jsx"
+import {moveObject} from "./Objects";
 function atkMoveEvaluation(move,pieceColor,board){
     let rowCoord=move[0];
     let colCoord=move[1];
@@ -72,7 +73,7 @@ function atkMoveEvaluation(move,pieceColor,board){
     }
 }
     // console.log("attack move evaluation:"+score)
-    return score
+    return {score:score, threats:threats}
 
 }
 
@@ -94,9 +95,6 @@ function verticalCheck(rowCoord,colCoord,pieceColor,board){
             
             if (occupant===pieceColor){
                 sameColorCount++
-                if(rowIndex===0){
-                    oppositeColorCount++;
-                }
             } else {
                 oppositeColorCount++;
                 break;
@@ -118,9 +116,6 @@ function verticalCheck(rowCoord,colCoord,pieceColor,board){
             
             if (occupant===pieceColor){
                 sameColorCount++
-                if(rowIndex===15){
-                    oppositeColorCount++;
-                }
             } else {
                 oppositeColorCount++;
                 break;
@@ -163,6 +158,7 @@ function horizontalCheck(rowCoord,colCoord,pieceColor,board){
                 oppositeColorCount++;
                 break;
             }
+
             colIndex--;
         } else {
             break;
@@ -176,7 +172,7 @@ function horizontalCheck(rowCoord,colCoord,pieceColor,board){
         if(occupant!==" " ){
             if (occupant===pieceColor){
                 sameColorCount++
-                if(colIndex===15){
+                if(colIndex===14){
                     oppositeColorCount++;
                 }
             } else {
@@ -214,7 +210,7 @@ function leftBotToRightTopCheck (rowCoord,colCoord,pieceColor,board){
                 // console.log("colIndex: "+colIndex) 
                 // console.log("occupant: "+occupant) 
                 if (occupant===pieceColor){
-                    sameColorCount++;    
+                    sameColorCount++;   
                     if(colIndex===15 || rowIndex===0){
                         oppositeColorCount++;
                     } 
@@ -237,11 +233,10 @@ function leftBotToRightTopCheck (rowCoord,colCoord,pieceColor,board){
         occupant=board[rowIndex][colIndex];
         if (occupant!==" "){
             if (occupant===pieceColor){
-                sameColorCount++;  
+                sameColorCount++;   
                 if(colIndex===0 || rowIndex===15){
                     oppositeColorCount++;
-                }    
-                
+                }  
                 // console.log(count)        
             } else {
                 oppositeColorCount++;
@@ -274,8 +269,8 @@ function leftTopToRightBotCheck (rowCoord,colCoord,pieceColor,board){
         occupant=board[rowIndex][colIndex];
         if(occupant!==" " ){
             if (occupant===pieceColor){
-                sameColorCount++;    
-                if(colIndex===0 || rowIndex===15){
+                sameColorCount++;   
+                if(colIndex===0 || rowIndex===0){
                     oppositeColorCount++;
                 }  
                 // console.log(count)        
@@ -297,10 +292,10 @@ function leftTopToRightBotCheck (rowCoord,colCoord,pieceColor,board){
         if(occupant!==" " ){
             if (occupant===pieceColor){
                 sameColorCount++;    
-                // console.log(count)  
                 if(colIndex===15 || rowIndex===15){
                     oppositeColorCount++;
-                }       
+                } 
+                // console.log(count)        
             } else {
                 oppositeColorCount++;
                 break;
@@ -340,26 +335,28 @@ function threatRecognise(counts){
     } else if ( sameColorCount>=5){
     threat=5
     }
+
 return threat
 }
 
 function moveEvaluation(move,pieceColor,defFactor,board){
-    let offenceScore=atkMoveEvaluation(move,pieceColor,board);
+    let offence=atkMoveEvaluation(move,pieceColor,board);
+    let offenceScore=offence.score;
+    let atkThreats=offence.threats;
     let oppositeColor=swapColor(pieceColor);
-    // console.log("occupied colour before change: "+board[move[0]][move[1]])
     board[move[0]][move[1]]=oppositeColor;
-    // console.log("occupied colour after change: "+board[move[0]][move[1]])
-    let defenceScore=atkMoveEvaluation(move,oppositeColor,board)*defFactor;
+    let defence=atkMoveEvaluation(move,oppositeColor,board)
+    let defenceScore=defence.score*defFactor;
+    let defThreats=defence.threats;
     board[move[0]][move[1]]=pieceColor;
-    // console.log("occupied colour after change back: "+board[move[0]][move[1]])
-    // let boardCopy=copyTwoDimArray(board);
-    // boardCopy[move[0]][move[1]]=oppositeColor;
-    // let defenceScore=atkMoveEvaluation(move,oppositeColor,boardCopy)*defFactor;
     let totalScore=offenceScore+defenceScore;
+    let moveEntity=new moveObject(move,atkThreats,defThreats,totalScore);
+    
     // let totalScore=offenceScore;
     // console.log("moveEvaluation function score:"+totalScore)
-    return totalScore;
-
+    return moveEntity
 }
+
+
 
 export default moveEvaluation;

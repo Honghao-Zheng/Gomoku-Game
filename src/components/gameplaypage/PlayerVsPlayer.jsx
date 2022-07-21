@@ -4,7 +4,7 @@ import {NavButton,FunctionButton} from "../Buttons";
 import { putDownPiece, checkWinning,avalibleMoves } from "../GameLogic"
 import { useState } from "react";
 import ShowText from "../ShowText";
-import moveEvaluation from "../AIplayers/AILogic/MoveEvaluationMinimax";
+import moveEvaluation from "../AIplayers/AILogic/MoveEvaluation";
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -47,7 +47,7 @@ function PlayerVsPlayer(props){
 
       isMoveMade = putDownPiece(clickedIntersectionCoord,turn,boardArrangement);
       if (isMoveMade){
-        console.log("move score: "+moveEvaluation(clickedIntersectionCoord,turn,0.9,boardArrangement))
+        // console.log("move score: "+moveEvaluation(clickedIntersectionCoord,turn,0.9,boardArrangement).score)
         avaMoves=avalibleMoves(boardArrangement);
         numMoveLeft=avaMoves.length;
         winner =checkWinning(turn,clickedIntersectionCoord,boardArrangement);

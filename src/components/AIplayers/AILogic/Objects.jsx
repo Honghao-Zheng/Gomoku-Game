@@ -1,8 +1,8 @@
 
 class individual{
-    constructor(){
-        this.moveComb=null;
-        this.score=null;
+    constructor(moves,value){
+        this.moveComb=moves;
+        this.score=value;
     }
 }
 

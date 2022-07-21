@@ -6,10 +6,10 @@ import {chooseRandomMove} from "../AIplayers/RandomPlayer"
 import { putDownPiece, checkWinning,avalibleMoves } from "../GameLogic";
 import { useState } from "react";
 import ShowText from "../ShowText";
-import {GAmove,GAModifiedMove} from "../AIplayers/GAalgorithm";
+import GAmove from "../AIplayers/GAalgorithm";
 import {initdrawCheckBoard,drawCheckBoard} from "../SharedData";
-import {minimaxMove,minimaxMoveBad} from "../AIplayers/MinimaxAlg";
-import moveEvaluation from "../AIplayers/AILogic/MoveEvaluationMinimax";
+import minimaxMove from "../AIplayers/MinimaxAlg";
+import moveEvaluation from "../AIplayers/AILogic/MoveEvaluation";
 
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -29,8 +29,10 @@ let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "]
   ];
   // boardArrangement=drawCheckBoard();
-let minimaxDepth=6;
-let geneticDepth=10;
+let defaultGeneticDepth=4;
+let defaultMinimaxDepth=4
+let minimaxDepth=defaultMinimaxDepth;
+let geneticDepth=defaultGeneticDepth;
 function PlayerVsComputer(props){
     let whoPlaysFirst=props.settings.whoGoFirst;
     let AIalgorithm=props.settings.computer;    
@@ -66,7 +68,7 @@ function PlayerVsComputer(props){
             computerMove=GAmove(geneticDepth,turn,board)
         }
         else if(AI==="GeneticBad"){
-            computerMove=GAModifiedMove(geneticDepth,turn,board)
+            computerMove=GAmove(1,turn,board)
         }
         putDownPiece(computerMove,turn,board)
         
@@ -111,23 +113,27 @@ function PlayerVsComputer(props){
         }
         // console.log("numMoveLeft: "+numMoveLeft)
         // console.log("depth: "+depth)
-        if(numMoveLeft<=geneticDepth+1){
-            // setDepth({
-            //     num:numMoveLeft
-            // })
-            geneticDepth=numMoveLeft-1
+        
+        if(numMoveLeft<geneticDepth+1){
+
+            geneticDepth=numMoveLeft
             // console.log("depth: "+depth)
         }
-        if(numMoveLeft<=minimaxDepth+1){
-          // setDepth({
-          //     num:numMoveLeft
-          // })
-          minimaxDepth=numMoveLeft-1
+        // console.log("numMoveLeft: "+numMoveLeft)
+        // console.log("minimaxDepth: "+minimaxDepth)
+        if(numMoveLeft<minimaxDepth+1){
+          minimaxDepth=numMoveLeft
+
           // console.log("depth: "+depth)
       }
+      console.log("numMoveLeft: "+numMoveLeft)
+      console.log("minimaxDepth: "+minimaxDepth)
+      // numMoveLeft-=1;
         if(!isGameEnded){
             moveMade=AImakeMove(AIalgorithm,turn,boardArrangement)
             whoWin =checkWinning(turn,moveMade,boardArrangement);
+            avaMoves=avalibleMoves(boardArrangement);
+            numMoveLeft=avaMoves.length;
             if (whoWin!==null){
               setGame({
                   isStarted:gameState.isStarted,
@@ -175,6 +181,8 @@ function PlayerVsComputer(props){
         setTurn({isBlackTurn:true})
         setGame({isStarted:false, isEnded:false, winner:null})
         setMove({moveMade:[]})
+        minimaxDepth=defaultMinimaxDepth;
+        geneticDepth=defaultGeneticDepth;
     }
 
     function returnHome(board){

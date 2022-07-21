@@ -1,24 +1,16 @@
 //jshint esversion:6
 
-//reference: general algorithms function, "isArrayEqualArray,arraysHasArray,copyTwoDimArray" 
-//came from the Honghao Zheng's github (Zheng,2021). 
-function isArrayEqualArray(array1,array2){
-  if (array1.length===array2.length){
-    let index;
-    for(index=0;index<array1.length;index++){
-      if (array1[index] !==array2[index]){
-        return false;
-      }
-    }
+function areTwoMovesEqual(move1,move2){
+  if(move1[0]===move2[0] && move1[1]===move2[1]){
     return true;
+} else {
+  return false 
 }
-
 }
-
-  function arraysHasArray(collectionOfArrays,singleArray){
-    let index;
-    for (index=0;index<collectionOfArrays.length;index++){
-      if (isArrayEqualArray(collectionOfArrays[index],singleArray)){
+  function MoveListContainMove(moveList,move){
+    let moveIndex;
+    for (moveIndex=0;moveIndex<moveList.length;moveIndex++){
+      if (areTwoMovesEqual(moveList[moveIndex],move)){
         return true;
       }
     }
@@ -47,21 +39,8 @@ function isArrayEqualArray(array1,array2){
   }
 
 
-  //reference: from stackoverflow: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-  function shuffle(arr) {
-    let arrIndex;
-    let randomNum;
-    let temp;
-    for (arrIndex = arr.length - 1; arrIndex > 0; arrIndex--) {
-      randomNum = random(arrIndex+1)
-      temp = arr[arrIndex];
-      arr[arrIndex] = arr[randomNum];
-      arr[randomNum] = temp;
-    }
-      
-    return arr;
-    }
+
     
 
 
-export {arraysHasArray,isArrayEqualArray,copyTwoDimArray,random,shuffle};
+export {areTwoMovesEqual,MoveListContainMove,copyTwoDimArray,random};

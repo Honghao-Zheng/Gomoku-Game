@@ -1,7 +1,7 @@
 //jshint esversion:6
 import React from "react";
 import {Intersection} from "./Buttons";
-import { isArrayEqualArray } from "./GeneralAlgorithms";
+import { areTwoMovesEqual } from "./GeneralAlgorithms";
 
 function Board (props) {
 // console.log(props.boardArrangement)
@@ -13,7 +13,7 @@ function Board (props) {
       {row.map((pieceColour,colNum)=>{
         cellColour="yellow"
         
-        if(isArrayEqualArray(props.moveMade,[rowNum,colNum])){
+        if(areTwoMovesEqual(props.moveMade,[rowNum,colNum])){
 
       cellColour="red"
     }     

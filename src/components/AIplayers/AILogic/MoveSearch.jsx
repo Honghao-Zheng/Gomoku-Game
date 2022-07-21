@@ -1,10 +1,10 @@
-import moveEvaluation from "./MoveEvaluationMinimax";
+import moveEvaluation from "./MoveEvaluation";
 import {chooseRandomMoveInit} from "../RandomPlayer.jsx";
 import {moveObject} from "./Objects";
 
 
 
-function movesSearch(turn,defFactor,board,branchFactor){
+function movesSearchMinimax(turn,defFactor,board,branchFactor){
     let rowCoord;
     let colCoord;
     let movePriorities=[];
@@ -34,8 +34,8 @@ function movesSearch(turn,defFactor,board,branchFactor){
             if (board[rowCoord][colCoord]!==" "){
                 // console.log(board[rowCoord][colCoord])
                 //search for neib sqaure
-                for (rowIndex=-1;rowIndex<=1;rowIndex++){
-                    for (colIndex=-1;colIndex<=1;colIndex++){
+                for (rowIndex=-2;rowIndex<=2;rowIndex++){
+                    for (colIndex=-2;colIndex<=2;colIndex++){
                       if (rowIndex !==0 || colIndex !==0){
                         moveRow=rowCoord+rowIndex;
                         moveCol=colCoord+colIndex;
@@ -114,7 +114,7 @@ function movesSearch(turn,defFactor,board,branchFactor){
     } 
     else {
         move =chooseRandomMoveInit(board)
-        console.log("init move: "+move)
+        // console.log("init move: "+move)
         let emptyThreats=[null,null,null,null]
         let randomMoveEntity=new moveObject(move,emptyThreats,emptyThreats,0)
         moveCollection.push(randomMoveEntity)
@@ -124,4 +124,48 @@ function movesSearch(turn,defFactor,board,branchFactor){
    
 }
 
-export default movesSearch;
+
+function movesSearchGA(board){
+    let rowCoord;
+    let colCoord;
+    let moveCollection=[];
+    // let searchRange=[-1,1]
+    // let i,j
+    let rowIndex,colIndex;
+    let moveRow,moveCol;
+    // console.log(board)
+    for (rowCoord=0;rowCoord<15;rowCoord++){
+        for (colCoord=0;colCoord<15;colCoord++){
+            // console.log("rowCoord: "+rowCoord)
+            // console.log("colCoord: "+colCoord)
+            if (board[rowCoord][colCoord]!==" "){
+                // console.log(board[rowCoord][colCoord])
+                for (rowIndex=-1;rowIndex<=1;rowIndex++){
+                    for (colIndex=-1;colIndex<=1;colIndex++){
+                      if (rowIndex !==0 || colIndex !==0){
+                        moveRow=rowCoord+rowIndex;
+                        moveCol=colCoord+colIndex
+
+                        if (
+                            moveRow>=0 &&
+                            moveRow<=14 &&
+                            moveCol>=0 &&
+                            moveCol <=14 
+                        ){
+                            if(board[moveRow][moveCol]===" "){
+                                moveCollection.push([moveRow,moveCol]);
+                            }
+ 
+                        }
+                      }
+                    }
+                  }
+
+            }
+
+        }
+    }
+    return moveCollection;
+}
+
+export {movesSearchMinimax,movesSearchGA};

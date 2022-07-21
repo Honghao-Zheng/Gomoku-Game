@@ -4,9 +4,9 @@ import Board from "./Board";
 import {putDownPiece,checkWinning} from "./GameLogic";
 import HomePage from "./HomePage";
 import PlayerVsPlayer from "./gameplaypage/PlayerVsPlayer";
-import PlayerVsAIChoice from "./parameterchoice/PlayerVsAIChoice"
-import AIVsAIChoice from "./parameterchoice/AIVsAIChoice"
-import SimulationChoice from "./parameterchoice/SimulationChoice"
+import PlayerVsAIChoice from "./ChoicePage/PlayerVsAIChoice"
+import AIVsAIChoice from "./ChoicePage/AIVsAIChoice"
+import SimulationChoice from "./ChoicePage/SimulationChoice"
 
 function GomokuGame (){
 
@@ -71,23 +71,6 @@ if(homePageState.showPage===false){
     <HomePage onClick={(mode)=>handleModeClick(mode)}/>
   )
 }
-
-
-// return (
-//   <div>
-
-
-//     <div>
-//       {homePageState.showPage?<HomePage onClick={(mode)=>handleModeClick(mode)}/>:null}
-//     </div>
-
-
-//     <div>
-//       {homePageState.showPage?null:<PlayerVsPlayer onClick={()=>handleHomeButtonClick()}/>}
-//     </div>
-
-//   </div>
-// )
 
 
 
