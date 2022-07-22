@@ -126,8 +126,8 @@ function PlayerVsComputer(props){
 
           // console.log("depth: "+depth)
       }
-      console.log("numMoveLeft: "+numMoveLeft)
-      console.log("minimaxDepth: "+minimaxDepth)
+      // console.log("numMoveLeft: "+numMoveLeft)
+      // console.log("minimaxDepth: "+minimaxDepth)
       // numMoveLeft-=1;
         if(!isGameEnded){
             moveMade=AImakeMove(AIalgorithm,turn,boardArrangement)

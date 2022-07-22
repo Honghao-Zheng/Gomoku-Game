@@ -32,8 +32,8 @@
 .gameboard {
   display: flex;
   flex-direction: row;
-  height: 510px;
-  width: 510px;
+  height: 600px;
+  width: 600px;
 }
 
 .rows{
@@ -58,7 +58,7 @@
 .gameScreen{
   display: flex;
   height: 510px;
-  width: 1200px;
+  width: 1300px;
 }
 
 h1{

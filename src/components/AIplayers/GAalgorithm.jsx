@@ -1,5 +1,6 @@
-import moveEvaluation from "./AILogic/MoveEvaluation";
-
+// import moveEvaluation from "./AILogic/MoveEvaluation";
+// import moveEvaluation from "./AILogic/MoveEvaluationGenetic";
+import moveEvaluation from "./AILogic/MoveEvaluationNew";
 import {individual} from "./AILogic/Objects";
 import {swapColor,putDownPiece} from "../GameLogic.jsx"
 import {copyTwoDimArray,random,shuffle} from "../GeneralAlgorithms.jsx"
@@ -84,7 +85,9 @@ function mutate(moves,prop){
 }
 
 function sortPopulation(population){
+    
     population.sort((ind1,ind2)=>ind2.score-ind1.score)
+
 }
 
 
@@ -118,7 +121,8 @@ function fitness(moveComb,pieceColor,defFactor,board){
                     putDownPiece(moveMade,turn,boardCopy)
                     if(turn===pieceColor){
                         indScore=moveEvaluation(moveMade,turn,defFactor,boardCopy).score
-                        totalFitnessScore+=indScore/Math.pow(index+1,3)
+                        // totalFitnessScore+=indScore/Math.pow(index+1,3)
+                        totalFitnessScore+=indScore/(index+1)**3
                     } 
                 } else {
                     return -10000;
@@ -200,6 +204,10 @@ for (itIndex=0;itIndex<=numOfIteration;itIndex++){
     population=population.slice(0, numOfPopulation-1)
     
 }
+// for (let i=0;i<population.length;i++){
+//     console.log("population[i].score:"+population[i].score)
+
+// }
 bestInd=population[0]
 // console.log(bestInd.moveComb)
 return bestInd.moveComb[0]

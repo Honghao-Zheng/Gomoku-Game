@@ -36,9 +36,11 @@ function movesSearchMinimax(turn,defFactor,board,branchFactor){
                 //search for neib sqaure
                 for (rowIndex=-2;rowIndex<=2;rowIndex++){
                     for (colIndex=-2;colIndex<=2;colIndex++){
+                        // console.log("[rowIndex,colIndex]: "+[rowIndex,colIndex])
                       if (rowIndex !==0 || colIndex !==0){
                         moveRow=rowCoord+rowIndex;
                         moveCol=colCoord+colIndex;
+                        // console.log("[moveRow,moveCol]: "+[moveRow,moveCol])
                         //sqaure within the board range
                         if (
                             moveRow>=0 &&
@@ -53,6 +55,7 @@ function movesSearchMinimax(turn,defFactor,board,branchFactor){
                                 moveValue=moveEntity.score
                                 atkThreats=moveEntity.atkThreats;
                                 defThreats=moveEntity.defThreats;
+                                // console.log("moveEntity: "+moveEntity.move)
                                 //check offence threats, if there is move to form five in-a-row threat, only consider such threat
                                 for(atkThreatIndex=0;atkThreatIndex<4;atkThreatIndex++){
                                     if (atkThreats[atkThreatIndex]===5){
@@ -90,7 +93,7 @@ function movesSearchMinimax(turn,defFactor,board,branchFactor){
         }
     }
     if (movePriorities.length!==0){
-        movePriorities.sort((move1,move2)=>move1.score-move2.score)
+        movePriorities.sort((move1,move2)=>move2.score-move1.score)
         for (moveIndex=0;moveIndex<movePriorities.length;moveIndex++){
             moveCollection.push(movePriorities[moveIndex])
 
@@ -98,7 +101,7 @@ function movesSearchMinimax(turn,defFactor,board,branchFactor){
         return moveCollection
         
     } else if (moveNormals.length!==0){
-        moveNormals.sort((move1,move2)=>move1.score-move2.score)
+        moveNormals.sort((move1,move2)=>move2.score-move1.score)
         // console.log("moveNormals: "+moveNormals)
         if(moveNormals.length<branchFactor){
             loopNums=moveNormals.length
@@ -107,6 +110,7 @@ function movesSearchMinimax(turn,defFactor,board,branchFactor){
         }
         for (moveIndex=0;moveIndex<loopNums;moveIndex++){
             // console.log("move: "+moveNormals[moveIndex].move)
+            // console.log("score: "+moveNormals[moveIndex].score)
             move=moveNormals[moveIndex]
             moveCollection.push(move)
         }

@@ -28,7 +28,7 @@ let boardArrangement=[
   ];
 let defaultMinimaxDepth=4;
 let defaultGeneticDepth=4
-let gameRound=50;
+let gameRound=100;
 
 function Simulation(props){
     let whoPlaysFirst="Computer 1";

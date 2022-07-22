@@ -2,10 +2,9 @@ import {swapColor,putDownPiece} from "../GameLogic.jsx"
 import {copyTwoDimArray} from "../GeneralAlgorithms.jsx"
 
 import {movesSearchMinimax} from "./AILogic/MoveSearch";
-import moveEvaluation from "./AILogic/MoveEvaluation";
-// import {movesSearch} from "./AILogic/InitIndMoves";
 // import moveEvaluation from "./AILogic/MoveEvaluation";
 
+import moveEvaluation from "./AILogic/MoveEvaluationNew";
 
 
 
@@ -32,6 +31,7 @@ function minimaxMove(turn,depthAwayFromRoot,depthAwayFromLeaf,board,bestScore1=-
     for (moveIndex1=0;moveIndex1<avalibleMoves1.length;moveIndex1++){
         B1=copyTwoDimArray(board)
         moveMade1=avalibleMoves1[moveIndex1].move
+        // console.log("moveMade1: "+moveMade1)
         putDownPiece(moveMade1,turn,B1)
         //alphabeta score is the default score for 
 
@@ -46,6 +46,7 @@ function minimaxMove(turn,depthAwayFromRoot,depthAwayFromLeaf,board,bestScore1=-
             } else{
                 B1Score=-moveEvaluation(moveMade1,turn,defFactor,B1).score  
             }
+            // console.log("B1Score: "+B1Score)
             
         } else {
             depthAwayFromRoot+=1
