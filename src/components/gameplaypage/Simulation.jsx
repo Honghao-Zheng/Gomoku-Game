@@ -28,7 +28,7 @@ let boardArrangement=[
   ];
 let defaultMinimaxDepth=4;
 let defaultGeneticDepth=4
-let gameRound=100;
+let gameRound=10;
 
 function Simulation(props){
     let whoPlaysFirst="Computer 1";
@@ -68,10 +68,20 @@ function Simulation(props){
         let turn;
         let moveMade;
         let whoWin;
+        let startTime;
+        let finishTime;
+        let moveTimeTaken;
+        let totalMoveTimeB=0;
+        let totalMoveTimeW=0;
+        let averageTimePerMoveB;
+        let averageTimePerMoveW;
         for (gameRound=0;gameRound<numOfRound;gameRound++){
             //initialise the game
             gameBoard=copyTwoDimArray(board);
-            
+            let numMovesB=0;
+            let numMovesW=0;
+            let movesTimeB=0;
+            let movesTimeW=0;
             minimaxDepth=defaultMinimaxDepth
             geneticDepth=defaultGeneticDepth
             isGameEnded=false;
@@ -85,28 +95,41 @@ function Simulation(props){
             while (!isGameEnded){
                 // console.log("gameBoard: "+gameBoard)
                 // console.log("turn: "+turn)
+                startTime=performance.now();
                 moveMade=AImakeMove(AIalgorithm,turn,gameBoard)
+                finishTime=performance.now();
+                moveTimeTaken=finishTime-startTime;
+
+                
+
                 // console.log("moveMade: "+moveMade)
                 avaMoves=avalibleMoves(gameBoard);
                 numMoveLeft=avaMoves.length;
                 whoWin =checkWinning(turn,moveMade,gameBoard);
                 //if there is winner,game ended. if there isn't, check draw.
+
+                //change turn and AI algorithm for next turn
+                if(turn==="B"){
+                    AIalgorithm=AI2;
+                    turn="W"
+                    numMovesB+=1;
+                    movesTimeB+=moveTimeTaken;
+                }else{
+                    AIalgorithm=AI1;
+                    turn="B";
+                    numMovesW+=1;
+                    movesTimeW+=moveTimeTaken;
+                }
                 if (whoWin!==null){
                     console.log("whoWin: "+whoWin+" ("+AIalgorithm+")")
+                    
+                    
                     // console.log("numMoveLeft: "+numMoveLeft)
                     isGameEnded=true;
                 } else if(numMoveLeft===0){
                     whoWin="draw"
                     console.log("whoWin: "+whoWin)
                     isGameEnded=true;
-                }
-                //change turn and AI algorithm for next turn
-                if(turn==="B"){
-                    AIalgorithm=AI2;
-                    turn="W"
-                }else{
-                    AIalgorithm=AI1;
-                    turn="B"
                 }
                 // for the last few moves the thinking depth decrease when number of 
                 //avalible move decrease
@@ -124,6 +147,12 @@ function Simulation(props){
               }
                
             }
+            averageTimePerMoveB=movesTimeB/numMovesB
+            averageTimePerMoveW=movesTimeW/numMovesW
+            console.log("average time taken per move for "+AI1+" : "+ averageTimePerMoveB)
+            console.log("average time taken per move for "+AI2+" : "+ averageTimePerMoveW)
+            totalMoveTimeB+=averageTimePerMoveB
+            totalMoveTimeW+=averageTimePerMoveW
             // const timetaken=performance.now() - start
             // console.log("timetaken: "+timetaken+"For round "+gameRound)
             //end of while loop, end of one game
@@ -137,6 +166,8 @@ function Simulation(props){
             // console.log("whoWin: "+whoWin)
         }
         //end of N games
+        console.log("average time taken per move per game for "+AI1+" : "+ totalMoveTimeB/gameRound)
+        console.log("average time taken per move per game for "+AI2+" : "+ totalMoveTimeW/gameRound)
         console.log(AI1+" computer1 black Win: "+computer1Win)
         console.log(AI2+" computer2 white Win: "+computer2Win)
         console.log("draw: "+draw)

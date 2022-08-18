@@ -1,0 +1,4 @@
+report:
+algorithm figure to be adjust
+section number ensure correctness
+spacing, font size

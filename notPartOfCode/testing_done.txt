@@ -1,0 +1,11 @@
+depth-two minimax play sensiblely|| play against the designer of the AI player through the objective feeling of tester
+
+making a move on board gives the correct score
+
+correct AI player was chosen
+
+
+
+To be tested:
+minimax n improved winning rate
+evaluation function show correct score

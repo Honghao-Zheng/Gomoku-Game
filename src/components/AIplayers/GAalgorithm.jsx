@@ -105,6 +105,35 @@ function pickTwoRandomIndex(len){
   }
 
 
+// function fitness(moveComb,pieceColor,defFactor,board){
+//     let index;
+//     let turn=pieceColor;
+//     let totalFitnessScore=0;
+//     let moveMade;
+//     let boardCopy=copyTwoDimArray(board);
+//     let indScore;
+//     // console.log("moveComb1: "+moveComb)
+//     for(index=0;index<moveComb.length;index++){
+//         moveMade=moveComb[index];
+//         //discard illegal moveComb
+//         if( moveMade[0]<15 && moveMade[0]>=0 && moveMade[1]<15 && moveMade[1]>=0){
+//                 if(boardCopy[moveMade[0]][moveMade[1]] ===" "){
+//                     putDownPiece(moveMade,turn,boardCopy)
+//                     if(turn===pieceColor){
+//                         indScore=moveEvaluation(moveMade,turn,defFactor,boardCopy).score
+//                         // totalFitnessScore+=indScore/Math.pow(index+1,3)
+//                         totalFitnessScore+=indScore/(index+1)**3
+//                     } 
+//                 } else {
+//                     return -10000;
+//                 }
+//         } else{
+//             return -10000;
+//         }
+//     }
+//     return totalFitnessScore
+// }
+
 function fitness(moveComb,pieceColor,defFactor,board){
     let index;
     let turn=pieceColor;
@@ -119,11 +148,10 @@ function fitness(moveComb,pieceColor,defFactor,board){
         if( moveMade[0]<15 && moveMade[0]>=0 && moveMade[1]<15 && moveMade[1]>=0){
                 if(boardCopy[moveMade[0]][moveMade[1]] ===" "){
                     putDownPiece(moveMade,turn,boardCopy)
-                    if(turn===pieceColor){
                         indScore=moveEvaluation(moveMade,turn,defFactor,boardCopy).score
                         // totalFitnessScore+=indScore/Math.pow(index+1,3)
                         totalFitnessScore+=indScore/(index+1)**3
-                    } 
+                        turn=swapColor(turn)
                 } else {
                     return -10000;
                 }
@@ -133,8 +161,44 @@ function fitness(moveComb,pieceColor,defFactor,board){
     }
     return totalFitnessScore
 }
+// function fitness(moveComb,pieceColor,defFactor,board){
+//     let index;
+//     let turn=pieceColor;
+//     let totalFitnessScore=0;
+//     let moveMade;
+//     let boardCopy=copyTwoDimArray(board);
+//     let indScore;
+
+//     // console.log("moveComb1: "+moveComb)
+//     for(index=0;index<moveComb.length;index++){
+//         moveMade=moveComb[index];
+//         //discard illegal moveComb
+//         if( moveMade[0]<15 && moveMade[0]>=0 && moveMade[1]<15 && moveMade[1]>=0){
+//                 if(boardCopy[moveMade[0]][moveMade[1]] ===" "){
+//                     putDownPiece(moveMade,turn,boardCopy)
+//                     if(turn===pieceColor){
+//                         indScore=moveEvaluation(moveMade,turn,defFactor,boardCopy).score
+//                     }else {
+//                         indScore=-moveEvaluation(moveMade,turn,defFactor,boardCopy).score
+//                     }
+                    
+//                         // totalFitnessScore+=indScore/Math.pow(index+1,3)
+//                         totalFitnessScore+=indScore/(index+1)**3
+//                 } else {
+//                     return -10000;
+//                 }
+//         } else{
+//             return -10000;
+//         }
+//         turn=swapColor(turn)
+//     }
+//     console.log(totalFitnessScore)
+//     return totalFitnessScore
+// }
+
 
 function GAmove(depth,pieceColor,board){
+
     // console.log(pieceColor)
     let numOfPopulation=300;
     let numOfIteration=100;

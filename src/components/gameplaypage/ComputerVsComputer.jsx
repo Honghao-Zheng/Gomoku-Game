@@ -107,6 +107,7 @@ function ComputerVsComputer(props){
         })
       }else if(numMoveLeft===0){
         setGame({
+          isStarted:gameState.isStarted,
           isEnded:true,
           winner:"D"
         })

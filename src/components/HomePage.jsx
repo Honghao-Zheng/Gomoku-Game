@@ -9,14 +9,14 @@ function HomePage(props){
 
             <div>
                 <NavButton 
-                        text="Player 1 VS Player 2"
+                        text="Human VS Human "
                         onClick={()=>props.onClick("PvsP")}
                 />
             </div>
 
             <div>
                 <NavButton 
-                        text="Player VS Computer"
+                        text="Human VS Computer"
                         onClick={()=>props.onClick("PvsAI")}
                 />
             </div>
