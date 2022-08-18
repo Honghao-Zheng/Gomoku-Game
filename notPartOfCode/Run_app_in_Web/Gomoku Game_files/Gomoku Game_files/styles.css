@@ -1,0 +1,95 @@
+
+
+
+
+.square {
+  border-color: #999;
+  border-width: 1px;
+  float: left;
+  height: 35px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  width: 35px;
+}
+
+.yellow{
+  background-color: yellow;
+}
+
+.red{
+  background-color: red;
+}
+
+.textBlack{
+  color: black;
+}
+
+.textRed{
+  color: red;
+}
+
+.gameboard {
+  display: flex;
+  flex-direction: row;
+  height: 600px;
+  width: 600px;
+}
+
+.rows{
+  display: flex;
+  flex-direction: row;
+  width: 600px;
+}
+
+.cols{
+  display: flex;
+  flex-direction:column;
+  width: 200px;
+}
+
+.radioDis{
+  display: flex;
+  flex-direction: row;
+  width: 800px;
+  height:50px
+}
+
+.gameScreen{
+  display: flex;
+  height: 510px;
+  width: 1300px;
+}
+
+h1{
+  margin-right: 50px;
+  margin-left: 50px
+}
+
+
+.W{
+    background-image: url("assets/whitepiece.png");
+}
+
+
+.B{
+    background-image: url("assets/blackpiece.png");
+}
+
+
+.navigation{
+  margin: 8px auto;
+  flex-shrink: 0;
+  width: 160px;
+  height: 64px;
+}
+.function{
+  margin: 8px auto;
+  flex-shrink: 0;
+  width: 160px;
+  height: 60px;
+}
+
+.des{
+  text-align: center;
+}
