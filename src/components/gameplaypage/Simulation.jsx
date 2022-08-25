@@ -7,7 +7,7 @@ import { putDownPiece, checkWinning,avalibleMoves } from "../GameLogic"
 import { useState } from "react";
 import ShowText from "../ShowText";
 import GAmove from "../AIplayers/GAalgorithm"
-import { copyTwoDimArray } from "../GeneralAlgorithms";
+import { copyTwoDimArray } from "../GeneralLogic";
 import minimaxMove from "../AIplayers/MinimaxAlg"
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -28,40 +28,58 @@ let boardArrangement=[
   ];
 let defaultMinimaxDepth=4;
 let defaultGeneticDepth=4
-let gameRound=10;
+let defaultMinimaxBadDepth=2;
+let defaultGeneticBadDepth=2
+let totalRound=200;
 
 function Simulation(props){
-    let whoPlaysFirst="Computer 1";
-    let AI1=props.settings.computer1;    
-    let AI2=props.settings.computer2; 
-    let minimaxDepth=defaultMinimaxDepth;
-    let geneticDepth=defaultGeneticDepth
-
+//AI1 is the AI that plays the first
+      let computer1Win=0;
+    let computer2Win=0;
+    let draw=0;
+    let computer1TotalWin=0;
+    let computer2TotalWin=0;
+    let totalDraw=0;    
+    let moveTimeList=[];
+    let movePair=[null,null];
+    let gamePerformanceList=[];
+    let isPairFull=false;
+    let player1=props.settings.computer1;
+    let player2=props.settings.computer2;
+    let AI1;
+    let AI2;
+    let minimaxDepth;
+    let geneticDepth;
+    let minimaxBadDepth;
+    let geneticBadDepth;
+    let computer1Performance;
+    let computer2Performance;
+    let totalMoveTimeC1=0;
+    let totalMoveTimeC2=0
     function AImakeMove(AI,turn,board){
         let computerMove;
-        if(AI==="Random"){
-            computerMove=chooseRandomMove(board)
+        if(AI==="Reference"){
+            // computerMove=chooseRandomMove(board)
+            // computerMove=minimaxNoReduction(turn,0,minimaxDepth,board)
+            computerMove=GAmove(1,turn,board)
         } else if(AI==="Minimax") {
             computerMove=minimaxMove(turn,0,minimaxDepth,board)
         } else if(AI==="MinimaxBad") {
-            computerMove=minimaxMove(turn,0,1,board)
+            computerMove=minimaxMove(turn,0,minimaxBadDepth,board)
+            // computerMove=minimaxNoReduction(turn,0,2,board)
+            // computerMove=minimaxNoReductionNoDF(turn,0,2,board)
+            // computerMove=minimaxMoveLimit(turn,0,2,board)
         }else if(AI==="Genetic"){
             computerMove=GAmove(geneticDepth,turn,board)
         } else if(AI==="GeneticBad"){
-            computerMove=GAmove(1,turn,board)
+            computerMove=GAmove(geneticBadDepth,turn,board)
         }
         putDownPiece(computerMove,turn,board)
         return computerMove
     } 
-
-    function runSimulation(numOfRound,board){
+    function runSimulation(numOfRound,board,playerNumber){
         let gameRound;
-        // let result={
-        //     computer1Win:0
-        // }
-        let computer1Win=0;
-        let computer2Win=0;
-        let draw=0
+        let maxRound;
         let gameBoard;
         let isGameEnded;
         let AIalgorithm;
@@ -71,19 +89,21 @@ function Simulation(props){
         let startTime;
         let finishTime;
         let moveTimeTaken;
-        let totalMoveTimeB=0;
-        let totalMoveTimeW=0;
-        let averageTimePerMoveB;
-        let averageTimePerMoveW;
-        for (gameRound=0;gameRound<numOfRound;gameRound++){
+
+        if(playerNumber===1){
+            gameRound=1;
+            maxRound=numOfRound;
+        } else{
+            gameRound=numOfRound+1;
+            maxRound=numOfRound*2;
+        }
+        for (gameRound;gameRound<=maxRound;gameRound++){
             //initialise the game
             gameBoard=copyTwoDimArray(board);
-            let numMovesB=0;
-            let numMovesW=0;
-            let movesTimeB=0;
-            let movesTimeW=0;
             minimaxDepth=defaultMinimaxDepth
             geneticDepth=defaultGeneticDepth
+            minimaxBadDepth=defaultMinimaxBadDepth
+            geneticBadDepth=defaultGeneticBadDepth
             isGameEnded=false;
             let avaMoves;
             let numMoveLeft;
@@ -101,6 +121,26 @@ function Simulation(props){
                 moveTimeTaken=finishTime-startTime;
 
                 
+                if (playerNumber===1){
+                    if (turn==="B"){
+                        movePair[0]=moveTimeTaken
+                    } else{
+                        movePair[1]=moveTimeTaken
+                    }
+                    
+                } else{
+                    if (turn==="W"){
+                        movePair[0]=moveTimeTaken
+                    } else{
+                        movePair[1]=moveTimeTaken
+                    }
+                }
+                // console.log("movePair: "+movePair)
+                isPairFull=movePair[0]!==null && movePair[1]!==null;
+                if(isPairFull===true){
+                    moveTimeList.push(movePair);
+                    movePair=[null,null]
+                }
 
                 // console.log("moveMade: "+moveMade)
                 avaMoves=avalibleMoves(gameBoard);
@@ -109,33 +149,42 @@ function Simulation(props){
                 //if there is winner,game ended. if there isn't, check draw.
 
                 //change turn and AI algorithm for next turn
-                if(turn==="B"){
-                    AIalgorithm=AI2;
-                    turn="W"
-                    numMovesB+=1;
-                    movesTimeB+=moveTimeTaken;
-                }else{
-                    AIalgorithm=AI1;
-                    turn="B";
-                    numMovesW+=1;
-                    movesTimeW+=moveTimeTaken;
-                }
+
                 if (whoWin!==null){
                     console.log("whoWin: "+whoWin+" ("+AIalgorithm+")")
-                    
-                    
                     // console.log("numMoveLeft: "+numMoveLeft)
                     isGameEnded=true;
+                    if(movePair[0]!==null || movePair[1]!==null){
+                        moveTimeList.push(movePair);
+                        movePair=[null,null]
+                    }
                 } else if(numMoveLeft===0){
                     whoWin="draw"
                     console.log("whoWin: "+whoWin)
                     isGameEnded=true;
+                    if(movePair[0]!==null || movePair[1]!==null){
+                        moveTimeList.push(movePair);
+                        movePair=[null,null]
+                    }
+                }
+
+                //change turn
+                if(turn==="B"){
+                    AIalgorithm=AI2;
+                    turn="W"
+                }else{
+                     //when player 1 plays white
+                    AIalgorithm=AI1;
+                    turn="B";
                 }
                 // for the last few moves the thinking depth decrease when number of 
                 //avalible move decrease
                 if(numMoveLeft<geneticDepth+1){
-
                     geneticDepth=numMoveLeft
+                    // console.log("depth: "+depth)
+                }
+                if(numMoveLeft<geneticBadDepth+1){
+                    geneticBadDepth=numMoveLeft
                     // console.log("depth: "+depth)
                 }
                 // console.log("numMoveLeft: "+numMoveLeft)
@@ -145,17 +194,17 @@ function Simulation(props){
             
                   // console.log("depth: "+depth)
               }
+              if(numMoveLeft<minimaxBadDepth+1){
+                minimaxBadDepth=numMoveLeft
+          
+                // console.log("depth: "+depth)
+            }
                
             }
-            averageTimePerMoveB=movesTimeB/numMovesB
-            averageTimePerMoveW=movesTimeW/numMovesW
-            console.log("average time taken per move for "+AI1+" : "+ averageTimePerMoveB)
-            console.log("average time taken per move for "+AI2+" : "+ averageTimePerMoveW)
-            totalMoveTimeB+=averageTimePerMoveB
-            totalMoveTimeW+=averageTimePerMoveW
-            // const timetaken=performance.now() - start
-            // console.log("timetaken: "+timetaken+"For round "+gameRound)
             //end of while loop, end of one game
+
+
+            if (playerNumber===1){
             if(whoWin==="B"){
                 computer1Win++
             } else if(whoWin==="W"){
@@ -163,26 +212,87 @@ function Simulation(props){
             } else {
                 draw++
             }
-            // console.log("whoWin: "+whoWin)
+        } else {
+            if(whoWin==="B"){
+                computer2Win++
+            } else if(whoWin==="W"){
+                computer1Win++
+            } else {
+                draw++
+            }
         }
-        //end of N games
-        console.log("average time taken per move per game for "+AI1+" : "+ totalMoveTimeB/gameRound)
-        console.log("average time taken per move per game for "+AI2+" : "+ totalMoveTimeW/gameRound)
-        console.log(AI1+" computer1 black Win: "+computer1Win)
-        console.log(AI2+" computer2 white Win: "+computer2Win)
-        console.log("draw: "+draw)
+        
+        }  
+        // end of N games
+        // console.log("average time taken per move per game for "+AI1+" : "+ totalMoveTimeB/gameRound)
+        // console.log("average time taken per move per game for "+AI2+" : "+ totalMoveTimeW/gameRound)
+        // console.log(AI1+" computer1 black Win: "+computer1Win)
+        // console.log(AI2+" computer2 white Win: "+computer2Win)
+        // console.log("draw: "+draw)
         
     }
-    
-    runSimulation(gameRound,boardArrangement)
+
+
+        
+        AI1=player1;    
+        AI2=player2; 
+        console.log("AI1: "+AI1)
+        minimaxDepth=defaultMinimaxDepth;
+        geneticDepth=defaultGeneticDepth;
+        runSimulation(totalRound,boardArrangement,1)
+        AI1=player2  
+         AI2=player1; 
+         minimaxDepth=defaultMinimaxDepth;
+         geneticDepth=defaultGeneticDepth
+         runSimulation(totalRound,boardArrangement,2)
+
+         
+         computer1TotalWin+=computer1Win
+         computer2TotalWin+=computer2Win
+         totalDraw+=draw
+         let winningCountList=[[computer1Win,computer2Win,draw]]
+
+
     
 
-    return(
+
+    //the following function, "downloadData", is from javatpoint.com
+    function downloadData(list, header,fileName) {
+
+        let data=header;
+        list.forEach(function(row) {
+           data += row.join(',');
+           data += "\n";
+        });
+        var element = document.createElement('a');
+        element.href = 'data:text/csv;charset=utf-8,' + encodeURI(data);
+        element.target = '_blank';
+        element.download = fileName ;
+        element.click();
+    }
+    
+
+
+
+    let moveTimeHeader='computer 1,computer 2\n'
+    let winningCountHeader='computer 1,computer 2,draw\n'
+    let fileNameMove=player1+"_"+player2+"_move_time.csv"
+    let fileNamePerformance=player1+"_"+player2+"_winning_count.csv"
+     return(
         <div>
-
-
+        <div className="des">
+        <h1>{props.settings.computer1+" computer1 Win: "+computer1TotalWin}</h1>
+        <h1>{props.settings.computer2+" computer2 Win: "+computer2TotalWin}</h1>
+        <h1>{"number of draw: "+totalDraw}</h1>
+        <h1>{props.settings.computer1+" computer1 winning rate: "+computer1TotalWin/(computer1TotalWin+computer2TotalWin)}</h1>
+        <h1>{props.settings.computer2+ " computer2 winning rate: "+computer2TotalWin/(computer1TotalWin+computer2TotalWin)}</h1>
+        </div>
+       
+       <div className="gameboard">
+       <button className={"function"} onClick={()=>downloadData(moveTimeList,moveTimeHeader, fileNameMove)}> Download move time data </button>
+        <button className={"function"} onClick={()=>downloadData(winningCountList, winningCountHeader, fileNamePerformance)}> Download performance data </button>
+       </div>
         </div>
     )
 }
-
 export default Simulation;

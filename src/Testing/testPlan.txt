@@ -1,0 +1,13 @@
+Testing DF:
+minimax2NR vs minimax2NRnoDF
+GA4 vs GA4noDF
+minimax2 vs minimax2noDF
+
+unpaired t-test
+Test improve computational time technics:
+minimax2NR vs minimax2NRSearchMove
+minimax2NRSearchMove vs minimax2NRAlpha
+minimax2NRAlpha vs minimax2NRAlpha
+minimax2NRAlpha vs earlyStoping
+
+

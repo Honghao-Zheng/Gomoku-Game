@@ -2,3 +2,13 @@ report:
 algorithm figure to be adjust
 section number ensure correctness
 spacing, font size
+grammer, read prove.
+citing correct
+conclusion and intro for each section, citation
+code reference
+more literture review computer play chess
+
+code:
+change function name before displayed in website
+tidy up code
+add make move button

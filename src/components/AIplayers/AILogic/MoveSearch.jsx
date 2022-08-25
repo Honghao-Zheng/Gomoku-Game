@@ -1,4 +1,4 @@
-import moveEvaluation from "./MoveEvaluation";
+import moveEvaluation from "./MoveEvaluationNew";
 import {chooseRandomMoveInit} from "../RandomPlayer.jsx";
 import {moveObject} from "./Objects";
 
@@ -72,7 +72,7 @@ function movesSearchMinimax(turn,defFactor,board,branchFactor){
                                 }
                                 
                                 //second priority moves
-                                if(moveValue>=30*defFactor){
+                                if(moveValue>=29){
 
                                     movePriorities.push(moveEntity)
 

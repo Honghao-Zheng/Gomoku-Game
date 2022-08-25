@@ -3,7 +3,7 @@
 import moveEvaluation from "./AILogic/MoveEvaluationNew";
 import {individual} from "./AILogic/Objects";
 import {swapColor,putDownPiece} from "../GameLogic.jsx"
-import {copyTwoDimArray,random,shuffle} from "../GeneralAlgorithms.jsx"
+import {copyTwoDimArray,random,shuffle} from "../GeneralLogic.jsx"
 import {movesSearchGA} from "./AILogic/MoveSearch";
 import {chooseRandomMoveInit} from "./RandomPlayer";
 function initIndMoves(turn,depth,board){

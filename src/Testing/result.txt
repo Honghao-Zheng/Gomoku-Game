@@ -1,0 +1,5 @@
+minimax with no search space reduction against 1 depth for 4 games. 
+average compuatational time per move per game for minimax with no search space reduction
+1 depth: 1.36 ms
+2 depth: 129.89 ms
+3 depth: 84599.52 ms

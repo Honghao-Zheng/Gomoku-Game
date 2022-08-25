@@ -1,8 +1,9 @@
 //jshint esversion:6
 import React from "react";
 import {Intersection} from "./Buttons";
-import { areTwoMovesEqual } from "./GeneralAlgorithms";
-
+import { areTwoMovesEqual } from "./GeneralLogic";
+//the component, "Board", is from my previous personal project, and it can
+// be found on github.com/Honghao-Zheng
 function Board (props) {
 // console.log(props.boardArrangement)
   function renderRow(row,rowNum){

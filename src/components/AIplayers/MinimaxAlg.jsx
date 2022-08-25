@@ -1,5 +1,5 @@
 import {swapColor,putDownPiece} from "../GameLogic.jsx"
-import {copyTwoDimArray} from "../GeneralAlgorithms.jsx"
+import {copyTwoDimArray} from "../GeneralLogic.jsx"
 
 import {movesSearchMinimax} from "./AILogic/MoveSearch";
 // import moveEvaluation from "./AILogic/MoveEvaluation";

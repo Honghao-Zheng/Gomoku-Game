@@ -1,2 +1,4 @@
-draw.io 
+draw.io, pixilart 
 javascript, html, css, node.js, react.js
+nodemon libary 
+R

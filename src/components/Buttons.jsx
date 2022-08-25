@@ -1,7 +1,8 @@
 //jshint esversion:6
 import React, { Component } from "react";
 
-
+//the component, "intersection", is from my previous personal project, and it can
+// be found on github.com/Honghao-Zheng
 function Intersection(props) {
   let selectedPiece=props.piece;
   let cellColour=props.colour;

@@ -163,7 +163,10 @@ function PlayerVsComputer(props){
             return ("Game Draw")
         }
     }
-
+    function resetAndStart(board, whoPlaysFirst){
+      resetGame(board);
+      startGame(whoPlaysFirst)
+    }
     function resetBoard(board){
         let rowIndex,colIndex;
         for (rowIndex=0;rowIndex<board.length;rowIndex++){
@@ -239,7 +242,7 @@ function PlayerVsComputer(props){
                 <div className="des">
                 
                     {gameState.isStarted?
-                    <FunctionButton text="reset" onClick={()=>resetGame(boardArrangement)}/>:
+                    <FunctionButton text="reset" onClick={()=>resetAndStart(boardArrangement,whoPlaysFirst)}/>:
                     <FunctionButton text="start" onClick={()=>{
                         startGame(whoPlaysFirst)
                     }} />

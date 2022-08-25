@@ -128,7 +128,10 @@ function ComputerVsComputer(props){
   }
       
     }
-
+    function returnHome(board){
+      props.onClickHome();
+      resetGame(board)
+    }
     function getWinningDeclaration(whowin){
         if (whowin==="B"){
             return ("Black piece win !")
@@ -160,9 +163,9 @@ function ComputerVsComputer(props){
         geneticDepth=defaultGeneticDepth;
     }
 
-    function returnHome(board){
-      props.onClickHome();
-      resetGame(board)
+    function resetAndStart(board, whoPlaysFirst){
+      resetGame(board);
+      startGame(whoPlaysFirst)
     }
 
     function startGame(whoPlaysFirst){
@@ -227,7 +230,7 @@ function ComputerVsComputer(props){
                 <div className="des">
                 
                     {gameState.isStarted?
-                    <FunctionButton text="reset" onClick={()=>resetGame(boardArrangement)}/>:
+                    <FunctionButton text="reset" onClick={()=>resetAndStart(boardArrangement,whoPlaysFirst)}/>:
                     <FunctionButton text="start" onClick={()=>{
                         startGame(whoPlaysFirst)
                     }} />
@@ -254,7 +257,11 @@ function ComputerVsComputer(props){
                         condition={whoPlaysFirst!=="Computer 1"}
                         textIfTrue={textWhiteC1}
                         textIfFalse={textWhiteC2}
-                    />                  
+                    />        
+                                        <FunctionButton text="make a move" 
+                     onClick={isGamePlayEnabled()?
+                            ()=>handleMoveClick([0,0]):
+                                    null}/>:                
                 </div>
 
         </div>

@@ -1,5 +1,5 @@
 import {swapColor} from "../../GameLogic.jsx";
-import {copyTwoDimArray} from "../../GeneralAlgorithms.jsx"
+import {copyTwoDimArray} from "../../GeneralLogic.jsx"
 import {moveObject} from "./Objects";
 function atkMoveEvaluation(move,pieceColor,board){
     let rowCoord=move[0];

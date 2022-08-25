@@ -1,2 +1,9 @@
-The Gomoku board design by using reat.js is inspired from my past personal project which is a offline chess game designed with react.js
 
+function and components from my previous personal project that was published on github are shown as follows:
+"areTwoMovesEqual", "MoveListContainMove" in GeneralLogic.jsx
+"Board" from Board.jsx
+"Intersection" from Button.jsx
+
+the function ""downloadData" is taken from the website:
+ https://www.javatpoint.com/javascript-create-and-download-csv-file
+the variable and function name are changed.
