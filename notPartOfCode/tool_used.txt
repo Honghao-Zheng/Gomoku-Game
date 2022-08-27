@@ -1,4 +1,4 @@
 draw.io, pixilart 
 javascript, html, css, node.js, react.js
-nodemon libary 
 R
+unit.js npm libary,  nodemon npm libary, jest.js libary

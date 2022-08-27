@@ -10,6 +10,8 @@ import SimulationChoice from "./ChoicePage/SimulationChoice"
 
 function GomokuGame (){
 
+
+
   const [homePageState,setHomeState]=useState({
     showPage:true,
     modeClicked:null

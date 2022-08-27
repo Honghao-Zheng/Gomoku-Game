@@ -8,7 +8,8 @@ import { useState } from "react";
 import ShowText from "../ShowText";
 import GAmove from "../AIplayers/GAalgorithm"
 import { copyTwoDimArray } from "../GeneralLogic";
-import minimaxMove from "../AIplayers/MinimaxAlg"
+import minimaxMove from "../AIplayers/MinimaxAlg";
+import {minimaxNR,minimaxNoReductionNoDF,minimaxMoveLimit,minimaxAB} from "../../Testing/minimax.jsx"
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -27,10 +28,12 @@ let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "]
   ];
 let defaultMinimaxDepth=4;
-let defaultGeneticDepth=4
 let defaultMinimaxBadDepth=2;
+let defaultGeneticDepth=4
 let defaultGeneticBadDepth=2
-let totalRound=200;
+
+
+let totalRound=10;
 
 function Simulation(props){
 //AI1 is the AI that plays the first
@@ -52,23 +55,26 @@ function Simulation(props){
     let geneticDepth;
     let minimaxBadDepth;
     let geneticBadDepth;
-    let computer1Performance;
-    let computer2Performance;
     let totalMoveTimeC1=0;
     let totalMoveTimeC2=0
+    let MoveNumC1=0
+    let MoveNumC2=0
+
+   
     function AImakeMove(AI,turn,board){
         let computerMove;
-        if(AI==="Reference"){
+        if(AI==="Random"){
             // computerMove=chooseRandomMove(board)
-            // computerMove=minimaxNoReduction(turn,0,minimaxDepth,board)
-            computerMove=GAmove(1,turn,board)
+            // computerMove=minimaxNR(turn,0,1,board)
+            // computerMove=GAmove(1,turn,board)
+            computerMove=minimaxMove(turn,0,1,board)
         } else if(AI==="Minimax") {
+            // computerMove=minimaxAB(turn,0,minimaxDepth,board)
             computerMove=minimaxMove(turn,0,minimaxDepth,board)
         } else if(AI==="MinimaxBad") {
+            // computerMove=minimaxMoveLimit(turn,0,minimaxBadDepth,board)
             computerMove=minimaxMove(turn,0,minimaxBadDepth,board)
-            // computerMove=minimaxNoReduction(turn,0,2,board)
-            // computerMove=minimaxNoReductionNoDF(turn,0,2,board)
-            // computerMove=minimaxMoveLimit(turn,0,2,board)
+
         }else if(AI==="Genetic"){
             computerMove=GAmove(geneticDepth,turn,board)
         } else if(AI==="GeneticBad"){
@@ -124,15 +130,23 @@ function Simulation(props){
                 if (playerNumber===1){
                     if (turn==="B"){
                         movePair[0]=moveTimeTaken
+                        totalMoveTimeC1+=moveTimeTaken
+                        MoveNumC1+=1
                     } else{
                         movePair[1]=moveTimeTaken
+                        totalMoveTimeC2+=moveTimeTaken
+                        MoveNumC2+=1
                     }
                     
                 } else{
                     if (turn==="W"){
                         movePair[0]=moveTimeTaken
+                        totalMoveTimeC1+=moveTimeTaken
+                        MoveNumC1+=1
                     } else{
                         movePair[1]=moveTimeTaken
+                        totalMoveTimeC2+=moveTimeTaken
+                        MoveNumC2+=1
                     }
                 }
                 // console.log("movePair: "+movePair)
@@ -286,6 +300,9 @@ function Simulation(props){
         <h1>{"number of draw: "+totalDraw}</h1>
         <h1>{props.settings.computer1+" computer1 winning rate: "+computer1TotalWin/(computer1TotalWin+computer2TotalWin)}</h1>
         <h1>{props.settings.computer2+ " computer2 winning rate: "+computer2TotalWin/(computer1TotalWin+computer2TotalWin)}</h1>
+        <h1>{props.settings.computer1+" computer1 average move time: "+totalMoveTimeC1/MoveNumC1}</h1>
+        <h1>{props.settings.computer2+" computer2 average move time: "+totalMoveTimeC2/MoveNumC2}</h1>
+
         </div>
        
        <div className="gameboard">

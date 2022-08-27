@@ -7,8 +7,12 @@ citing correct
 conclusion and intro for each section, citation
 code reference
 more literture review computer play chess
+sammary instead of conclusion
 
 code:
 change function name before displayed in website
 tidy up code
 add make move button
+
+testing:
+alhpa2 vs no AB2
