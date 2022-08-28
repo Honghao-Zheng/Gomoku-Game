@@ -29,10 +29,14 @@ let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "]
   ];
   // boardArrangement=drawCheckBoard();
-let defaultGeneticDepth=4;
-let defaultMinimaxDepth=4
+  let defaultMinimaxDepth=4;
+  let defaultMinimaxBadDepth=2;
+  let defaultGeneticDepth=4
+  let defaultGeneticBadDepth=2
 let minimaxDepth=defaultMinimaxDepth;
+let minimaxBadDepth=defaultMinimaxBadDepth;
 let geneticDepth=defaultGeneticDepth;
+let geneticBadDepth=defaultGeneticBadDepth;
 function PlayerVsComputer(props){
     let whoPlaysFirst=props.settings.whoGoFirst;
     let AIalgorithm=props.settings.computer;    
@@ -60,9 +64,9 @@ function PlayerVsComputer(props){
         if(AI==="Random"){
             computerMove=chooseRandomMove(board)
         } else if(AI==="Minimax") {
-          computerMove=minimaxMove(turn,0,minimaxDepth,board)
+          computerMove=minimaxMove(turn,0,minimaxDepth,minimaxDepth,board)
         } else if(AI==="MinimaxBad") {
-          computerMove=minimaxMove(turn,0,1,board)
+          computerMove=minimaxMove(turn,0,minimaxBadDepth,minimaxBadDepth,board)
         }
         else if(AI==="Genetic"){
             computerMove=GAmove(geneticDepth,turn,board)
@@ -115,17 +119,25 @@ function PlayerVsComputer(props){
         // console.log("depth: "+depth)
         
         if(numMoveLeft<geneticDepth+1){
-
-            geneticDepth=numMoveLeft
-            // console.log("depth: "+depth)
-        }
-        // console.log("numMoveLeft: "+numMoveLeft)
-        // console.log("minimaxDepth: "+minimaxDepth)
-        if(numMoveLeft<minimaxDepth+1){
-          minimaxDepth=numMoveLeft
-
+          geneticDepth=numMoveLeft
           // console.log("depth: "+depth)
       }
+      if(numMoveLeft<geneticBadDepth+1){
+          geneticBadDepth=numMoveLeft
+          // console.log("depth: "+depth)
+      }
+      // console.log("numMoveLeft: "+numMoveLeft)
+      // console.log("minimaxDepth: "+minimaxDepth)
+      if(numMoveLeft<minimaxDepth+1){
+        minimaxDepth=numMoveLeft
+  
+        // console.log("depth: "+depth)
+    }
+    if(numMoveLeft<minimaxBadDepth+1){
+      minimaxBadDepth=numMoveLeft
+
+      // console.log("depth: "+depth)
+  }
       // console.log("numMoveLeft: "+numMoveLeft)
       // console.log("minimaxDepth: "+minimaxDepth)
       // numMoveLeft-=1;

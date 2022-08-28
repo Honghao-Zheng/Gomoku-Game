@@ -6,6 +6,7 @@ import {swapColor,putDownPiece} from "../GameLogic.jsx"
 import {copyTwoDimArray,random,shuffle} from "../GeneralLogic.jsx"
 import {movesSearchGA} from "./AILogic/MoveSearch";
 import {chooseRandomMoveInit} from "./RandomPlayer";
+import assert from "unit.js/src/assert";
 function initIndMoves(turn,depth,board){
     let boardCopy=copyTwoDimArray(board)
     let move;
@@ -149,7 +150,7 @@ function fitness(moveComb,pieceColor,defFactor,board){
                 if(boardCopy[moveMade[0]][moveMade[1]] ===" "){
                     putDownPiece(moveMade,turn,boardCopy)
                         indScore=moveEvaluation(moveMade,turn,defFactor,boardCopy).score
-                        // totalFitnessScore+=indScore/Math.pow(index+1,3)
+ 
                         totalFitnessScore+=indScore/(index+1)**3
                         turn=swapColor(turn)
                 } else {
@@ -161,41 +162,16 @@ function fitness(moveComb,pieceColor,defFactor,board){
     }
     return totalFitnessScore
 }
-// function fitness(moveComb,pieceColor,defFactor,board){
-//     let index;
-//     let turn=pieceColor;
-//     let totalFitnessScore=0;
-//     let moveMade;
-//     let boardCopy=copyTwoDimArray(board);
-//     let indScore;
 
-//     // console.log("moveComb1: "+moveComb)
-//     for(index=0;index<moveComb.length;index++){
-//         moveMade=moveComb[index];
-//         //discard illegal moveComb
-//         if( moveMade[0]<15 && moveMade[0]>=0 && moveMade[1]<15 && moveMade[1]>=0){
-//                 if(boardCopy[moveMade[0]][moveMade[1]] ===" "){
-//                     putDownPiece(moveMade,turn,boardCopy)
-//                     if(turn===pieceColor){
-//                         indScore=moveEvaluation(moveMade,turn,defFactor,boardCopy).score
-//                     }else {
-//                         indScore=-moveEvaluation(moveMade,turn,defFactor,boardCopy).score
-//                     }
-                    
-//                         // totalFitnessScore+=indScore/Math.pow(index+1,3)
-//                         totalFitnessScore+=indScore/(index+1)**3
-//                 } else {
-//                     return -10000;
-//                 }
-//         } else{
-//             return -10000;
-//         }
-//         turn=swapColor(turn)
-//     }
-//     console.log(totalFitnessScore)
-//     return totalFitnessScore
-// }
 
+function polpuationScore(population){
+    let score=0
+    for (let p=0; p<population.length;p++){
+        score+=population[p].score
+    }
+    return score
+
+}
 
 function GAmove(depth,pieceColor,board){
 
@@ -221,31 +197,21 @@ let child1MoveComb;
 let child2MoveComb;
 let moveComb;
 let score;
-//initialise population
+let previusPopulationScore=0;
+let currentPopulationScore=0
+//get population
 for (var i=0;i<numOfPopulation;i++){
     moveComb=initIndMoves(pieceColor,depth,board)
-    // console.log("initial indivisual "+i)
     score=fitness(moveComb,pieceColor,defFactor,board)
     ind=new individual(moveComb,score);
-    // console.log("score "+ind.score)
     population.push(ind)
-    // if (ind.score>=bestScore){
-    //     moveComb=ind.moveComb;
-    //     score=ind.score;
-    //     bestInd=new individual(moveComb,score);
-    // }
-    // console.log("bestInd moveComb: "+bestInd.moveComb)
+    previusPopulationScore+=score
 }
-// console.log(population[0].moveComb)
-// console.log("forst ind in population: "+population[0].moveComb)
-//iterations
+
+// interation process
 for (itIndex=0;itIndex<=numOfIteration;itIndex++){
     for (childIndex=0;childIndex<Math.floor(numOfChildren/2);childIndex++){
-        //choose random parents in the population
         [momIndex,dadIndex]=pickTwoRandomIndex(population.length)
-        // console.log("momIndex: "+momIndex)
-        // console.log("dadIndex: "+dadIndex)
-        // console.log("population lenth: "+population.length)
         mom=population[momIndex];
         dad=population[dadIndex];
 
@@ -265,14 +231,16 @@ for (itIndex=0;itIndex<=numOfIteration;itIndex++){
         //sort population in descending order
     }
     sortPopulation(population)
-    population=population.slice(0, numOfPopulation-1)
+    population=population.slice(0, numOfPopulation);
     
+    assert(population.length===numOfPopulation, "different polpulation: "+[population.length,numOfPopulation]);
+    currentPopulationScore=polpuationScore(population);
+    assert(previusPopulationScore<=currentPopulationScore)
+    previusPopulationScore=currentPopulationScore
 }
-// for (let i=0;i<population.length;i++){
-//     console.log("population[i].score:"+population[i].score)
 
-// }
 bestInd=population[0]
+//postCondition make sure all moves are valid
 // console.log(bestInd.moveComb)
 return bestInd.moveComb[0]
 }

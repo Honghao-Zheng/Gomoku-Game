@@ -1,8 +1,19 @@
 import moveEvaluation from "./MoveEvaluationNew";
 import {chooseRandomMoveInit} from "../RandomPlayer.jsx";
 import {moveObject} from "./Objects";
+import assert from "unit.js/src/assert";
 
 
+// function checkIntersectionEmpty(moveCollection, board){
+//     for (let i=0; i<moveCollection.length;i++){
+//         let moveMade=moveCollection[i].move;
+//         if (board[moveMade[0]][moveMade[1]]!==" "){
+//             return false
+//         } else {
+//             return true
+//         }
+//     }
+// }
 
 function movesSearchMinimax(turn,defFactor,board,branchFactor){
     let rowCoord;
@@ -33,7 +44,7 @@ function movesSearchMinimax(turn,defFactor,board,branchFactor){
             // console.log("board[rowCoord][colCoord]: "+board[rowCoord][colCoord])
             if (board[rowCoord][colCoord]!==" "){
                 // console.log(board[rowCoord][colCoord])
-                //search for neib sqaure
+                //search for neib imtersections
                 for (rowIndex=-2;rowIndex<=2;rowIndex++){
                     for (colIndex=-2;colIndex<=2;colIndex++){
                         // console.log("[rowIndex,colIndex]: "+[rowIndex,colIndex])
@@ -52,6 +63,7 @@ function movesSearchMinimax(turn,defFactor,board,branchFactor){
                             if(board[moveRow][moveCol]===" "){
                                 board[moveRow][moveCol]=turn;
                                 moveEntity=moveEvaluation([moveRow,moveCol],turn,defFactor,board)
+                                board[moveRow][moveCol]=" ";
                                 moveValue=moveEntity.score
                                 atkThreats=moveEntity.atkThreats;
                                 defThreats=moveEntity.defThreats;
@@ -60,6 +72,7 @@ function movesSearchMinimax(turn,defFactor,board,branchFactor){
                                 for(atkThreatIndex=0;atkThreatIndex<4;atkThreatIndex++){
                                     if (atkThreats[atkThreatIndex]===5){
                                         moveCollection=[moveEntity]
+                                        // assert(checkIntersectionEmpty(moveCollection,board),"75")
                                         return moveCollection
                                     }
                                 }
@@ -67,6 +80,7 @@ function movesSearchMinimax(turn,defFactor,board,branchFactor){
                                 for(defThreatsIndex=0;defThreatsIndex<4;defThreatsIndex++){
                                     if (defThreats[defThreatsIndex]===5){
                                         moveCollection=[moveEntity]
+                                        // assert(checkIntersectionEmpty(moveCollection,board),"83")
                                         return moveCollection
                                     }
                                 }
@@ -83,7 +97,7 @@ function movesSearchMinimax(turn,defFactor,board,branchFactor){
                                     moveNormals.push(moveEntity)
                                 }
                                 //reverse the move to make the board unchanged
-                                board[moveRow][moveCol]=" ";
+                                
                             }
                         }
                       }
@@ -98,6 +112,7 @@ function movesSearchMinimax(turn,defFactor,board,branchFactor){
             moveCollection.push(movePriorities[moveIndex])
 
         }
+        // assert(checkIntersectionEmpty(moveCollection,board),"115")
         return moveCollection
         
     } else if (moveNormals.length!==0){
@@ -114,6 +129,7 @@ function movesSearchMinimax(turn,defFactor,board,branchFactor){
             move=moveNormals[moveIndex]
             moveCollection.push(move)
         }
+        // assert(checkIntersectionEmpty(moveCollection,board),"132")
         return moveCollection;
     } 
     else {
@@ -122,6 +138,7 @@ function movesSearchMinimax(turn,defFactor,board,branchFactor){
         let emptyThreats=[null,null,null,null]
         let randomMoveEntity=new moveObject(move,emptyThreats,emptyThreats,0)
         moveCollection.push(randomMoveEntity)
+        // assert(checkIntersectionEmpty(moveCollection,board),"141")
         return moveCollection
     }
 

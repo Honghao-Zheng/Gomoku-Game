@@ -27,9 +27,13 @@ let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "]
   ];
   let defaultMinimaxDepth=4;
-let defaultGeneticDepth=4;
-  let minimaxDepth=defaultMinimaxDepth;
-  let geneticDepth=defaultGeneticDepth;
+  let defaultMinimaxBadDepth=2;
+  let defaultGeneticDepth=4
+  let defaultGeneticBadDepth=2
+let minimaxDepth=defaultMinimaxDepth;
+let minimaxBadDepth=defaultMinimaxBadDepth;
+let geneticDepth=defaultGeneticDepth;
+let geneticBadDepth=defaultGeneticBadDepth;
   // boardArrangement=drawCheckBoard();
 function ComputerVsComputer(props){
     let whoPlaysFirst="Computer 1";
@@ -63,9 +67,9 @@ function ComputerVsComputer(props){
         if(AI==="Random"){
             computerMove=chooseRandomMove(board)
         } else if(AI==="Minimax") {
-          computerMove=minimaxMove(turn,0,minimaxDepth,board)
+          computerMove=minimaxMove(turn,0,minimaxDepth,minimaxDepth,board)
         } else if(AI==="MinimaxBad") {
-          computerMove=minimaxMove(turn,0,1,board)
+          computerMove=minimaxMove(turn,0,minimaxBadDepth,minimaxBadDepth,board)
         }else if(AI==="Genetic"){
             computerMove=GAmove(geneticDepth,turn,board)
         }else if(AI==="GeneticBad"){
@@ -121,12 +125,26 @@ function ComputerVsComputer(props){
     }
     // console.log("numMoveLeft: "+numMoveLeft)
     // console.log("minimaxDepth: "+minimaxDepth)
-    if(numMoveLeft<minimaxDepth+1){
-      minimaxDepth=numMoveLeft
-
+    if(numMoveLeft<geneticDepth+1){
+      geneticDepth=numMoveLeft
       // console.log("depth: "+depth)
   }
-      
+  if(numMoveLeft<geneticBadDepth+1){
+      geneticBadDepth=numMoveLeft
+      // console.log("depth: "+depth)
+  }
+  // console.log("numMoveLeft: "+numMoveLeft)
+  // console.log("minimaxDepth: "+minimaxDepth)
+  if(numMoveLeft<minimaxDepth+1){
+    minimaxDepth=numMoveLeft
+
+    // console.log("depth: "+depth)
+}
+if(numMoveLeft<minimaxBadDepth+1){
+  minimaxBadDepth=numMoveLeft
+
+  // console.log("depth: "+depth)
+} 
     }
     function returnHome(board){
       props.onClickHome();

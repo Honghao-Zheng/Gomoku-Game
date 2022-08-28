@@ -9,7 +9,7 @@ import ShowText from "../ShowText";
 import GAmove from "../AIplayers/GAalgorithm"
 import { copyTwoDimArray } from "../GeneralLogic";
 import minimaxMove from "../AIplayers/MinimaxAlg";
-import {minimaxNR,minimaxNoReductionNoDF,minimaxMoveLimit,minimaxAB} from "../../Testing/minimax.jsx"
+import {minimaxNR,minimaxNoReductionNoDF,minimaxMoveLimit,minimaxAB} from "../../Experiment/minimax.jsx"
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -33,7 +33,7 @@ let defaultGeneticDepth=4
 let defaultGeneticBadDepth=2
 
 
-let totalRound=10;
+let totalRound=20;
 
 function Simulation(props){
 //AI1 is the AI that plays the first
@@ -67,13 +67,13 @@ function Simulation(props){
             // computerMove=chooseRandomMove(board)
             // computerMove=minimaxNR(turn,0,1,board)
             // computerMove=GAmove(1,turn,board)
-            computerMove=minimaxMove(turn,0,1,board)
+            computerMove=minimaxMove(turn,0,1,1,board)
         } else if(AI==="Minimax") {
             // computerMove=minimaxAB(turn,0,minimaxDepth,board)
-            computerMove=minimaxMove(turn,0,minimaxDepth,board)
+            computerMove=minimaxMove(turn,0,minimaxDepth,minimaxDepth,board)
         } else if(AI==="MinimaxBad") {
             // computerMove=minimaxMoveLimit(turn,0,minimaxBadDepth,board)
-            computerMove=minimaxMove(turn,0,minimaxBadDepth,board)
+            computerMove=minimaxMove(turn,0,minimaxBadDepth,minimaxBadDepth,board)
 
         }else if(AI==="Genetic"){
             computerMove=GAmove(geneticDepth,turn,board)
