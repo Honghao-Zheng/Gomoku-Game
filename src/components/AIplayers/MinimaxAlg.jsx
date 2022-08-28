@@ -9,7 +9,7 @@ import assert from "unit.js/src/assert.js";
 import { avalibleMoves } from "../GameLogic.jsx";
 
 
-function minimaxPreCondition(distanceAwayFromLeaf,currentNodeScore,board){
+function minimaxPreCondition(distanceAwayFromLeaf,board){
     let isPassed=distanceAwayFromLeaf>=1;
     assert(isPassed, 
         "current node distance away from leaf is less than 1, it is "+distanceAwayFromLeaf)
@@ -71,7 +71,7 @@ function minimaxMove(turn,depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth,bo
     let nextCurrentNodeScore;
     let bestMove;
     let boardCopy;
-    assert(minimaxPreCondition(distanceAwayFromLeaf,currentNodeScore,board),"minimaxPreCondition Failed")
+    assert(minimaxPreCondition(distanceAwayFromLeaf,board),"minimaxPreCondition Failed")
     distanceAwayFromLeaf-=1;
     
     //first depth, consider different computer moves

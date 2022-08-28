@@ -7,6 +7,7 @@ import {copyTwoDimArray,random,shuffle} from "../GeneralLogic.jsx"
 import {movesSearchGA} from "./AILogic/MoveSearch";
 import {chooseRandomMoveInit} from "./RandomPlayer";
 import assert from "unit.js/src/assert";
+import { avalibleMoves } from "../GameLogic.jsx";
 function initIndMoves(turn,depth,board){
     let boardCopy=copyTwoDimArray(board)
     let move;
@@ -29,13 +30,11 @@ function initIndMoves(turn,depth,board){
     for(d=1;d<=depth-1;d++){
         putDownPiece(move,turn,boardCopy)
         possibleMoves=movesSearchGA(boardCopy);
-        // console.log(possibleMoves)
         numOfMoves=possibleMoves.length;
         moveIndex=random(numOfMoves);
         move=possibleMoves[moveIndex];
         individualMoves.push(move)
     }
-    //    console.log(individualMoves)
     return individualMoves
 
 }
@@ -106,34 +105,6 @@ function pickTwoRandomIndex(len){
   }
 
 
-// function fitness(moveComb,pieceColor,defFactor,board){
-//     let index;
-//     let turn=pieceColor;
-//     let totalFitnessScore=0;
-//     let moveMade;
-//     let boardCopy=copyTwoDimArray(board);
-//     let indScore;
-//     // console.log("moveComb1: "+moveComb)
-//     for(index=0;index<moveComb.length;index++){
-//         moveMade=moveComb[index];
-//         //discard illegal moveComb
-//         if( moveMade[0]<15 && moveMade[0]>=0 && moveMade[1]<15 && moveMade[1]>=0){
-//                 if(boardCopy[moveMade[0]][moveMade[1]] ===" "){
-//                     putDownPiece(moveMade,turn,boardCopy)
-//                     if(turn===pieceColor){
-//                         indScore=moveEvaluation(moveMade,turn,defFactor,boardCopy).score
-//                         // totalFitnessScore+=indScore/Math.pow(index+1,3)
-//                         totalFitnessScore+=indScore/(index+1)**3
-//                     } 
-//                 } else {
-//                     return -10000;
-//                 }
-//         } else{
-//             return -10000;
-//         }
-//     }
-//     return totalFitnessScore
-// }
 
 function fitness(moveComb,pieceColor,defFactor,board){
     let index;
@@ -154,10 +125,10 @@ function fitness(moveComb,pieceColor,defFactor,board){
                         totalFitnessScore+=indScore/(index+1)**3
                         turn=swapColor(turn)
                 } else {
-                    return -10000;
+                    return 0;
                 }
         } else{
-            return -10000;
+            return 0;
         }
     }
     return totalFitnessScore
@@ -173,8 +144,36 @@ function polpuationScore(population){
 
 }
 
-function GAmove(depth,pieceColor,board){
+function geneticPreCondition(depth,board){
+    let numberOfMoves=avalibleMoves(board).length;
+    let isPassed= depth<=numberOfMoves;
+    assert(isPassed, "not enough depth: "+{depth: depth, numberOfMoves:numberOfMoves})
+    return isPassed
+}
+function geneticInvariant(currentPopulationScore,previousPopulationScore){
+    let isPassed= previousPopulationScore<=currentPopulationScore;
+    assert(isPassed, "population quality goes backwards"
+    +[previousPopulationScore, currentPopulationScore])
+    return isPassed
+}
+function geneticPostCondition(turn,population,numOfPopulation,bestInd,board){
+    let isPassed=population.length===numOfPopulation;
+    let move;
+    let boardCopy=copyTwoDimArray(board)
+    assert(isPassed, "different polpulation: "+[population.length,numOfPopulation]);
+    for(let moveIndex=0; moveIndex<bestInd.moveComb.length;moveIndex++){
+        move=bestInd.moveComb[moveIndex]
+        isPassed=isPassed && board[move[0]][move[1]]===" "
+        putDownPiece(move,turn,boardCopy)
+        turn=swapColor(turn)
 
+    }
+    assert(isPassed, "there is invalid move")
+    return isPassed
+}
+
+function bestInd(depth,pieceColor,board){
+    assert(geneticPreCondition(depth,board),"genetic precondotion failed")
     // console.log(pieceColor)
     let numOfPopulation=300;
     let numOfIteration=100;
@@ -197,7 +196,7 @@ let child1MoveComb;
 let child2MoveComb;
 let moveComb;
 let score;
-let previusPopulationScore=0;
+let previousPopulationScore=0;
 let currentPopulationScore=0
 //get population
 for (var i=0;i<numOfPopulation;i++){
@@ -205,11 +204,12 @@ for (var i=0;i<numOfPopulation;i++){
     score=fitness(moveComb,pieceColor,defFactor,board)
     ind=new individual(moveComb,score);
     population.push(ind)
-    previusPopulationScore+=score
+    currentPopulationScore+=score
 }
-
+previousPopulationScore=currentPopulationScore
 // interation process
 for (itIndex=0;itIndex<=numOfIteration;itIndex++){
+    assert(geneticInvariant(currentPopulationScore,previousPopulationScore),"genetic invariant failed loop start")
     for (childIndex=0;childIndex<Math.floor(numOfChildren/2);childIndex++){
         [momIndex,dadIndex]=pickTwoRandomIndex(population.length)
         mom=population[momIndex];
@@ -228,21 +228,28 @@ for (itIndex=0;itIndex<=numOfIteration;itIndex++){
         //add the child to population
         population.push(child1)
         population.push(child2)
+        currentPopulationScore+=child1Score
+        currentPopulationScore+=child2Score
         //sort population in descending order
     }
+    assert(geneticInvariant(currentPopulationScore,previousPopulationScore),"genetic invariant failed after children")
     sortPopulation(population)
     population=population.slice(0, numOfPopulation);
-    
-    assert(population.length===numOfPopulation, "different polpulation: "+[population.length,numOfPopulation]);
     currentPopulationScore=polpuationScore(population);
-    assert(previusPopulationScore<=currentPopulationScore)
-    previusPopulationScore=currentPopulationScore
+    assert(geneticInvariant(currentPopulationScore,previousPopulationScore),"genetic invariant failed end of loop")
+    previousPopulationScore=currentPopulationScore;
+
 }
 
 bestInd=population[0]
+assert(geneticPostCondition(pieceColor,population,numOfPopulation,bestInd,board),"genetic post condition failed")
 //postCondition make sure all moves are valid
 // console.log(bestInd.moveComb)
-return bestInd.moveComb[0]
+return bestInd
+}
+
+function GAmove(bestInd){
+    return bestInd.moveComb[0]
 }
 
 
@@ -251,5 +258,4 @@ return bestInd.moveComb[0]
 
 
 
-
-export  default GAmove;
+export {GAmove,bestInd};

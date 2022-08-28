@@ -6,7 +6,7 @@ import {chooseRandomMove} from "../AIplayers/RandomPlayer"
 import { putDownPiece, checkWinning,avalibleMoves } from "../GameLogic"
 import { useState } from "react";
 import ShowText from "../ShowText";
-import GAmove from "../AIplayers/GAalgorithm"
+import {GAmove} from "../AIplayers/GAalgorithm"
 import { copyTwoDimArray } from "../GeneralLogic";
 import minimaxMove from "../AIplayers/MinimaxAlg";
 import {minimaxNR,minimaxNoReductionNoDF,minimaxMoveLimit,minimaxAB} from "../../Experiment/minimax.jsx"
@@ -66,8 +66,9 @@ function Simulation(props){
         if(AI==="Random"){
             // computerMove=chooseRandomMove(board)
             // computerMove=minimaxNR(turn,0,1,board)
+            computerMove=GAmove(1,turn,board)
             // computerMove=GAmove(1,turn,board)
-            computerMove=minimaxMove(turn,0,1,1,board)
+            // computerMove=minimaxMove(turn,0,1,1,board)
         } else if(AI==="Minimax") {
             // computerMove=minimaxAB(turn,0,minimaxDepth,board)
             computerMove=minimaxMove(turn,0,minimaxDepth,minimaxDepth,board)
