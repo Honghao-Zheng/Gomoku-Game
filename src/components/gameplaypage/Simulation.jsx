@@ -33,7 +33,7 @@ let defaultGeneticDepth=4
 let defaultGeneticBadDepth=2
 
 
-let totalRound=20;
+let totalRound=200;
 
 function Simulation(props){
 //AI1 is the AI that plays the first

@@ -163,7 +163,7 @@ function geneticPostCondition(turn,population,numOfPopulation,bestInd,board){
     assert(isPassed, "different polpulation: "+[population.length,numOfPopulation]);
     for(let moveIndex=0; moveIndex<bestInd.moveComb.length;moveIndex++){
         move=bestInd.moveComb[moveIndex]
-        isPassed=isPassed && board[move[0]][move[1]]===" "
+        isPassed=isPassed && boardCopy[move[0]][move[1]]===" "
         putDownPiece(move,turn,boardCopy)
         turn=swapColor(turn)
 
@@ -248,8 +248,9 @@ assert(geneticPostCondition(pieceColor,population,numOfPopulation,bestInd,board)
 return bestInd
 }
 
-function GAmove(bestInd){
-    return bestInd.moveComb[0]
+function GAmove(depth,pieceColor,board){
+    let ind=bestInd(depth,pieceColor,board)
+    return ind.moveComb[0]
 }
 
 
