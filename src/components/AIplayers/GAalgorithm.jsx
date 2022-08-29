@@ -173,8 +173,8 @@ function geneticPostCondition(turn,population,numOfPopulation,bestInd,board){
 }
 
 function bestInd(depth,pieceColor,board){
-    assert(geneticPreCondition(depth,board),"genetic precondotion failed")
-    // console.log(pieceColor)
+    // assert(geneticPreCondition(depth,board),"genetic precondotion failed")
+
     let numOfPopulation=300;
     let numOfIteration=100;
     let numOfChildren=300;
@@ -209,7 +209,7 @@ for (var i=0;i<numOfPopulation;i++){
 previousPopulationScore=currentPopulationScore
 // interation process
 for (itIndex=0;itIndex<=numOfIteration;itIndex++){
-    assert(geneticInvariant(currentPopulationScore,previousPopulationScore),"genetic invariant failed loop start")
+    // assert(geneticInvariant(currentPopulationScore,previousPopulationScore),"genetic invariant failed loop start")
     for (childIndex=0;childIndex<Math.floor(numOfChildren/2);childIndex++){
         [momIndex,dadIndex]=pickTwoRandomIndex(population.length)
         mom=population[momIndex];
@@ -232,19 +232,18 @@ for (itIndex=0;itIndex<=numOfIteration;itIndex++){
         currentPopulationScore+=child2Score
         //sort population in descending order
     }
-    assert(geneticInvariant(currentPopulationScore,previousPopulationScore),"genetic invariant failed after children")
+    // assert(geneticInvariant(currentPopulationScore,previousPopulationScore),"genetic invariant failed after children")
     sortPopulation(population)
     population=population.slice(0, numOfPopulation);
     currentPopulationScore=polpuationScore(population);
-    assert(geneticInvariant(currentPopulationScore,previousPopulationScore),"genetic invariant failed end of loop")
+    // assert(geneticInvariant(currentPopulationScore,previousPopulationScore),"genetic invariant failed end of loop")
     previousPopulationScore=currentPopulationScore;
 
 }
 
 bestInd=population[0]
-assert(geneticPostCondition(pieceColor,population,numOfPopulation,bestInd,board),"genetic post condition failed")
+// assert(geneticPostCondition(pieceColor,population,numOfPopulation,bestInd,board),"genetic post condition failed")
 //postCondition make sure all moves are valid
-// console.log(bestInd.moveComb)
 return bestInd
 }
 

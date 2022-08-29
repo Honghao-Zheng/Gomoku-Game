@@ -266,6 +266,7 @@ function Simulation(props){
         AI1=player1;    
         AI2=player2; 
         console.log("AI1: "+AI1)
+        console.log("AI2: "+AI2)
         minimaxDepth=defaultMinimaxDepth;
         geneticDepth=defaultGeneticDepth;
         runSimulation(totalRound,boardArrangement,1)
