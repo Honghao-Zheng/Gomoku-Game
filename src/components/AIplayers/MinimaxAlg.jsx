@@ -55,11 +55,7 @@ function minimaxPostCondition(depthAwayFromRoot,distanceAwayFromLeaf,currentNode
 
 
 function minimaxMove(turn,depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth,board,currentNodeScore=-100000,parentNodeScore=100000){
-// console.log("1 depthAwayFromLeaf,depthAwayFromRoot,currentNodeScore,parentNodeScore "+ [depthAwayFromLeaf,depthAwayFromRoot,currentNodeScore,parentNodeScore])
-//     assert(minimaxPreCondition(depthAwayFromLeaf,depthAwayFromRoot,currentNodeScore,parentNodeScore),
-//      "preCondition failed node: "+[depthAwayFromLeaf,depthAwayFromRoot,currentNodeScore,parentNodeScore])
 
-    // console.log("depthAwayFromLeaf: "+depthAwayFromLeaf)
     //distance away from leaf is also the height of subtree for the child node of the current node
     let defFactor=0.9;
     let branchFactor=10;
@@ -71,19 +67,15 @@ function minimaxMove(turn,depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth,bo
     let nextCurrentNodeScore;
     let bestMove;
     let boardCopy;
-    assert(minimaxPreCondition(distanceAwayFromLeaf,board),"minimaxPreCondition Failed")
+    // assert(minimaxPreCondition(distanceAwayFromLeaf,board),"minimaxPreCondition Failed")
     distanceAwayFromLeaf-=1;
     
     //first depth, consider different computer moves
     for (moveIndex=0;moveIndex<moveCollection.length;moveIndex++){
-        assert(minimaxInvariant(depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth), "invariant failed")
+        // assert(minimaxInvariant(depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth), "invariant failed")
         boardCopy=copyTwoDimArray(board)
         moveMade=moveCollection[moveIndex].move
-        // nextCurrentNodeScore=currentNodeScore;
         putDownPiece(moveMade,turn,boardCopy)
-        
-        //check invariant
-        
         if(distanceAwayFromLeaf===0){
             //if leaf node at odd depth
             if((depthAwayFromRoot+distanceAwayFromLeaf+1)%2===1){
@@ -97,7 +89,7 @@ function minimaxMove(turn,depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth,bo
             moveScore=minimaxMove(opponentColor,depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth,boardCopy,parentNodeScore,currentNodeScore)
             depthAwayFromRoot-=1
         }
-        assert(minimaxInvariant(depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth), "invariant failed")
+        // assert(minimaxInvariant(depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth), "invariant failed")
         if(moveCollection[moveIndex].atkThreats.includes(5)){
             if((depthAwayFromRoot+distanceAwayFromLeaf+1)%2===1){
                 currentNodeScore=moveCollection[moveIndex].score;
@@ -127,10 +119,10 @@ function minimaxMove(turn,depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth,bo
                 }
             }
         }
-        assert(minimaxInvariant(depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth), "invariant failed")
+        // assert(minimaxInvariant(depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth), "invariant failed")
     }
     // minimax invariant:
-    assert(minimaxPostCondition(depthAwayFromRoot,distanceAwayFromLeaf,currentNodeScore), "fail post condition")
+    // assert(minimaxPostCondition(depthAwayFromRoot,distanceAwayFromLeaf,currentNodeScore), "fail post condition")
     //return the score back to the parent node if it is not in the root node
     if(depthAwayFromRoot !== 0  ){
         return currentNodeScore;

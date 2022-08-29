@@ -9,7 +9,7 @@ import ShowText from "../ShowText";
 import {GAmove} from "../AIplayers/GAalgorithm"
 import { copyTwoDimArray } from "../GeneralLogic";
 import minimaxMove from "../AIplayers/MinimaxAlg";
-import {minimaxNR,minimaxNoReductionNoDF,minimaxMoveLimit,minimaxAB} from "../../Experiment/minimax.jsx"
+import {minimaxNR,minimaxML,minimaxAB} from "../../Experiment/minimax.jsx"
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
@@ -69,17 +69,38 @@ function Simulation(props){
             computerMove=GAmove(1,turn,board)
             // computerMove=GAmove(1,turn,board)
             // computerMove=minimaxMove(turn,0,1,1,board)
-        } else if(AI==="Minimax") {
-            // computerMove=minimaxAB(turn,0,minimaxDepth,board)
-            computerMove=minimaxMove(turn,0,minimaxDepth,minimaxDepth,board)
-        } else if(AI==="MinimaxBad") {
-            // computerMove=minimaxMoveLimit(turn,0,minimaxBadDepth,board)
-            computerMove=minimaxMove(turn,0,minimaxBadDepth,minimaxBadDepth,board)
+        } 
+        else if(AI==="MinimaxNR2") {
+            computerMove=minimaxNR(turn,0,minimaxBadDepth,minimaxBadDepth,board)
+        }
+        else if(AI==="MinimaxML2") {
+            computerMove=minimaxML(turn,0,minimaxBadDepth,minimaxBadDepth,board)
+        }
+        else if(AI==="MinimaxML4") {
 
-        }else if(AI==="Genetic"){
+            computerMove=minimaxML(turn,0,minimaxDepth,minimaxDepth,board)
+        }
+        else if(AI==="MinimaxAB4") {
+            computerMove=minimaxAB(turn,0,minimaxDepth,minimaxDepth,board)
+        }
+        else if(AI==="MinimaxDepth4") {
+            computerMove=minimaxMove(turn,0,minimaxDepth,minimaxDepth,board)
+        } 
+        
+        else if(AI==="MinimaxDepth2") {
+            computerMove=minimaxMove(turn,0,minimaxBadDepth,minimaxBadDepth,board)
+        }
+        else if(AI==="MinimaxDepth1") {
+            computerMove=minimaxMove(turn,0,1,1,board)
+        }
+        else if(AI==="GeneticDepth4"){
             computerMove=GAmove(geneticDepth,turn,board)
-        } else if(AI==="GeneticBad"){
+        } 
+        else if(AI==="GeneticDepth2"){
             computerMove=GAmove(geneticBadDepth,turn,board)
+        }
+        else if(AI==="GeneticDepth1"){
+            computerMove=GAmove(1,turn,board)
         }
         putDownPiece(computerMove,turn,board)
         return computerMove
@@ -150,24 +171,21 @@ function Simulation(props){
                         MoveNumC2+=1
                     }
                 }
-                // console.log("movePair: "+movePair)
                 isPairFull=movePair[0]!==null && movePair[1]!==null;
                 if(isPairFull===true){
                     moveTimeList.push(movePair);
                     movePair=[null,null]
                 }
 
-                // console.log("moveMade: "+moveMade)
                 avaMoves=avalibleMoves(gameBoard);
                 numMoveLeft=avaMoves.length;
                 whoWin =checkWinning(turn,moveMade,gameBoard);
                 //if there is winner,game ended. if there isn't, check draw.
 
-                //change turn and AI algorithm for next turn
+
 
                 if (whoWin!==null){
                     console.log("whoWin: "+whoWin+" ("+AIalgorithm+")")
-                    // console.log("numMoveLeft: "+numMoveLeft)
                     isGameEnded=true;
                     if(movePair[0]!==null || movePair[1]!==null){
                         moveTimeList.push(movePair);
@@ -183,7 +201,7 @@ function Simulation(props){
                     }
                 }
 
-                //change turn
+            //change turn and AI algorithm for next turn
                 if(turn==="B"){
                     AIalgorithm=AI2;
                     turn="W"
@@ -196,23 +214,19 @@ function Simulation(props){
                 //avalible move decrease
                 if(numMoveLeft<geneticDepth+1){
                     geneticDepth=numMoveLeft
-                    // console.log("depth: "+depth)
+ 
                 }
                 if(numMoveLeft<geneticBadDepth+1){
                     geneticBadDepth=numMoveLeft
-                    // console.log("depth: "+depth)
+
                 }
-                // console.log("numMoveLeft: "+numMoveLeft)
-                // console.log("minimaxDepth: "+minimaxDepth)
+
                 if(numMoveLeft<minimaxDepth+1){
                   minimaxDepth=numMoveLeft
-            
-                  // console.log("depth: "+depth)
+
               }
               if(numMoveLeft<minimaxBadDepth+1){
                 minimaxBadDepth=numMoveLeft
-          
-                // console.log("depth: "+depth)
             }
                
             }
@@ -261,7 +275,6 @@ function Simulation(props){
          geneticDepth=defaultGeneticDepth
          runSimulation(totalRound,boardArrangement,2)
 
-         
          computer1TotalWin+=computer1Win
          computer2TotalWin+=computer2Win
          totalDraw+=draw

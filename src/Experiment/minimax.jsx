@@ -6,261 +6,204 @@ import { putDownPiece } from "../components/GameLogic";
 import { movesSearchMinimax } from "../components/AIplayers/AILogic/MoveSearch";
 import moveEvaluationNoDF from "./moveEvaluationNoDF";
 
+function minimaxNR(turn,depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth,board,currentNodeScore=-100000,parentNodeScore=100000){
 
-function minimaxNR(turn,depthAwayFromRoot,depthAwayFromLeaf,board,bestScore1=-100000){
-    depthAwayFromLeaf-=1;
-    // console.log("depthAwayFromLeaf: "+depthAwayFromLeaf)
-    let defFactor=0.9;
-    let opponentColor=swapColor(turn)
-    let avalibleMoves1= avalibleMoves(board)
-    // console.log(avalibleMoves1)
-    let moveIndex1;
-    let moveMade1;
-    let B1Score;
-    let bestScore2;
-    let bestMove;
-    let B1;
-    for (moveIndex1=0;moveIndex1<avalibleMoves1.length;moveIndex1++){
-        B1=copyTwoDimArray(board)
-        moveMade1=avalibleMoves1[moveIndex1]
-
-        putDownPiece(moveMade1,turn,B1)
-        bestScore2=-bestScore1;
-
-        if(depthAwayFromLeaf===0){
-            if((depthAwayFromRoot+1)%2===1){
-                B1Score=moveEvaluation(moveMade1,turn,defFactor,B1).score   
-            } else{
-                B1Score=-moveEvaluation(moveMade1,turn,defFactor,B1).score  
-            }
-            
-        } else {
-            depthAwayFromRoot+=1
-            B1Score=minimaxNR(opponentColor,depthAwayFromRoot,depthAwayFromLeaf,B1,bestScore2)
-            depthAwayFromRoot-=1
-        }
-        if((depthAwayFromRoot+1)%2===1){
-            if(B1Score>=bestScore1){
-                bestScore1=B1Score;
-                bestMove=moveMade1;
-            }
-        } else {
-            if(B1Score<=bestScore1){
-                bestScore1=B1Score
-                bestMove=moveMade1;
-            }
-        }
-    }
-
-    if(depthAwayFromRoot !== 0  ){
-
-        return bestScore1;
-
-    } else {
-// console.log("bestMove: "+bestMove)
-        return bestMove;
-    }
-    
-}
-
-function minimaxNoReductionNoDF(turn,depthAwayFromRoot,depthAwayFromLeaf,board,bestScore1=-100000){
-    depthAwayFromLeaf-=1;
-    // console.log("depthAwayFromLeaf: "+depthAwayFromLeaf)
-    let defFactor=0.9;
-    let opponentColor=swapColor(turn)
-    let avalibleMoves1= avalibleMoves(board)
-    // console.log(avalibleMoves1)
-    let moveIndex1;
-    let moveMade1;
-    let B1Score;
-    let bestScore2;
-    let bestMove;
-    let B1;
-    for (moveIndex1=0;moveIndex1<avalibleMoves1.length;moveIndex1++){
-        B1=copyTwoDimArray(board)
-        moveMade1=avalibleMoves1[moveIndex1]
-
-        putDownPiece(moveMade1,turn,B1)
-        bestScore2=-bestScore1;
-
-        if(depthAwayFromLeaf===0){
-            if((depthAwayFromRoot+1)%2===1){
-                B1Score=moveEvaluation(moveMade1,turn,defFactor,B1).score   
-            } else{
-                B1Score=-moveEvaluation(moveMade1,turn,defFactor,B1).score  
-            }
-            
-        } else {
-            depthAwayFromRoot+=1
-            B1Score=minimaxNoReductionNoDF(opponentColor,depthAwayFromRoot,depthAwayFromLeaf,B1,bestScore2)
-            depthAwayFromRoot-=1
-        }
-        if((depthAwayFromRoot+1)%2===1){
-            if(B1Score>=bestScore1){
-                bestScore1=B1Score;
-                bestMove=moveMade1;
-            }
-        } else {
-            if(B1Score<=bestScore1){
-                bestScore1=B1Score
-                bestMove=moveMade1;
-            }
-        }
-    }
-
-    if(depthAwayFromRoot !== 0  ){
-
-        return bestScore1;
-
-    } else {
-// console.log("bestMove: "+bestMove)
-        return bestMove;
-    }
-    
-}
-
-
-function minimaxMoveLimit(turn,depthAwayFromRoot,depthAwayFromLeaf,board,bestScore1=-100000,alphaBetaScore=100000){
-    depthAwayFromLeaf-=1;
+    //distance away from leaf is also the height of subtree for the child node of the current node
     let defFactor=0.9;
     let branchFactor=10;
     let opponentColor=swapColor(turn)
-    let avalibleMoves1= movesSearchMinimax(turn,defFactor,board,branchFactor)
-    let moveIndex1;
-    let moveMade1;
-    let B1Score;
-    let bestScore2;
+    let moveCollection= avalibleMoves(board)
+    let moveIndex;
+    let moveMade;
+    let moveScore;
+    let nextCurrentNodeScore;
     let bestMove;
-    let B1;
-    for (moveIndex1=0;moveIndex1<avalibleMoves1.length;moveIndex1++){
-        B1=copyTwoDimArray(board)
-        moveMade1=avalibleMoves1[moveIndex1].move
-        // console.log("moveMade1: "+moveMade1)
-        putDownPiece(moveMade1,turn,B1)
-        //alphabeta score is the default score for 
-
-        //bestScore1 is the default score of current parent node
-
-        //bestScore2 is the default score of parent node for next branching out
-        bestScore2=-bestScore1;
-
-        if(depthAwayFromLeaf===0){
-            if((depthAwayFromRoot+1)%2===1){
-                B1Score=moveEvaluation(moveMade1,turn,defFactor,B1).score   
-            } else{
-                B1Score=-moveEvaluation(moveMade1,turn,defFactor,B1).score  
-            }
-            // console.log("B1Score: "+B1Score)
-        } else {
-            depthAwayFromRoot+=1
-            B1Score=minimaxMoveLimit(opponentColor,depthAwayFromRoot,depthAwayFromLeaf,B1,bestScore2,bestScore1)
-            depthAwayFromRoot-=1
-        }
-        //odd depth maximiser
-        if((depthAwayFromRoot+1)%2===1){
-            if(B1Score>=bestScore1){
-                bestScore1=B1Score;
-                bestMove=moveMade1;
-
-            }
-        // even depth minimiser
-        } else {
-            if(B1Score<=bestScore1){
-                bestScore1=B1Score
-                bestMove=moveMade1;
- 
-            }
-        }
-    }
-    //return the score back to the parent node if it is not in the root node
-    if(depthAwayFromRoot !== 0  ){
-
-        return bestScore1;
-    //if already in the first depth, return the move.
-    } else {
-
-        return bestMove;
-    }
-    
-}
-
-
-function minimaxAB(turn,depthAwayFromRoot,depthAwayFromLeaf,board,bestScore1=-100000,alphaBetaScore=100000){
-    depthAwayFromLeaf-=1;
-    // console.log("depthAwayFromLeaf: "+depthAwayFromLeaf)
-    let defFactor=0.9;
-    let branchFactor=10;
-    let opponentColor=swapColor(turn)
-    let avalibleMoves1= movesSearchMinimax(turn,defFactor,board,branchFactor)
-    let moveIndex1;
-    let moveMade1;
-    let B1Score;
-    let bestScore2;
-    let bestMove;
-    let B1;
- 
+    let boardCopy;
+    // assert(minimaxPreCondition(distanceAwayFromLeaf,board),"minimaxPreCondition Failed")
+    distanceAwayFromLeaf-=1;
     
     //first depth, consider different computer moves
-    for (moveIndex1=0;moveIndex1<avalibleMoves1.length;moveIndex1++){
-        B1=copyTwoDimArray(board)
-        moveMade1=avalibleMoves1[moveIndex1].move
-        // console.log("moveMade1: "+moveMade1)
-        putDownPiece(moveMade1,turn,B1)
-        //alphabeta score is the default score for 
-
-        //bestScore1 is the default score of current parent node
-
-        //bestScore2 is the default score of parent node for next branching out
-        bestScore2=-bestScore1;
-
-        if(depthAwayFromLeaf===0){
-            if((depthAwayFromRoot+1)%2===1){
-                B1Score=moveEvaluation(moveMade1,turn,defFactor,B1).score   
+    for (moveIndex=0;moveIndex<moveCollection.length;moveIndex++){
+        // assert(minimaxInvariant(depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth), "invariant failed")
+        boardCopy=copyTwoDimArray(board)
+        moveMade=moveCollection[moveIndex].move
+        putDownPiece(moveMade,turn,boardCopy)
+        if(distanceAwayFromLeaf===0){
+            //if leaf node at odd depth
+            if((depthAwayFromRoot+distanceAwayFromLeaf+1)%2===1){
+                moveScore=moveEvaluation(moveMade,turn,defFactor,boardCopy).score   
+            //if leaf node at even depth
             } else{
-                B1Score=-moveEvaluation(moveMade1,turn,defFactor,B1).score  
-            }
-            // console.log("B1Score: "+B1Score)
-            
+                moveScore=-moveEvaluation(moveMade,turn,defFactor,boardCopy).score
+            }            
         } else {
             depthAwayFromRoot+=1
-            B1Score=minimaxAB(opponentColor,depthAwayFromRoot,depthAwayFromLeaf,B1,bestScore2,bestScore1)
+            moveScore=minimaxNR(opponentColor,depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth,boardCopy,parentNodeScore,currentNodeScore)
             depthAwayFromRoot-=1
         }
+        // assert(minimaxInvariant(depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth), "invariant failed")
+
         //odd depth maximiser
         if((depthAwayFromRoot+1)%2===1){
-            if(B1Score>=bestScore1){
-                bestScore1=B1Score;
-                bestMove=moveMade1;
-                if(B1Score>=alphaBetaScore){
+            if(moveScore>currentNodeScore){
+                currentNodeScore=moveScore;
+                bestMove=moveMade;
+            }
+        // even depth minimiser
+        } else {
+            if(moveScore<currentNodeScore){
+                currentNodeScore=moveScore
+                bestMove=moveMade;
+
+                }
+            }
+        }
+        // assert(minimaxInvariant(depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth), "invariant failed")
+    
+    // minimax invariant:
+    // assert(minimaxPostCondition(depthAwayFromRoot,distanceAwayFromLeaf,currentNodeScore), "fail post condition")
+    //return the score back to the parent node if it is not in the root node
+    if(depthAwayFromRoot !== 0  ){
+        return currentNodeScore;
+    //if already in the first depth, return the move.
+    } else {
+        return bestMove;
+    }
+}
+
+
+
+function minimaxML(turn,depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth,board,currentNodeScore=-100000,parentNodeScore=100000){
+
+    //distance away from leaf is also the height of subtree for the child node of the current node
+    let defFactor=0.9;
+    let branchFactor=10;
+    let opponentColor=swapColor(turn)
+    let moveCollection= movesSearchMinimax(turn,defFactor,board,branchFactor)
+    let moveIndex;
+    let moveMade;
+    let moveScore;
+    let nextCurrentNodeScore;
+    let bestMove;
+    let boardCopy;
+    // assert(minimaxPreCondition(distanceAwayFromLeaf,board),"minimaxPreCondition Failed")
+    distanceAwayFromLeaf-=1;
+    
+    //first depth, consider different computer moves
+    for (moveIndex=0;moveIndex<moveCollection.length;moveIndex++){
+        // assert(minimaxInvariant(depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth), "invariant failed")
+        boardCopy=copyTwoDimArray(board)
+        moveMade=moveCollection[moveIndex].move
+        putDownPiece(moveMade,turn,boardCopy)
+        if(distanceAwayFromLeaf===0){
+            //if leaf node at odd depth
+            if((depthAwayFromRoot+distanceAwayFromLeaf+1)%2===1){
+                moveScore=moveEvaluation(moveMade,turn,defFactor,boardCopy).score   
+            //if leaf node at even depth
+            } else{
+                moveScore=-moveEvaluation(moveMade,turn,defFactor,boardCopy).score
+            }            
+        } else {
+            depthAwayFromRoot+=1
+            moveScore=minimaxNR(opponentColor,depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth,boardCopy,parentNodeScore,currentNodeScore)
+            depthAwayFromRoot-=1
+        }
+        // assert(minimaxInvariant(depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth), "invariant failed")
+
+        //odd depth maximiser
+        if((depthAwayFromRoot+1)%2===1){
+            if(moveScore>currentNodeScore){
+                currentNodeScore=moveScore;
+                bestMove=moveMade;
+            }
+        // even depth minimiser
+        } else {
+            if(moveScore<currentNodeScore){
+                currentNodeScore=moveScore
+                bestMove=moveMade;
+
+                }
+            }
+        }
+        // assert(minimaxInvariant(depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth), "invariant failed")
+    
+    // minimax invariant:
+    // assert(minimaxPostCondition(depthAwayFromRoot,distanceAwayFromLeaf,currentNodeScore), "fail post condition")
+    //return the score back to the parent node if it is not in the root node
+    if(depthAwayFromRoot !== 0  ){
+        return currentNodeScore;
+    //if already in the first depth, return the move.
+    } else {
+        return bestMove;
+    }
+}
+
+function minimaxAB(turn,depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth,board,currentNodeScore=-100000,parentNodeScore=100000){
+    //distance away from leaf is also the height of subtree for the child node of the current node
+    let defFactor=0.9;
+    let branchFactor=10;
+    let opponentColor=swapColor(turn)
+    let moveCollection= movesSearchMinimax(turn,defFactor,board,branchFactor)
+    let moveIndex;
+    let moveMade;
+    let moveScore;
+    let nextCurrentNodeScore;
+    let bestMove;
+    let boardCopy;
+    // assert(minimaxPreCondition(distanceAwayFromLeaf,board),"minimaxPreCondition Failed")
+    distanceAwayFromLeaf-=1;
+    
+    //first depth, consider different computer moves
+    for (moveIndex=0;moveIndex<moveCollection.length;moveIndex++){
+        // assert(minimaxInvariant(depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth), "invariant failed")
+        boardCopy=copyTwoDimArray(board)
+        moveMade=moveCollection[moveIndex].move
+        putDownPiece(moveMade,turn,boardCopy)
+        if(distanceAwayFromLeaf===0){
+            //if leaf node at odd depth
+            if((depthAwayFromRoot+distanceAwayFromLeaf+1)%2===1){
+                moveScore=moveEvaluation(moveMade,turn,defFactor,boardCopy).score   
+            //if leaf node at even depth
+            } else{
+                moveScore=-moveEvaluation(moveMade,turn,defFactor,boardCopy).score
+            }            
+        } else {
+            depthAwayFromRoot+=1
+            moveScore=minimaxAB(opponentColor,depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth,boardCopy,parentNodeScore,currentNodeScore)
+            depthAwayFromRoot-=1
+        }
+        // assert(minimaxInvariant(depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth), "invariant failed")
+        //odd depth maximiser
+        if((depthAwayFromRoot+1)%2===1){
+            if(moveScore>currentNodeScore){
+                currentNodeScore=moveScore;
+                bestMove=moveMade;
+                if(moveScore>=parentNodeScore){
                     break;
                 }
             }
         // even depth minimiser
         } else {
-            if(B1Score<=bestScore1){
-                bestScore1=B1Score
-                bestMove=moveMade1;
-                if(B1Score<=alphaBetaScore){
+            if(moveScore<currentNodeScore){
+                currentNodeScore=moveScore
+                bestMove=moveMade;
+                if(moveScore<=parentNodeScore){
                     break;
                 }
             }
         }
+        // assert(minimaxInvariant(depthAwayFromRoot,distanceAwayFromLeaf,limitedDepth), "invariant failed")
     }
+    // minimax invariant:
+    // assert(minimaxPostCondition(depthAwayFromRoot,distanceAwayFromLeaf,currentNodeScore), "fail post condition")
     //return the score back to the parent node if it is not in the root node
     if(depthAwayFromRoot !== 0  ){
-        // console.log("------------------------")
-        // console.log("depthAwayFromRoot: "+depthAwayFromRoot)
-        // console.log("bestScore1: "+bestScore1)
-        return bestScore1;
+        return currentNodeScore;
     //if already in the first depth, return the move.
     } else {
-        // console.log("------------------------")
-        // console.log("depthAwayFromRoot: "+depthAwayFromRoot)
-        // console.log("bestMove: "+bestMove)
         return bestMove;
     }
-    
 }
 
 
-export {minimaxNR,minimaxNoReductionNoDF,minimaxMoveLimit,minimaxAB};
+export {minimaxNR,minimaxML,minimaxAB};

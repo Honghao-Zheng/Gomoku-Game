@@ -4,7 +4,6 @@ import {NavButton,FunctionButton} from "../Buttons";
 import { putDownPiece, checkWinning,avalibleMoves } from "../GameLogic"
 import { useState } from "react";
 import ShowText from "../ShowText";
-import moveEvaluation from "../AIplayers/AILogic/MoveEvaluation";
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],

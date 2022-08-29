@@ -18,7 +18,7 @@ let initialBoard=[
   ];
 
   test("minimax testing", ()=>{
-    let fittestInd=bestInd(2,"B",initialBoard).moveComb
+    let fittestInd=bestInd(2,"B",initialBoard).moveComb  
     let actualMoveB=fittestInd[0]
     let actualMoveW=fittestInd[1]
 

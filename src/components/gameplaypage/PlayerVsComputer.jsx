@@ -9,7 +9,7 @@ import ShowText from "../ShowText";
 import {GAmove} from "../AIplayers/GAalgorithm";
 import {initdrawCheckBoard,drawCheckBoard} from "../SharedData";
 import minimaxMove from "../AIplayers/MinimaxAlg";
-import moveEvaluation from "../AIplayers/AILogic/MoveEvaluation";
+
 
 let boardArrangement=[
     [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],

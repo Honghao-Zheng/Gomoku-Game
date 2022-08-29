@@ -75,3 +75,4 @@ binom.test(187, 187+148, p = 0.5,
 binom.test(188, 187+162, p = 0.5,
            alternative = "greater",
            conf.level = 0.95)
+
