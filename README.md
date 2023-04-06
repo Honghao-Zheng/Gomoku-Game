@@ -1,7 +1,8 @@
-MSc project: Design an AI to play Gomoku
+# MSc project: Design an AI to play Gomoku
+
 To run the project, node.js and react.js will be needed
 
-Steps:
+### Steps:
 1. Download the project zip folder and extract all
 2. download node.js from https://nodejs.org/en/download/ and ensure node.js is added
 to the Path in environment variable
