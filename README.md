@@ -1,6 +1,6 @@
 # MSc project in University of Birmingham: Design an AI to play Gomoku
 
-genetic algorithm and minimax algorithm were used for the computer player
+Game Rule: The first player to achieve a line of five stones in a row wins the game
 
 <img src="https://github.com/Honghao-Zheng/gomoku-game/blob/main/public/assets/Gomoku.png" width="600" height="300">
 
